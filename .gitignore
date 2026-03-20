@@ -42,3 +42,4 @@ replay_pid*
 .Trashes
 org.eclipse.jdt.core.prefs
 Thumbs.db
+/bin/
