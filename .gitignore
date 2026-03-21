@@ -43,3 +43,4 @@ replay_pid*
 org.eclipse.jdt.core.prefs
 Thumbs.db
 /bin/
+*.kate-swp
