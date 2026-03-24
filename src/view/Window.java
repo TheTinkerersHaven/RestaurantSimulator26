@@ -13,6 +13,7 @@ public class Window extends JFrame implements WindowListener {
 		setSize(600, 450);
 		setContentPane(panel);
 		setVisible(true);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		addWindowListener(this);
 	}
 
