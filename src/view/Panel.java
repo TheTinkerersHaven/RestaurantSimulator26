@@ -14,7 +14,7 @@ import java.net.URL;
 public class Panel extends JPanel {
     private JPanel panelMenu;
     private JPanel panelPulsantiMenu;
-    private JComponent menuImage;
+    private JLabel lblMenuImage;
     private JButton btnClassifica;
     private JButton btnNuovaPartita;
     private JPanel panelSala;
@@ -28,13 +28,9 @@ public class Panel extends JPanel {
         add(panelMenu, "menu");
         panelMenu.setLayout(new BorderLayout(0, 0));
 
-        URL imageResource = Panel.class.getResource("/images/Restaurant Simulator V2.png");
-        
-        // menuImage = new ScaledImage(imageResource);
-        menuImage = new JLabel(new ScaledImageIcon(imageResource));
-        
-        menuImage.setOpaque(true);
-        panelMenu.add(menuImage, BorderLayout.CENTER);
+        lblMenuImage = new JLabel(new ScaledImageIcon(Panel.class.getResource("/images/Restaurant Simulator V2.png")));
+        lblMenuImage.setOpaque(true);
+        panelMenu.add(lblMenuImage, BorderLayout.CENTER);
 
         panelPulsantiMenu = new JPanel();
         panelMenu.add(panelPulsantiMenu, BorderLayout.SOUTH);
