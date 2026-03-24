@@ -8,7 +8,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import java.awt.GridLayout;
-import java.net.URL;
 
 @SuppressWarnings("serial")
 public class Panel extends JPanel {
