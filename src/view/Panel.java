@@ -4,7 +4,6 @@ import javax.swing.JPanel;
 import java.awt.CardLayout;
 import java.awt.BorderLayout;
 import javax.swing.JButton;
-import javax.swing.JComponent;
 import javax.swing.JLabel;
 
 import java.awt.GridLayout;
