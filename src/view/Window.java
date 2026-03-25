@@ -4,16 +4,17 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 @SuppressWarnings("serial")
 public class Window extends JFrame implements WindowListener {
-	private Panel panel;
+	private MainPanel panel;
 	public Window() {
-		panel = new Panel();
+		panel = new MainPanel();
 		setSize(600, 450);
 		setContentPane(panel);
 		setVisible(true);
-		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
 	}
 
@@ -23,8 +24,8 @@ public class Window extends JFrame implements WindowListener {
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		// TODO Auto-generated method stub
-		
+		int esito = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler uscire?", "Conferma uscita", JOptionPane.YES_NO_OPTION);	
+		if(esito == JOptionPane.YES_OPTION) System.exit(0);
 	}
 	@Override
 	public void windowClosed(WindowEvent e) {
