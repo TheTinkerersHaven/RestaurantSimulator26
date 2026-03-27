@@ -4,19 +4,20 @@ import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import java.awt.Component;
+import java.awt.Dimension;
+
 import javax.swing.border.EmptyBorder;
 import javax.swing.Box;
 
 @SuppressWarnings("serial")
 public class CucinaPanel extends JPanel {
-	private JPanel panel;
-	private JButton btnPiatto1;
-	private JButton btnPiatto2;
-	private JButton btnPiatto3;
-	private JButton btnPiatto4;
-	private JButton btnPiatto5;
+	private JPanel panelCuochi;
 	private JButton btnIndietro;
+	private PannelloCuoco pannelloCuoco1;
+	private PannelloCuoco pannelloCuoco2;
+	private PannelloCuoco pannelloCuoco3;
 	private Component verticalGlue;
+	private Component verticalGlue_1;
 
 	public CucinaPanel() {
 		setBorder(new EmptyBorder(10, 10, 10, 10));
@@ -25,23 +26,21 @@ public class CucinaPanel extends JPanel {
 		verticalGlue = Box.createVerticalGlue();
 		add(verticalGlue);
 		
-		panel = new JPanel();
-		add(panel);
+		panelCuochi = new JPanel();
+		panelCuochi.setMaximumSize(new Dimension(32767, 0));
+		add(panelCuochi);
 		
-		btnPiatto1 = new JButton("Piatto1");
-		panel.add(btnPiatto1);
+		pannelloCuoco1 = new PannelloCuoco(1);
+		panelCuochi.add(pannelloCuoco1);
 		
-		btnPiatto2 = new JButton("Piatto2");
-		panel.add(btnPiatto2);
+		pannelloCuoco2 = new PannelloCuoco(2);
+		panelCuochi.add(pannelloCuoco2);
 		
-		btnPiatto3 = new JButton("Piatto3");
-		panel.add(btnPiatto3);
+		pannelloCuoco3 = new PannelloCuoco(3);
+		panelCuochi.add(pannelloCuoco3);
 		
-		btnPiatto4 = new JButton("Piatto4");
-		panel.add(btnPiatto4);
-		
-		btnPiatto5 = new JButton("Piatto5");
-		panel.add(btnPiatto5);
+		verticalGlue_1 = Box.createVerticalGlue();
+		add(verticalGlue_1);
 		
 		btnIndietro = new JButton("Indietro");
 		btnIndietro.setAlignmentX(Component.CENTER_ALIGNMENT);
