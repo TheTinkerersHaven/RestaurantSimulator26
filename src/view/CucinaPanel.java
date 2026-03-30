@@ -3,8 +3,11 @@ package view;
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
+
 import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.event.ActionListener;
+import java.util.function.Function;
 
 import javax.swing.border.EmptyBorder;
 import javax.swing.Box;
@@ -45,5 +48,11 @@ public class CucinaPanel extends JPanel {
 		btnIndietro = new JButton("Indietro");
 		btnIndietro.setAlignmentX(Component.CENTER_ALIGNMENT);
 		add(btnIndietro);
+	}
+	
+	public void aggiungiAscoltatori(Function<PannelloCuoco, ActionListener> creaAscoltatore) {
+		pannelloCuoco1.aggiungiAscoltatori(creaAscoltatore.apply(pannelloCuoco1));
+		pannelloCuoco2.aggiungiAscoltatori(creaAscoltatore.apply(pannelloCuoco2));
+		pannelloCuoco3.aggiungiAscoltatori(creaAscoltatore.apply(pannelloCuoco3));
 	}
 }
