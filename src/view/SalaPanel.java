@@ -7,19 +7,19 @@ import javax.swing.border.EmptyBorder;
 
 @SuppressWarnings("serial")
 public class SalaPanel extends JPanel {
-	private JPanel panel1;
-	private JPanel panel2;
-	private JPanel panel3;
-	private JPanel panel4;
+	private PannelloTavolo panel1;
+	private PannelloTavolo panel2;
+	private PannelloTavolo panel3;
+	private PannelloTavolo panel4;
 	
 	public SalaPanel() {
 		setBorder(new EmptyBorder(30, 50, 30, 50));
 		setLayout(new GridLayout(2, 2, 50, 50));
 		
-		add(panel1 = new JPanel());
-		add(panel2 = new JPanel());
-		add(panel3 = new JPanel());
-		add(panel4 = new JPanel());
+		add(panel1 = new PannelloTavolo(1));
+		add(panel2 = new PannelloTavolo(2));
+		add(panel3 = new PannelloTavolo(3));
+		add(panel4 = new PannelloTavolo(4));
 	}
 
 	public JPanel getTavolo(int tavolo) {
