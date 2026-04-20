@@ -6,6 +6,12 @@ import view.Window;
 public class Main {
 	public static void main(String[] args) {
 		Window window = new Window();
-		new ControllerNavigazione(window);
+
+		// Facciamo suppress cosi si può scommentare la riga sotto per il debug
+		@SuppressWarnings("unused")
+		ControllerNavigazione controllerNavigazione = new ControllerNavigazione(window);
+
+		// Per debug: se vuoi aprire l'app in un altra schermata
+		// controllerNavigazione.actionPerformed(new java.awt.event.ActionEvent(window, 0, "nuova_partita"));
 	}
 }
