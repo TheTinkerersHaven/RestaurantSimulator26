@@ -6,6 +6,8 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import controller.ControllerNavigazione;
+
 @SuppressWarnings("serial")
 public class MenuPanel extends JPanel {
 	private JPanel panelMenu;
@@ -28,10 +30,17 @@ public class MenuPanel extends JPanel {
 		add(panelPulsantiMenu, BorderLayout.SOUTH);
 			    
 		btnClassifica = new JButton("Classifica");
+		btnClassifica.setActionCommand("classifica");
 		panelPulsantiMenu.add(btnClassifica);
 			    
 		btnNuovaPartita = new JButton("Nuova partita");
+		btnNuovaPartita.setActionCommand("nuova_partita");
 		panelPulsantiMenu.add(btnNuovaPartita);
+	}
+	
+	public void registraAscoltatori(ControllerNavigazione c) {
+		btnClassifica.addActionListener(c);
+		btnNuovaPartita.addActionListener(c);
 	}
 }
 	

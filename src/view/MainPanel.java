@@ -11,8 +11,12 @@ import java.awt.BorderLayout;
 import javax.swing.JLayeredPane;
 import javax.swing.BoxLayout;
 import java.awt.Component;
-import javax.swing.Box;
+import java.awt.Dimension;
+
 import javax.swing.border.EmptyBorder;
+
+import controller.ControllerNavigazione;
+
 import java.awt.Font;
 
 @SuppressWarnings("serial")
@@ -55,10 +59,10 @@ public class MainPanel extends JPanel {
 		overlayUI.setBorder(new EmptyBorder(10, 10, 10, 10));
 		overlayUI.setLayout(new BoxLayout(overlayUI, BoxLayout.Y_AXIS));
 
-		// Messaggii di test
-		overlayUI.add(creaMessaggioOverlay("Tutorial: Hello world!"));
-		overlayUI.add(Box.createVerticalStrut(5));
-		overlayUI.add(creaMessaggioOverlay("Tutorial:\nPer cucinare qualcosa in cucina fai click destro su un forno"));
+		// Messaggi di test
+//		overlayUI.add(creaMessaggioOverlay("Tutorial: Hello world!"));
+//		overlayUI.add(Box.createVerticalStrut(5));
+//		overlayUI.add(creaMessaggioOverlay("Tutorial:\nPer cucinare qualcosa in cucina fai click destro su un forno"));
 
 		// --- MAIN UI ---
 		cardLayoutMainUI = new CardLayout(0, 0);
@@ -77,6 +81,7 @@ public class MainPanel extends JPanel {
 		mainUI.add(classificaPanel, "classifica");
 	}
 
+	@SuppressWarnings("unused")
 	private JTextArea creaMessaggioOverlay(String testo) {
 		JTextArea textArea = new JTextArea(testo);
 
@@ -109,5 +114,24 @@ public class MainPanel extends JPanel {
 			salaPanel.getTavolo(tavolo).setBackground(Color.red);
 			break;
 		}
+	}
+	
+	public CardLayout getCardLayoutMainUI() {
+		return cardLayoutMainUI;
+	}
+	
+	public JPanel getMainUI() {
+		return mainUI;
+	}
+
+	public void registraAscoltatoriMain(ControllerNavigazione c) {
+		menuPanel.registraAscoltatori(c);
+		classificaPanel.registraAscoltatori(c);
+	}
+	
+	public Dimension cambiaPannello(String pannello) {
+		cardLayoutMainUI.show(mainUI, pannello);
+		if(pannello.equals("sala")) return new Dimension(600, 600);
+		else return new Dimension(600, 450);
 	}
 }

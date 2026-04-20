@@ -1,9 +1,11 @@
 package main;
 
+import controller.ControllerNavigazione;
 import view.Window;
 
 public class Main {
 	public static void main(String[] args) {
-		new Window();
+		Window window = new Window();
+		new ControllerNavigazione(window);
 	}
 }

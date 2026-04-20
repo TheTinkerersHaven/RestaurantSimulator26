@@ -14,6 +14,7 @@ public class Window extends JFrame implements WindowListener {
 		setSize(600, 450);
 		setContentPane(panel);
 		setVisible(true);
+		setLocationRelativeTo(null);
 		setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
 		addWindowListener(this);
 	}
@@ -27,6 +28,7 @@ public class Window extends JFrame implements WindowListener {
 		int esito = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler uscire?", "Conferma uscita", JOptionPane.YES_NO_OPTION);	
 		if(esito == JOptionPane.YES_OPTION) System.exit(0);
 	}
+
 	@Override
 	public void windowClosed(WindowEvent e) {
 		// TODO Auto-generated method stub
@@ -53,4 +55,7 @@ public class Window extends JFrame implements WindowListener {
 		
 	}
 
+	public MainPanel getPanel() {
+		return panel;
+	}
 }
