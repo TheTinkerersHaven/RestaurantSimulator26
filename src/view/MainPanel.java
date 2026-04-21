@@ -127,6 +127,8 @@ public class MainPanel extends JPanel {
 	public void registraAscoltatoriMain(ControllerNavigazione c) {
 		menuPanel.registraAscoltatori(c);
 		classificaPanel.registraAscoltatori(c);
+		salaPanel.registraAscoltatori(c);
+		cucinaPanel.aggiungiAscoltatori(c);
 	}
 	
 	public Dimension cambiaPannello(String pannello) {

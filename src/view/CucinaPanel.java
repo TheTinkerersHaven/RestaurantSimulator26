@@ -2,36 +2,38 @@ package view;
 
 import javax.swing.JPanel;
 import javax.swing.BoxLayout;
-import javax.swing.JButton;
-
-import java.awt.Component;
+import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.event.ActionListener;
-import java.util.function.Function;
-
 import javax.swing.border.EmptyBorder;
-import javax.swing.Box;
+
+import controller.ControllerNavigazione;
+
+import java.awt.GridLayout;
 
 @SuppressWarnings("serial")
 public class CucinaPanel extends JPanel {
+	private BarraSuperiore barraSuperiore;
 	private JPanel panelCuochi;
-	private JButton btnIndietro;
 	private PannelloCuoco pannelloCuoco1;
 	private PannelloCuoco pannelloCuoco2;
 	private PannelloCuoco pannelloCuoco3;
-	private Component verticalGlue;
-	private Component verticalGlue_1;
+	private JPanel panel;
 
 	public CucinaPanel() {
-		setBorder(new EmptyBorder(10, 10, 10, 10));
-		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
+		setLayout(new BorderLayout(0, 0));
 		
-		verticalGlue = Box.createVerticalGlue();
-		add(verticalGlue);
+		barraSuperiore = new BarraSuperiore("Vai a sala", "vai_sala_da_cucina");
+		add(barraSuperiore, BorderLayout.NORTH);
+		
+		panel = new JPanel();
+		panel.setBorder(new EmptyBorder(30, 30, 30, 30));
+		add(panel, BorderLayout.CENTER);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
 		
 		panelCuochi = new JPanel();
-		panelCuochi.setMaximumSize(new Dimension(32767, 0));
-		add(panelCuochi);
+		panel.add(panelCuochi);
+		panelCuochi.setMaximumSize(new Dimension(32767, 32767));
+		panelCuochi.setLayout(new GridLayout(1, 3, 5, 5));
 		
 		pannelloCuoco1 = new PannelloCuoco(1);
 		panelCuochi.add(pannelloCuoco1);
@@ -41,18 +43,12 @@ public class CucinaPanel extends JPanel {
 		
 		pannelloCuoco3 = new PannelloCuoco(3);
 		panelCuochi.add(pannelloCuoco3);
-		
-		verticalGlue_1 = Box.createVerticalGlue();
-		add(verticalGlue_1);
-		
-		btnIndietro = new JButton("Indietro");
-		btnIndietro.setAlignmentX(Component.CENTER_ALIGNMENT);
-		add(btnIndietro);
 	}
 	
-	public void aggiungiAscoltatori(Function<PannelloCuoco, ActionListener> creaAscoltatore) {
-		pannelloCuoco1.aggiungiAscoltatori(creaAscoltatore.apply(pannelloCuoco1));
-		pannelloCuoco2.aggiungiAscoltatori(creaAscoltatore.apply(pannelloCuoco2));
-		pannelloCuoco3.aggiungiAscoltatori(creaAscoltatore.apply(pannelloCuoco3));
+	public void aggiungiAscoltatori(ControllerNavigazione c/*, Function<PannelloCuoco, ActionListener> creaAscoltatore*/) {
+//		pannelloCuoco1.aggiungiAscoltatori(creaAscoltatore.apply(pannelloCuoco1));
+//		pannelloCuoco2.aggiungiAscoltatori(creaAscoltatore.apply(pannelloCuoco2));
+//		pannelloCuoco3.aggiungiAscoltatori(creaAscoltatore.apply(pannelloCuoco3));
+		barraSuperiore.getBtnCentrale().addActionListener(c);
 	}
 }

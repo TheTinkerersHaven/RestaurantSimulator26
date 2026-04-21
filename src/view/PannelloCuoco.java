@@ -48,6 +48,21 @@ public class PannelloCuoco extends JPanel {
 		mntmPiatto3 = new JMenuItem("Hosomaki maguro");
 		popupMenu.add(mntmPiatto3);
 	}
+
+	@Override
+	public void setBounds(int x, int y, int width, int height) {
+		// Controlla la dimensione minore per mantenere un quadrato
+		int size = Math.min(width, height);
+		// Trova l'angolo superiore sinistro per centrare il quadrato
+		int nx = x + (width - size) / 2;
+		int ny = y + (height - size) / 2;
+		super.setBounds(nx, ny, size, size);
+	}
+
+	@Override
+	public Dimension getMaximumSize() {
+		return new Dimension(Integer.MAX_VALUE, Integer.MAX_VALUE);
+	}
 	
 	public int getNumeroCuoco() {
 		return numeroCuoco;

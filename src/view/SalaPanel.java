@@ -5,18 +5,11 @@ import java.awt.BorderLayout;
 
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import controller.ControllerNavigazione;
+
 import javax.swing.JScrollPane;
-import javax.swing.JMenuBar;
-import javax.swing.JMenu;
 import java.awt.Dimension;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-
-import javax.swing.SwingConstants;
-import javax.swing.JButton;
-import javax.swing.JMenuItem;
-
-import java.awt.ComponentOrientation;
 
 @SuppressWarnings("serial")
 public class SalaPanel extends JPanel {
@@ -26,55 +19,13 @@ public class SalaPanel extends JPanel {
 	private PannelloTavolo tavolo4;
 	private JPanel panelTavoli;
 	private JScrollPane scrollPaneBancone;
-	private JMenuBar menuBar;
-	private JMenu menuFile;
-	private JButton btnVaiCucina;
-	private JMenu menuNotifiche;
-	private JMenuItem mntmNewMenuItem;
+	private BarraSuperiore barraSuperiore;
 	
 	public SalaPanel() {
 		setLayout(new BorderLayout());
 		
-		menuBar = new JMenuBar();
-		menuBar.setLayout(new GridBagLayout());
-		add(menuBar, BorderLayout.NORTH);
-		
-		menuFile = new JMenu("File");
-		menuFile.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
-
-		// Cambia la dimensione a 0 0, se no il bottone non viene in centro
-		menuFile.setPreferredSize(new Dimension(0, 0));
-		GridBagConstraints fileConstrain = new GridBagConstraints();
-		// Dimensiona in X e Y (perche abbiamo anche height a 0)
-		fileConstrain.fill = GridBagConstraints.BOTH;
-		fileConstrain.weightx = 1;
-		fileConstrain.weighty = 1;
-		menuBar.add(menuFile, fileConstrain);
-		
-		btnVaiCucina = new JButton("Vai in cucina");
-
-		GridBagConstraints cucinaConstrain = new GridBagConstraints();
-		// Dimensiona in Y, in X lascia il PreferredSize di JButton
-		//  ridimensioniamo anche se non servirebbe cosi se per caso la JMenuBar diventa più alta anche il pulsante si ingrandisce
-		cucinaConstrain.fill = GridBagConstraints.VERTICAL;
-		cucinaConstrain.weighty = 1;
-		menuBar.add(btnVaiCucina, cucinaConstrain);
-		
-		menuNotifiche = new JMenu("Notifiche");
-		menuNotifiche.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
-
-		// Cambia la dimensione a 0 0, se no il bottone non viene in centro
-		menuNotifiche.setPreferredSize(new Dimension(0, 0));
-		GridBagConstraints notificheConstrain = new GridBagConstraints();
-		// Dimensiona in X e Y (perche abbiamo anche height a 0)
-		notificheConstrain.fill = GridBagConstraints.BOTH;
-		notificheConstrain.weightx = 1;
-		notificheConstrain.weighty = 1;
-		menuBar.add(menuNotifiche, notificheConstrain);
-		
-		mntmNewMenuItem = new JMenuItem("New menu item");
-		mntmNewMenuItem.setHorizontalAlignment(SwingConstants.RIGHT);
-		menuNotifiche.add(mntmNewMenuItem);
+		barraSuperiore = new BarraSuperiore("Vai a cucina", "vai_cucina_da_sala");
+		add(barraSuperiore, BorderLayout.NORTH);
 		
 		panelTavoli = new JPanel();
 		panelTavoli.setBorder(new EmptyBorder(30, 50, 30, 50));
@@ -103,5 +54,9 @@ public class SalaPanel extends JPanel {
 			case 4: return tavolo4;
 		}
 		return null;
+	}
+	
+	public void registraAscoltatori(ControllerNavigazione c) {
+		barraSuperiore.getBtnCentrale().addActionListener(c);
 	}
 }

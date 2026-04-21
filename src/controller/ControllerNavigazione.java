@@ -28,6 +28,12 @@ public class ControllerNavigazione implements ActionListener {
 			case "indietro_classifica":
 				window.setSize(panel.cambiaPannello("menu"));
 				break;
+			case "vai_cucina_da_sala":
+				window.setSize(panel.cambiaPannello("cucina"));
+				break;
+			case "vai_sala_da_cucina":
+				window.setSize(panel.cambiaPannello("sala"));
+				break;
 		}
 		
 	}
