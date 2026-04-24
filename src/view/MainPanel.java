@@ -15,9 +15,11 @@ import java.awt.Dimension;
 
 import javax.swing.border.EmptyBorder;
 
+import controller.ControllerCuoco;
 import controller.ControllerNavigazione;
 
 import java.awt.Font;
+import java.util.function.Function;
 
 @SuppressWarnings("serial")
 public class MainPanel extends JPanel {
@@ -35,8 +37,7 @@ public class MainPanel extends JPanel {
 
 		// Il LayeredPane consente di avere 2 cose una sopra l'altra
 		layeredPane = new JLayeredPane();
-		// L'overlayLayout consente di posizionare 2 cose una sopra l'altra senza
-		// absolute (default di JLayeredPane)
+		// L'overlayLayout consente di posizionare 2 cose una sopra l'altra senza absolute (default di JLayeredPane)
 		layeredPane.setLayout(new OverlayLayout(layeredPane));
 		add(layeredPane, BorderLayout.CENTER);
 
@@ -86,8 +87,7 @@ public class MainPanel extends JPanel {
 		JTextArea textArea = new JTextArea(testo);
 
 		textArea.setBorder(new EmptyBorder(5, 5, 5, 5));
-		// Dato che non sappiamo che font sia in uso, usa quello di default ma con il
-		// bold
+		// Dato che non sappiamo che font sia in uso, usa quello di default ma con il bold
 		textArea.setFont(textArea.getFont().deriveFont(textArea.getFont().getStyle() | Font.BOLD));
 		textArea.setEnabled(false);
 		textArea.setEditable(false);
@@ -95,8 +95,7 @@ public class MainPanel extends JPanel {
 		textArea.setDisabledTextColor(Color.BLACK);
 		textArea.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		textArea.setBackground(Color.YELLOW);
-		// getPreferredSize è calcolato in base al testo, se impostiamo il max a
-		// preferred gli diamo lo spazio minimo
+		// getPreferredSize è calcolato in base al testo, se impostiamo il max a preferred gli diamo lo spazio minimo
 		textArea.setMaximumSize(textArea.getPreferredSize());
 
 		return textArea;
@@ -124,11 +123,15 @@ public class MainPanel extends JPanel {
 		return mainUI;
 	}
 
-	public void registraAscoltatoriMain(ControllerNavigazione c) {
-		menuPanel.registraAscoltatori(c);
-		classificaPanel.registraAscoltatori(c);
-		salaPanel.registraAscoltatori(c);
-		cucinaPanel.aggiungiAscoltatori(c);
+	public void registraAscoltatoriNavigazioneMain(ControllerNavigazione controllerNavigazione) {
+		menuPanel.registraAscoltatori(controllerNavigazione);
+		classificaPanel.registraAscoltatori(controllerNavigazione);
+		salaPanel.registraAscoltatori(controllerNavigazione);
+		cucinaPanel.aggiungiAscoltatoriNavigazione(controllerNavigazione);
+	}
+	
+	public void registraAscolatoriCuochiMain(Function<PannelloCuoco, ControllerCuoco> creaControllerCuoco) {
+		cucinaPanel.aggiungiAscoltatoriCuochi(creaControllerCuoco);
 	}
 	
 	public Dimension cambiaPannello(String pannello) {

@@ -4,12 +4,14 @@ import javax.swing.JLabel;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
+import javax.swing.JProgressBar;
 
 import java.awt.Dimension;
-import java.awt.event.ActionListener;
+import java.net.URL;
 import java.awt.BorderLayout;
 import javax.swing.border.TitledBorder;
 
+import controller.ControllerCuoco;
 import controller.PopupController;
 
 import javax.swing.border.LineBorder;
@@ -18,6 +20,7 @@ import java.awt.Color;
 @SuppressWarnings("serial")
 public class PannelloCuoco extends JPanel {
 	private JLabel lblCuoco;
+	private JProgressBar progressBar;
 	private JPopupMenu popupMenu;
 	private JMenuItem mntmPiatto1;
 	private JMenuItem mntmPiatto2;
@@ -28,13 +31,16 @@ public class PannelloCuoco extends JPanel {
 	public PannelloCuoco(int numeroCuoco) {
 		this.numeroCuoco = numeroCuoco;
 		
-		setLayout(new BorderLayout(0, 0));
+		setLayout(new BorderLayout(5, 5));
 		setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229), 2, false), "Cuoco " + numeroCuoco, TitledBorder.CENTER, TitledBorder.TOP, null, new Color(51, 51, 51)));
 		
 		lblCuoco = new JLabel();
-		lblCuoco.setPreferredSize(new Dimension(100, 100));
 		lblCuoco.setOpaque(true);
-		add(lblCuoco);
+		add(lblCuoco, BorderLayout.CENTER);
+		
+		progressBar = new JProgressBar();
+		progressBar.setStringPainted(true);
+		add(progressBar, BorderLayout.SOUTH);
 		
 		popupMenu = new JPopupMenu();
 		
@@ -43,9 +49,11 @@ public class PannelloCuoco extends JPanel {
 		popupMenu.add(mntmPiatto1);
 		
 		mntmPiatto2 = new JMenuItem("Uramaki Rainbow");
+		mntmPiatto2.setActionCommand("uramakiRainbow");
 		popupMenu.add(mntmPiatto2);
 		
 		mntmPiatto3 = new JMenuItem("Hosomaki Maguro");
+		mntmPiatto3.setActionCommand("hosomakiMaguro");
 		popupMenu.add(mntmPiatto3);
 	}
 
@@ -68,11 +76,24 @@ public class PannelloCuoco extends JPanel {
 		return numeroCuoco;
 	}
 
-	public void aggiungiAscoltatori(ActionListener al) {
-		lblCuoco.addMouseListener(new PopupController(popupMenu));
+	public void aggiungiAscoltatori(ControllerCuoco al) {
+		this.addMouseListener(new PopupController(popupMenu));
 		
 		mntmPiatto1.addActionListener(al);
 		mntmPiatto2.addActionListener(al);
 		mntmPiatto3.addActionListener(al);
+	}
+
+	public void mostraPiatto(URL immaginePiatto) {
+		lblCuoco.setIcon(new ScaledImageIcon(immaginePiatto));
+	}
+	
+	public void rimuoviImmagine() {
+		lblCuoco.setIcon(null);
+		progressBar.setValue(0);
+	}
+
+	public void aggiornaProgresso(int perc) {
+		progressBar.setValue(perc);
 	}
 }

@@ -1,5 +1,6 @@
 package main;
 
+import controller.ControllerCuoco;
 import controller.ControllerNavigazione;
 import view.Window;
 
@@ -12,6 +13,8 @@ public class Main {
 		ControllerNavigazione controllerNavigazione = new ControllerNavigazione(window);
 
 		// Per debug: se vuoi aprire l'app in un altra schermata
-		// controllerNavigazione.actionPerformed(new java.awt.event.ActionEvent(window, 0, "nuova_partita"));
+		// controllerNavigazione.actionPerformed(new java.awt.event.ActionEvent(window, 0, "vai_cucina_da_sala"));
+		
+		ControllerCuoco.registraAscoltatori(window.getPanel());
 	}
 }

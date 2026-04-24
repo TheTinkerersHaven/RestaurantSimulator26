@@ -13,7 +13,7 @@ public class ControllerNavigazione implements ActionListener {
 	public ControllerNavigazione(Window window) {
 		this.window = window;
 		this.panel = window.getPanel();
-		panel.registraAscoltatoriMain(this);
+		panel.registraAscoltatoriNavigazioneMain(this);
 	}
 
 	@Override
