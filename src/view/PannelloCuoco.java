@@ -42,10 +42,10 @@ public class PannelloCuoco extends JPanel {
 		mntmPiatto1.setActionCommand("sashimi");
 		popupMenu.add(mntmPiatto1);
 		
-		mntmPiatto2 = new JMenuItem("Futomaki Miura");
+		mntmPiatto2 = new JMenuItem("Uramaki Ebiten");
 		popupMenu.add(mntmPiatto2);
 		
-		mntmPiatto3 = new JMenuItem("Hosomaki maguro");
+		mntmPiatto3 = new JMenuItem("Hosomaki Maguro");
 		popupMenu.add(mntmPiatto3);
 	}
 
