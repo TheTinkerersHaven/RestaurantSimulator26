@@ -28,28 +28,24 @@ public class ControllerCuoco implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		try {
-			if (!cuoco.getPiattoInPreparazione().equals(Piatto.NESSUNO)) {
-				JOptionPane.showMessageDialog(pc, "C'è un piatto già in preparazione", "Avviso", JOptionPane.WARNING_MESSAGE);
-				return;
-			}
-			
-			switch (e.getActionCommand()) {
-				case "sashimi":
-					cuoco.iniziaPreparazione(Piatto.SASHIMI);
-					break;
-				case "uramakiRainbow":
-					cuoco.iniziaPreparazione(Piatto.URAMAKI_RAINBOW);
-					break;
-				case "hosomakiMaguro":
-					cuoco.iniziaPreparazione(Piatto.HOSOMAKI_MAGURO);
-					break;
-			}
-			
-			pc.mostraPiatto(cuoco.getPiattoInPreparazione().getImmaginePiatto());
-		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(pc, ex.getMessage(), "Errore!", JOptionPane.ERROR_MESSAGE);
+		if (!cuoco.getPiattoInPreparazione().equals(Piatto.NESSUNO)) {
+			JOptionPane.showMessageDialog(pc, "C'è un piatto già in preparazione", "Avviso", JOptionPane.WARNING_MESSAGE);
+			return;
 		}
+		
+		switch (e.getActionCommand()) {
+			case "sashimi":
+				cuoco.iniziaPreparazione(Piatto.SASHIMI);
+				break;
+			case "uramakiRainbow":
+				cuoco.iniziaPreparazione(Piatto.URAMAKI_RAINBOW);
+				break;
+			case "hosomakiMaguro":
+				cuoco.iniziaPreparazione(Piatto.HOSOMAKI_MAGURO);
+				break;
+		}
+		
+		pc.mostraPiatto(cuoco.getPiattoInPreparazione().getImmaginePiatto());
 	}
 
 	/**

@@ -17,7 +17,7 @@ public class Cuoco implements Runnable {
 		return tempoRimanente;
 	}
 
-	public void iniziaPreparazione(Piatto piatto) throws Exception {
+	public void iniziaPreparazione(Piatto piatto) {
 		this.piattoInPreparazione = piatto;
 		this.tempoRimanente = piatto.getTempoDiPreparazione();
 	}

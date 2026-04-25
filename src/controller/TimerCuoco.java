@@ -3,8 +3,6 @@ package controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import javax.swing.JOptionPane;
-
 import model.Cuoco;
 import model.Piatto;
 import view.PannelloCuoco;
@@ -17,7 +15,7 @@ public class TimerCuoco implements ActionListener {
 		this.cuoco = cuoco;
 		this.pc = pc;
 	}
-	
+
 	/**
 	 * Eseguito ogni 1s per decrementare il tempo se ce un piatto in prepazione
 	 */
@@ -33,12 +31,8 @@ public class TimerCuoco implements ActionListener {
 			pc.rimuoviImmagine();
 			return;
 		}
-		
-		try {
-			double progresso = ((double)cuoco.getTempoRimanente()) / cuoco.getPiattoInPreparazione().getTempoDiPreparazione();
-			pc.aggiornaProgresso(100 - (int)(progresso * 100));
-		} catch (Exception ex) {
-			JOptionPane.showMessageDialog(pc, ex.getMessage(), "Errore!", JOptionPane.ERROR_MESSAGE);
-		}
+
+		double progresso = ((double) cuoco.getTempoRimanente()) / cuoco.getPiattoInPreparazione().getTempoDiPreparazione();
+		pc.aggiornaProgresso(100 - (int) (progresso * 100));
 	}
 }

@@ -8,7 +8,7 @@ public enum Piatto {
  	URAMAKI_RAINBOW,
  	HOSOMAKI_MAGURO;
 	
-	public int getTempoDiPreparazione() throws Exception {
+	public int getTempoDiPreparazione() {
 		switch (this) {
 			case SASHIMI:
 				return 120;
@@ -17,11 +17,11 @@ public enum Piatto {
 			case HOSOMAKI_MAGURO:
 				return 120;
 			default:
-				throw new Exception("Impossibile calcolare il tempo di preparzione per un piatto invalido.");
+				throw new IllegalStateException("Impossibile calcolare il tempo di preparzione per un piatto invalido.");
 		}
 	}
 	
-	public URL getImmaginePiatto() throws Exception {
+	public URL getImmaginePiatto() {
 		switch (this) {
 			case SASHIMI:
 				return Piatto.class.getResource("/images/Sashimi.jpg");
@@ -30,7 +30,7 @@ public enum Piatto {
 			case HOSOMAKI_MAGURO:
 				return Piatto.class.getResource("/images/Maguro.jpg");
 			default:
-				throw new Exception("Impossibile recuperare l'immagine per un piatto invalido.");
+				throw new IllegalStateException("Impossibile recuperare l'immagine per un piatto invalido.");
 		}
 	}
 }
