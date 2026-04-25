@@ -55,8 +55,8 @@ public class SalaPanel extends JPanel {
 		}
 		return null;
 	}
-	
-	public void registraAscoltatori(ControllerNavigazione c) {
+
+	public void registraAscoltatoriNavigazione(ControllerNavigazione c) {
 		barraSuperiore.getBtnCentrale().addActionListener(c);
 	}
 }

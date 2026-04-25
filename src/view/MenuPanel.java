@@ -38,7 +38,7 @@ public class MenuPanel extends JPanel {
 		panelPulsantiMenu.add(btnNuovaPartita);
 	}
 	
-	public void registraAscoltatori(ControllerNavigazione c) {
+	public void registraAscoltatoriNavigazione(ControllerNavigazione c) {
 		btnClassifica.addActionListener(c);
 		btnNuovaPartita.addActionListener(c);
 	}

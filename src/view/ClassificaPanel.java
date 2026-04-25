@@ -35,7 +35,7 @@ public class ClassificaPanel extends JPanel {
 		panelPulsantiClassifica.add(btnIndietro);
 	}
 
-	public void registraAscoltatori(ControllerNavigazione c) {
+	public void registraAscoltatoriNavigaione(ControllerNavigazione c) {
 		btnIndietro.addActionListener(c);
 	}
 	

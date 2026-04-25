@@ -124,9 +124,9 @@ public class MainPanel extends JPanel {
 	}
 
 	public void registraAscoltatoriNavigazioneMain(ControllerNavigazione controllerNavigazione) {
-		menuPanel.registraAscoltatori(controllerNavigazione);
-		classificaPanel.registraAscoltatori(controllerNavigazione);
-		salaPanel.registraAscoltatori(controllerNavigazione);
+		menuPanel.registraAscoltatoriNavigazione(controllerNavigazione);
+		classificaPanel.registraAscoltatoriNavigaione(controllerNavigazione);
+		salaPanel.registraAscoltatoriNavigazione(controllerNavigazione);
 		cucinaPanel.aggiungiAscoltatoriNavigazione(controllerNavigazione);
 	}
 	
