@@ -139,4 +139,8 @@ public class MainPanel extends JPanel {
 		if(pannello.equals("sala")) return new Dimension(600, 600);
 		else return new Dimension(600, 450);
 	}
+
+    public SalaPanel getSalaPanel() {
+		return salaPanel;
+    }
 }

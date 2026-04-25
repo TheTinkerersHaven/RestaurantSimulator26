@@ -1,15 +1,19 @@
 package view;
 
-import java.awt.GridLayout;
 import java.awt.BorderLayout;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.GridLayout;
+import java.net.URL;
+import java.util.List;
 
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import controller.ControllerNavigazione;
-
-import javax.swing.JScrollPane;
-import java.awt.Dimension;
+import model.Piatto;
 
 @SuppressWarnings("serial")
 public class SalaPanel extends JPanel {
@@ -19,6 +23,7 @@ public class SalaPanel extends JPanel {
 	private PannelloTavolo tavolo4;
 	private JPanel panelTavoli;
 	private JScrollPane scrollPaneBancone;
+	private JPanel scrollPaneViewportView;
 	private BarraSuperiore barraSuperiore;
 	
 	public SalaPanel() {
@@ -40,13 +45,26 @@ public class SalaPanel extends JPanel {
 		panelTavoli.add(tavolo3);
 		tavolo4 = new PannelloTavolo(4);
 		panelTavoli.add(tavolo4);
-		
-		scrollPaneBancone = new JScrollPane();
-		scrollPaneBancone.setPreferredSize(new Dimension(100, 100));
+
+		scrollPaneViewportView = new JPanel();
+		scrollPaneViewportView.setLayout(new FlowLayout(FlowLayout.LEADING, 10, 5));
+
+		scrollPaneBancone = new JScrollPane(scrollPaneViewportView, JScrollPane.VERTICAL_SCROLLBAR_NEVER, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+		scrollPaneBancone.setPreferredSize(new Dimension(0, 100));
+
 		add(scrollPaneBancone, BorderLayout.SOUTH);
 	}
 
-	public JPanel getTavolo(int tavolo) {
+	// 72 è quello che sembra essere la dimensione corretta per essere centrata in verticale
+	private final int DIMENSIONE_PIATTO = 72;
+
+	private JLabel createPiattoLabel(URL link) {
+		JLabel label = new JLabel(new ScaledImageIcon(link));
+		label.setPreferredSize(new Dimension(DIMENSIONE_PIATTO, DIMENSIONE_PIATTO));
+		return label;
+	}
+
+	public PannelloTavolo getTavolo(int tavolo) {
 		switch(tavolo) {
 			case 1: return tavolo1;
 			case 2: return tavolo2;
@@ -58,5 +76,12 @@ public class SalaPanel extends JPanel {
 
 	public void registraAscoltatoriNavigazione(ControllerNavigazione c) {
 		barraSuperiore.getBtnCentrale().addActionListener(c);
+	}
+
+	public void aggiornaBancone(List<Piatto> piatto) {
+		scrollPaneViewportView.removeAll();
+		for (Piatto p : piatto) {
+			scrollPaneViewportView.add(createPiattoLabel(p.getImmaginePiatto()));
+		}
 	}
 }

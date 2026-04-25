@@ -5,15 +5,21 @@ import java.awt.event.ActionListener;
 
 import model.Cuoco;
 import model.Piatto;
+import model.Sala;
 import view.PannelloCuoco;
+import view.SalaPanel;
 
 public class TimerCuoco implements ActionListener {
 	private Cuoco cuoco;
 	private PannelloCuoco pc;
+	private SalaPanel ps;
+	private Sala sala;
 
-	public TimerCuoco(Cuoco cuoco, PannelloCuoco pc) {
+	public TimerCuoco(Cuoco cuoco, PannelloCuoco pc, SalaPanel ps, Sala sala) {
 		this.cuoco = cuoco;
 		this.pc = pc;
+		this.ps = ps;
+		this.sala = sala;
 	}
 
 	/**
@@ -21,14 +27,24 @@ public class TimerCuoco implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		boolean stavaPreparando = !cuoco.getPiattoInPreparazione().equals(Piatto.NESSUNO);
-		
+		Piatto stavaPreparando = cuoco.getPiattoInPreparazione();
+
 		cuoco.run();
-		
-		if (!stavaPreparando && cuoco.getPiattoInPreparazione().equals(Piatto.NESSUNO)) return;
-				
+
+		if (stavaPreparando.equals(Piatto.NESSUNO) && cuoco.getPiattoInPreparazione().equals(Piatto.NESSUNO))
+			return;
+
 		if (cuoco.getTempoRimanente() == 0) {
 			pc.rimuoviImmagine();
+			try {
+				sala.aggiungiPiatto(stavaPreparando);
+			} catch (InterruptedException ie) {
+				// TODO: gestisci?
+				ie.printStackTrace();
+			}
+
+			ps.aggiornaBancone(sala.getPiattiPronti());
+
 			return;
 		}
 

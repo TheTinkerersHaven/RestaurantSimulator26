@@ -8,18 +8,20 @@ import javax.swing.Timer;
 
 import model.Cuoco;
 import model.Piatto;
+import model.Sala;
 import view.MainPanel;
 import view.PannelloCuoco;
+import view.SalaPanel;
 
 public class ControllerCuoco implements ActionListener {
 	private Cuoco cuoco;
 	private Timer timer;
 	private PannelloCuoco pc;
 	
-	public ControllerCuoco(Cuoco cuoco, PannelloCuoco pc) {
+	public ControllerCuoco(Cuoco cuoco, PannelloCuoco pc, SalaPanel ps, Sala sala) {
 		this.cuoco = cuoco;
 		this.pc = pc;
-		this.timer = new Timer(1000, new TimerCuoco(cuoco, pc));
+		this.timer = new Timer(1000, new TimerCuoco(cuoco, pc, ps, sala));
 		this.timer.start();
 	}
 
@@ -52,10 +54,10 @@ public class ControllerCuoco implements ActionListener {
 	 * Registra i controller dei cuochi al mainPanel
 	 * Crea un nuovo cuoco per ogni pannelloCuoco che verrà creato
 	 */
-	public static void registraAscoltatori(MainPanel mp) {
+	public static void registraAscoltatori(MainPanel mp, SalaPanel ps, Sala sala) {
 		mp.registraAscolatoriCuochiMain((pannelloCuoco) -> {
 			Cuoco c = new Cuoco();
-			return new ControllerCuoco(c, pannelloCuoco);
+			return new ControllerCuoco(c, pannelloCuoco, ps, sala);
 		});
 	}
 }
