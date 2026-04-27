@@ -6,8 +6,12 @@ import javax.swing.border.EmptyBorder;
 
 import controller.ControllerCuoco;
 import controller.ControllerNavigazione;
+import controller.ControllerNotifiche;
 
 import java.awt.GridLayout;
+import java.util.ArrayDeque;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.function.Function;
 
 @SuppressWarnings("serial")
@@ -47,5 +51,9 @@ public class CucinaPanel extends JPanel {
 		pannelloCuoco1.aggiungiAscoltatori(creaControllerCuoco.apply(pannelloCuoco1));
 		pannelloCuoco2.aggiungiAscoltatori(creaControllerCuoco.apply(pannelloCuoco2));
 		pannelloCuoco3.aggiungiAscoltatori(creaControllerCuoco.apply(pannelloCuoco3));
+	}
+	
+	public void aggiornaNotifiche(LinkedList<String> linkedList, ControllerNotifiche cn) {
+		barraSuperiore.aggiornaMenuNotifiche(linkedList, cn);
 	}
 }

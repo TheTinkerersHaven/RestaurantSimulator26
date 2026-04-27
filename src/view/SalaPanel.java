@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.net.URL;
+import java.util.ArrayDeque;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -13,6 +15,7 @@ import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
 import controller.ControllerNavigazione;
+import controller.ControllerNotifiche;
 import model.Piatto;
 
 @SuppressWarnings("serial")
@@ -83,5 +86,9 @@ public class SalaPanel extends JPanel {
 		for (Piatto p : piatto) {
 			scrollPaneViewportView.add(createPiattoLabel(p.getImmaginePiatto()));
 		}
+	}
+	
+	public void aggiornaNotifiche(LinkedList<String> linkedList, ControllerNotifiche cn) {
+		barraSuperiore.aggiornaMenuNotifiche(linkedList, cn);
 	}
 }

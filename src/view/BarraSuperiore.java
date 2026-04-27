@@ -4,12 +4,20 @@ import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.util.ArrayDeque;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+
+import controller.ControllerNotifiche;
 
 @SuppressWarnings("serial")
 public class BarraSuperiore extends JMenuBar {
@@ -75,4 +83,21 @@ public class BarraSuperiore extends JMenuBar {
 		return btnCentrale;
 	}
 	
+	public void aggiornaMenuNotifiche(LinkedList<String> linkedList, ControllerNotifiche cn) {
+		menuNotifiche.removeAll();
+		if(!linkedList.isEmpty()) {
+			JMenuItem deleteAll = new JMenuItem("-- CANCELLA TUTTO --");
+			deleteAll.setActionCommand("del_all");
+			deleteAll.addActionListener(cn);
+			menuNotifiche.add(deleteAll);			
+		}
+		int i = 0;
+		for(String notif : linkedList) {
+			JMenuItem itemNotif = new JMenuItem(notif);
+			itemNotif.setActionCommand(String.valueOf(i));
+			itemNotif.addActionListener(cn);
+			menuNotifiche.add(itemNotif);
+			i++;
+		}
+	}
 }
