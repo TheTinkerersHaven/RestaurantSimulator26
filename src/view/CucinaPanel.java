@@ -9,9 +9,7 @@ import controller.ControllerNavigazione;
 import controller.ControllerNotifiche;
 
 import java.awt.GridLayout;
-import java.util.ArrayDeque;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.function.Function;
 
 @SuppressWarnings("serial")

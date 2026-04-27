@@ -1,7 +1,6 @@
 package view;
 
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 import javax.swing.OverlayLayout;
 import javax.swing.Timer;
 
@@ -21,9 +20,7 @@ import controller.ControllerCuoco;
 import controller.ControllerNavigazione;
 import controller.ControllerNotifiche;
 
-import java.awt.Font;
 import java.util.function.Function;
-import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
 public class MainPanel extends JPanel {
@@ -35,7 +32,6 @@ public class MainPanel extends JPanel {
 	private JLayeredPane layeredPane;
 	private JPanel overlayUI;
 	private JPanel mainUI;
-	private JLabel lblClose;
 
 	public MainPanel() {
 		setLayout(new BorderLayout(0, 0));
