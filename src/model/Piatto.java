@@ -17,7 +17,7 @@ public enum Piatto {
 			case HOSOMAKI_MAGURO:
 				return 120;
 			default:
-				throw new IllegalStateException("Impossibile calcolare il tempo di preparzione per un piatto invalido.");
+				throw new IllegalStateException("Impossibile calcolare il tempo di preparazione per un piatto invalido.");
 		}
 	}
 	
@@ -31,6 +31,20 @@ public enum Piatto {
 				return Piatto.class.getResource("/images/Maguro.jpg");
 			default:
 				throw new IllegalStateException("Impossibile recuperare l'immagine per un piatto invalido.");
+		}
+	}
+	
+	@Override
+	public String toString() {
+		switch (this) {
+			case SASHIMI:
+				return "Sashimi";
+			case URAMAKI_RAINBOW:
+				return "Uramaki Rainbow";
+			case HOSOMAKI_MAGURO:
+				return "Hosomaki Maguro";
+			default:
+				throw new IllegalStateException("Impossibile recuperare il nome per un piatto invalido.");
 		}
 	}
 }
