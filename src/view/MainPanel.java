@@ -3,12 +3,14 @@ package view;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.OverlayLayout;
+import javax.swing.Timer;
 
 import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.BorderLayout;
 
 import javax.swing.JLayeredPane;
+import javax.swing.Box;
 import javax.swing.BoxLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -17,9 +19,11 @@ import javax.swing.border.EmptyBorder;
 
 import controller.ControllerCuoco;
 import controller.ControllerNavigazione;
+import controller.ControllerNotifiche;
 
 import java.awt.Font;
 import java.util.function.Function;
+import javax.swing.JLabel;
 
 @SuppressWarnings("serial")
 public class MainPanel extends JPanel {
@@ -31,6 +35,7 @@ public class MainPanel extends JPanel {
 	private JLayeredPane layeredPane;
 	private JPanel overlayUI;
 	private JPanel mainUI;
+	private JLabel lblClose;
 
 	public MainPanel() {
 		setLayout(new BorderLayout(0, 0));
@@ -60,11 +65,6 @@ public class MainPanel extends JPanel {
 		overlayUI.setBorder(new EmptyBorder(10, 10, 10, 10));
 		overlayUI.setLayout(new BoxLayout(overlayUI, BoxLayout.Y_AXIS));
 
-		// Messaggi di test
-//		overlayUI.add(creaMessaggioOverlay("Tutorial: Hello world!"));
-//		overlayUI.add(Box.createVerticalStrut(5));
-//		overlayUI.add(creaMessaggioOverlay("Tutorial:\nPer cucinare qualcosa in cucina fai click destro su un forno"));
-
 		// --- MAIN UI ---
 		cardLayoutMainUI = new CardLayout(0, 0);
 		mainUI.setLayout(cardLayoutMainUI);
@@ -80,25 +80,6 @@ public class MainPanel extends JPanel {
 
 		classificaPanel = new ClassificaPanel();
 		mainUI.add(classificaPanel, "classifica");
-	}
-
-	@SuppressWarnings("unused")
-	private JTextArea creaMessaggioOverlay(String testo) {
-		JTextArea textArea = new JTextArea(testo);
-
-		textArea.setBorder(new EmptyBorder(5, 5, 5, 5));
-		// Dato che non sappiamo che font sia in uso, usa quello di default ma con il bold
-		textArea.setFont(textArea.getFont().deriveFont(textArea.getFont().getStyle() | Font.BOLD));
-		textArea.setEnabled(false);
-		textArea.setEditable(false);
-		// Di default il testo disattivato ha un colore grigio, reimposta a nero
-		textArea.setDisabledTextColor(Color.BLACK);
-		textArea.setAlignmentX(Component.RIGHT_ALIGNMENT);
-		textArea.setBackground(Color.YELLOW);
-		// getPreferredSize è calcolato in base al testo, se impostiamo il max a preferred gli diamo lo spazio minimo
-		textArea.setMaximumSize(textArea.getPreferredSize());
-
-		return textArea;
 	}
 
 	public void setStatoTavolo(int tavolo, int stato) {
@@ -122,6 +103,10 @@ public class MainPanel extends JPanel {
 	public JPanel getMainUI() {
 		return mainUI;
 	}
+	
+	public JPanel getOverlayUI() {
+		return overlayUI;
+	}
 
 	public void registraAscoltatoriNavigazioneMain(ControllerNavigazione controllerNavigazione) {
 		menuPanel.registraAscoltatoriNavigazione(controllerNavigazione);
@@ -130,7 +115,7 @@ public class MainPanel extends JPanel {
 		cucinaPanel.aggiungiAscoltatoriNavigazione(controllerNavigazione);
 	}
 	
-	public void registraAscolatoriCuochiMain(Function<PannelloCuoco, ControllerCuoco> creaControllerCuoco) {
+	public void registraAscoltatoriCuochiMain(Function<PannelloCuoco, ControllerCuoco> creaControllerCuoco) {
 		cucinaPanel.aggiungiAscoltatoriCuochi(creaControllerCuoco);
 	}
 	
@@ -143,4 +128,32 @@ public class MainPanel extends JPanel {
     public SalaPanel getSalaPanel() {
 		return salaPanel;
     }
+    
+    public void mostraNotifica(String text, ControllerNotifiche cn) {
+    	NotificaPanel notif = new NotificaPanel(text);
+    	Component strut = Box.createVerticalStrut(5);
+    	notif.registraAscoltatori(cn);
+		overlayUI.add(notif);
+		overlayUI.add(strut);
+		overlayUI.revalidate();
+		overlayUI.repaint();
+		
+		Timer timer = new Timer(5000, event -> {
+			if(notif != null && strut != null) {
+				overlayUI.remove(notif);
+				overlayUI.remove(strut);
+				overlayUI.revalidate();
+				overlayUI.repaint();		
+			}
+		});
+		
+		timer.setRepeats(false);
+		timer.start();
+	}
+
+	public CucinaPanel getCucinaPanel() {
+		return cucinaPanel;
+	}
+
+	
 }

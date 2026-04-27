@@ -18,10 +18,10 @@ public class ControllerCuoco implements ActionListener {
 	private Timer timer;
 	private PannelloCuoco pc;
 	
-	public ControllerCuoco(Cuoco cuoco, PannelloCuoco pc, SalaPanel ps, Sala sala) {
+	public ControllerCuoco(Cuoco cuoco, PannelloCuoco pc, SalaPanel ps, MainPanel mp, Sala sala, ControllerNotifiche cn) {
 		this.cuoco = cuoco;
 		this.pc = pc;
-		this.timer = new Timer(1000, new TimerCuoco(cuoco, pc, ps, sala));
+		this.timer = new Timer(1000, new TimerCuoco(cuoco, pc, ps, mp, sala, cn));
 		this.timer.start();
 	}
 
@@ -54,10 +54,10 @@ public class ControllerCuoco implements ActionListener {
 	 * Registra i controller dei cuochi al mainPanel
 	 * Crea un nuovo cuoco per ogni pannelloCuoco che verrà creato
 	 */
-	public static void registraAscoltatori(MainPanel mp, SalaPanel ps, Sala sala) {
-		mp.registraAscolatoriCuochiMain((pannelloCuoco) -> {
+	public static void registraAscoltatori(MainPanel mp, SalaPanel ps, Sala sala, ControllerNotifiche cn) {
+		mp.registraAscoltatoriCuochiMain((pannelloCuoco) -> {
 			Cuoco c = new Cuoco();
-			return new ControllerCuoco(c, pannelloCuoco, ps, sala);
+			return new ControllerCuoco(c, pannelloCuoco, ps, mp, sala, cn);
 		});
 	}
 }
