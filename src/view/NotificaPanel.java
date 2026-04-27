@@ -23,13 +23,13 @@ public class NotificaPanel extends JPanel {
 		setAlignmentX(RIGHT_ALIGNMENT);
 		
 		textAreaNotif = new JTextArea(testo);
+		// Inserisco dei border direttamente sugli elementi per rendere anche gli spazi vuoti cliccabili
+		textAreaNotif.setBorder(new EmptyBorder(5, 5, 5, 2));
 		textAreaNotif.setName("textAreaNotif");
 		add(textAreaNotif);
 		
 		textAreaNotif.setOpaque(false);
-		textAreaNotif.setBorder(new EmptyBorder(5, 5, 5, 5));
-		// Dato che non sappiamo che font sia in uso, usa quello di default ma con il bold
-		textAreaNotif.setFont(textAreaNotif.getFont().deriveFont(textAreaNotif.getFont().getStyle() | Font.BOLD));
+		textAreaNotif.setFont(new Font("Dialog", Font.BOLD, 12));
 		textAreaNotif.setEnabled(false);
 		textAreaNotif.setEditable(false);
 		// Di default il testo disattivato ha un colore grigio, reimposta a nero
@@ -39,10 +39,12 @@ public class NotificaPanel extends JPanel {
 		// getPreferredSize è calcolato in base al testo, se impostiamo il max a preferred gli diamo lo spazio minimo
 		textAreaNotif.setMaximumSize(textAreaNotif.getPreferredSize());
 		
+		// Simbolo unicode per la "x" di chiusura
 		lblCloseNotif = new JLabel("\u2715");
+		lblCloseNotif.setBorder(new EmptyBorder(3, 5, 5, 5));
 		lblCloseNotif.setName("lblCloseNotif");
 		add(lblCloseNotif);
-
+		
 		lblCloseNotif.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		lblCloseNotif.setFont(new Font("Dialog", Font.BOLD, 18));
 	}

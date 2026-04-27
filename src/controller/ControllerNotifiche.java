@@ -13,7 +13,6 @@ import view.Window;
 public class ControllerNotifiche implements MouseListener, ActionListener {
 	private Window window;
 	private MainPanel mainPanel;
-	private NotificaPanel notifPanel;
 	private Sala sala;
 	
 	public ControllerNotifiche(Window window, Sala sala) {
@@ -25,7 +24,6 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if(e.getActionCommand().equals("del_all")) {
-			System.out.println("spacca tutto");
 			sala.getNotifiche().clear();
 			mainPanel.getSalaPanel().aggiornaNotifiche(sala.getNotifiche(), this);
 			mainPanel.getCucinaPanel().aggiornaNotifiche(sala.getNotifiche(), this);
@@ -40,7 +38,7 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		this.notifPanel = (NotificaPanel) e.getComponent().getParent();
+		NotificaPanel notifPanel = (NotificaPanel) e.getComponent().getParent();
 		switch(e.getComponent().getName()) {
 			case "textAreaNotif":
 				mainPanel.getOverlayUI().remove(notifPanel);
