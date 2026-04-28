@@ -2,6 +2,7 @@ package model;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class Sala {
@@ -15,11 +16,11 @@ public class Sala {
 		mutex = new Semaphore(1);
 	}
 
-	public ArrayList<Piatto> getPiattiPronti() {
+	public List<Piatto> getPiattiPronti() {
 		return piattiPronti;
 	}
 	
-	public LinkedList<String> getNotifiche() {
+	public List<String> getNotifiche() {
 		return notifiche;
 	}
 	

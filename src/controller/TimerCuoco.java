@@ -44,10 +44,8 @@ public class TimerCuoco implements ActionListener {
 			try {
 				sala.aggiungiPiatto(stavaPreparando);
 				String notifText = "Cuoco " + pc.getNumeroCuoco() + " ha finito di preparare " + stavaPreparando.toString() + "!"; 
-				mp.mostraNotifica(notifText, cn);
 				sala.registraNotifica(notifText);
-				mp.getSalaPanel().aggiornaNotifiche(sala.getNotifiche(), cn);
-				mp.getCucinaPanel().aggiornaNotifiche(sala.getNotifiche(), cn);
+				mp.mostraNotifica(sala.getNotifiche(), notifText, cn);
 			} catch (InterruptedException ie) {
 				// TODO: gestisci?
 				ie.printStackTrace();

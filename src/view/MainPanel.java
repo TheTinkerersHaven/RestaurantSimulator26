@@ -9,7 +9,6 @@ import java.awt.Color;
 import java.awt.BorderLayout;
 
 import javax.swing.JLayeredPane;
-import javax.swing.Box;
 import javax.swing.BoxLayout;
 import java.awt.Component;
 import java.awt.Dimension;
@@ -20,6 +19,7 @@ import controller.ControllerCuoco;
 import controller.ControllerNavigazione;
 import controller.ControllerNotifiche;
 
+import java.util.List;
 import java.util.function.Function;
 
 @SuppressWarnings("serial")
@@ -125,26 +125,22 @@ public class MainPanel extends JPanel {
 		return salaPanel;
     }
     
-    public void mostraNotifica(String text, ControllerNotifiche cn) {
+    public void mostraNotifica(List<String> list, String text, ControllerNotifiche cn) {
     	NotificaPanel notif = new NotificaPanel(text);
-    	Component strut = Box.createVerticalStrut(5);
     	notif.registraAscoltatori(cn);
 		overlayUI.add(notif);
-		overlayUI.add(strut);
-		overlayUI.revalidate();
 		overlayUI.repaint();
-		
+
 		Timer timer = new Timer(5000, event -> {
-			if(notif != null && strut != null) {
-				overlayUI.remove(notif);
-				overlayUI.remove(strut);
-				overlayUI.revalidate();
-				overlayUI.repaint();		
-			}
+			overlayUI.remove(notif);
+			overlayUI.repaint();
 		});
 		
 		timer.setRepeats(false);
 		timer.start();
+		
+		cucinaPanel.aggiornaNotifiche(list, cn);
+		salaPanel.aggiornaNotifiche(list, cn);
 	}
 
 	public CucinaPanel getCucinaPanel() {

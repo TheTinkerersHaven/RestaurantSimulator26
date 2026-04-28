@@ -11,7 +11,7 @@ public enum Piatto {
 	public int getTempoDiPreparazione() {
 		switch (this) {
 			case SASHIMI:
-				return 120;
+				return 2;
 			case URAMAKI_RAINBOW:
 				return 180;
 			case HOSOMAKI_MAGURO:

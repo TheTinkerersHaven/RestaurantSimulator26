@@ -5,7 +5,6 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.swing.JLabel;
@@ -87,7 +86,7 @@ public class SalaPanel extends JPanel {
 		}
 	}
 	
-	public void aggiornaNotifiche(LinkedList<String> linkedList, ControllerNotifiche cn) {
-		barraSuperiore.aggiornaMenuNotifiche(linkedList, cn);
+	public void aggiornaNotifiche(List<String> list, ControllerNotifiche cn) {
+		barraSuperiore.aggiornaMenuNotifiche(list, cn);
 	}
 }

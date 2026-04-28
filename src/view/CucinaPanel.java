@@ -9,7 +9,8 @@ import controller.ControllerNavigazione;
 import controller.ControllerNotifiche;
 
 import java.awt.GridLayout;
-import java.util.LinkedList;
+
+import java.util.List;
 import java.util.function.Function;
 
 @SuppressWarnings("serial")
@@ -51,7 +52,7 @@ public class CucinaPanel extends JPanel {
 		pannelloCuoco3.aggiungiAscoltatori(creaControllerCuoco.apply(pannelloCuoco3));
 	}
 	
-	public void aggiornaNotifiche(LinkedList<String> linkedList, ControllerNotifiche cn) {
-		barraSuperiore.aggiornaMenuNotifiche(linkedList, cn);
+	public void aggiornaNotifiche(List<String> list, ControllerNotifiche cn) {
+		barraSuperiore.aggiornaMenuNotifiche(list, cn);
 	}
 }
