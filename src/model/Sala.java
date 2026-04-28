@@ -6,34 +6,59 @@ import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class Sala {
+	private Semaphore mutexPiatti;
 	private ArrayList<Piatto> piattiPronti;
+
 	private LinkedList<String> notifiche;
-	private Semaphore mutex;
-	
+	private ArrayList<Tavolo> tavoli;
+
 	public Sala() {
+		mutexPiatti = new Semaphore(1);
 		piattiPronti = new ArrayList<>();
+
 		notifiche = new LinkedList<>();
-		mutex = new Semaphore(1);
+
+		tavoli = new ArrayList<>(4);
+		for (int i = 0; i < 4; i++) {
+			tavoli.add(new Tavolo(i + 1));
+		}
 	}
 
 	public List<Piatto> getPiattiPronti() {
 		return piattiPronti;
 	}
-	
+
 	public List<String> getNotifiche() {
 		return notifiche;
 	}
-	
+
+	public List<Tavolo> getTavoli() {
+		return tavoli;
+	}
+
+	public Tavolo getTavolo(int numero) {
+		return tavoli.get(numero - 1);
+	}
+
 	public void registraNotifica(String notif) {
 		notifiche.addFirst(notif);
-		if(notifiche.size() == 11) notifiche.removeLast();
+		if (notifiche.size() == 11)
+			notifiche.removeLast();
 	}
 
 	public void aggiungiPiatto(Piatto piatto) throws InterruptedException {
-		mutex.acquire();
+		mutexPiatti.acquire();
 
 		piattiPronti.add(piatto);
 
-		mutex.release();
+		mutexPiatti.release();
+	}
+
+	public void rimuoviPiatto(int index) throws InterruptedException {
+		mutexPiatti.acquire();
+
+		piattiPronti.remove(index);
+
+		mutexPiatti.release();
 	}
 }
