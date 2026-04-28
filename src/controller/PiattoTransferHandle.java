@@ -19,7 +19,7 @@ import view.SalaPanel;
 
 public class PiattoTransferHandle extends TransferHandler {
     /**
-     * Il DataFlavor usato per identificare il trasferimento di un piatto. Il tipo di dato trasferito è un oggetto Piatto.
+     * Il DataFlavor usato per identificare il trasferimento di un piatto. Il tipo di dato trasferito è un oggetto TransferPiatto.
      */
     public static final DataFlavor PIATTO_DATA_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + TransferPiatto.class.getName(), "Piatto");
 
