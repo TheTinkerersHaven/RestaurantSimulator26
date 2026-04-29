@@ -1,10 +1,10 @@
-package view;
+package restaurantsim.view;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.border.EmptyBorder;
 
-import controller.ControllerNavigazione;
+import restaurantsim.controller.ControllerNavigazione;
 
 import javax.swing.JList;
 import javax.swing.DefaultListModel;

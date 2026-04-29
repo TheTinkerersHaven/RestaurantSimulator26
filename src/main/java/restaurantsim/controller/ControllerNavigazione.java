@@ -1,10 +1,10 @@
-package controller;
+package restaurantsim.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import view.MainPanel;
-import view.Window;
+import restaurantsim.view.MainPanel;
+import restaurantsim.view.Window;
 
 public class ControllerNavigazione implements ActionListener {
 	private Window window;

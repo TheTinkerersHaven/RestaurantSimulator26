@@ -1,21 +1,24 @@
-package view;
+package restaurantsim.view;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.net.URL;
-import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Function;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
 
-import controller.ControllerNavigazione;
-import controller.ControllerNotifiche;
-import model.Piatto;
+import restaurantsim.controller.ControllerNavigazione;
+import restaurantsim.controller.ControllerNotifiche;
+import restaurantsim.controller.DragAndDropMouseController;
+import restaurantsim.controller.PiattoTransferHandle;
+import restaurantsim.model.Piatto;
+import restaurantsim.model.TransferPiatto;
 
 @SuppressWarnings("serial")
 public class SalaPanel extends JPanel {
@@ -27,18 +30,18 @@ public class SalaPanel extends JPanel {
 	private JScrollPane scrollPaneBancone;
 	private JPanel scrollPaneViewportView;
 	private BarraSuperiore barraSuperiore;
-	
+
 	public SalaPanel() {
 		setLayout(new BorderLayout());
-		
+
 		barraSuperiore = new BarraSuperiore("Vai a cucina", "vai_cucina_da_sala");
 		add(barraSuperiore, BorderLayout.NORTH);
-		
+
 		panelTavoli = new JPanel();
 		panelTavoli.setBorder(new EmptyBorder(30, 50, 30, 50));
 		panelTavoli.setLayout(new GridLayout(2, 2, 50, 50));
 		add(panelTavoli, BorderLayout.CENTER);
-		
+
 		tavolo1 = new PannelloTavolo(1);
 		panelTavoli.add(tavolo1);
 		tavolo2 = new PannelloTavolo(2);
@@ -60,34 +63,37 @@ public class SalaPanel extends JPanel {
 	// 72 è quello che sembra essere la dimensione corretta per essere centrata in verticale
 	private final int DIMENSIONE_PIATTO = 72;
 
-	private JLabel createPiattoLabel(URL link) {
+	private JLabel createPiattoLabel(URL link, PiattoTransferHandle transferHandle) {
 		JLabel label = new JLabel(new ScaledImageIcon(link));
 		label.setPreferredSize(new Dimension(DIMENSIONE_PIATTO, DIMENSIONE_PIATTO));
-		return label;
-	}
 
-	public PannelloTavolo getTavolo(int tavolo) {
-		switch(tavolo) {
-			case 1: return tavolo1;
-			case 2: return tavolo2;
-			case 3: return tavolo3;
-			case 4: return tavolo4;
-		}
-		return null;
+		// Assegna il transfer handle e aggiungi il MouseListener per il drag
+		label.setTransferHandler(transferHandle);
+		label.addMouseListener(new DragAndDropMouseController());
+
+		return label;
 	}
 
 	public void registraAscoltatoriNavigazione(ControllerNavigazione c) {
 		barraSuperiore.getBtnCentrale().addActionListener(c);
 	}
 
+	public void registraTransferHandlerPiatto(Function<PannelloTavolo, PiattoTransferHandle> creaTransferHandle) {
+		tavolo1.setTransferHandler(creaTransferHandle.apply(tavolo1));
+		tavolo2.setTransferHandler(creaTransferHandle.apply(tavolo2));
+		tavolo3.setTransferHandler(creaTransferHandle.apply(tavolo3));
+		tavolo4.setTransferHandler(creaTransferHandle.apply(tavolo4));
+	}
+
 	public void aggiornaBancone(List<Piatto> piatto) {
 		scrollPaneViewportView.removeAll();
-		for (Piatto p : piatto) {
-			scrollPaneViewportView.add(createPiattoLabel(p.getImmaginePiatto()));
+		for (int idx = 0; idx < piatto.size(); idx++) {
+			Piatto p = piatto.get(idx);
+			scrollPaneViewportView.add(createPiattoLabel(p.getImmaginePiatto(), new PiattoTransferHandle(new TransferPiatto(p, idx))));
 		}
 	}
-	
-	public void aggiornaNotifiche(LinkedList<String> linkedList, ControllerNotifiche cn) {
-		barraSuperiore.aggiornaMenuNotifiche(linkedList, cn);
+
+	public void aggiornaNotifiche(List<String> list, ControllerNotifiche cn) {
+		barraSuperiore.aggiornaMenuNotifiche(list, cn);
 	}
 }

@@ -1,4 +1,4 @@
-package view;
+package restaurantsim.view;
 
 import java.awt.BorderLayout;
 
@@ -6,7 +6,7 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
-import controller.ControllerNavigazione;
+import restaurantsim.controller.ControllerNavigazione;
 
 @SuppressWarnings("serial")
 public class MenuPanel extends JPanel {

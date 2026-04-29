@@ -1,15 +1,16 @@
-package view;
+package restaurantsim.view;
 
 import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import javax.swing.border.EmptyBorder;
 
-import controller.ControllerCuoco;
-import controller.ControllerNavigazione;
-import controller.ControllerNotifiche;
+import restaurantsim.controller.ControllerCuoco;
+import restaurantsim.controller.ControllerNavigazione;
+import restaurantsim.controller.ControllerNotifiche;
 
 import java.awt.GridLayout;
-import java.util.LinkedList;
+
+import java.util.List;
 import java.util.function.Function;
 
 @SuppressWarnings("serial")
@@ -51,7 +52,7 @@ public class CucinaPanel extends JPanel {
 		pannelloCuoco3.aggiungiAscoltatori(creaControllerCuoco.apply(pannelloCuoco3));
 	}
 	
-	public void aggiornaNotifiche(LinkedList<String> linkedList, ControllerNotifiche cn) {
-		barraSuperiore.aggiornaMenuNotifiche(linkedList, cn);
+	public void aggiornaNotifiche(List<String> list, ControllerNotifiche cn) {
+		barraSuperiore.aggiornaMenuNotifiche(list, cn);
 	}
 }

@@ -1,4 +1,4 @@
-package controller;
+package restaurantsim.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -6,12 +6,12 @@ import java.awt.event.ActionListener;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
-import model.Cuoco;
-import model.Piatto;
-import model.Sala;
-import view.MainPanel;
-import view.PannelloCuoco;
-import view.SalaPanel;
+import restaurantsim.model.Cuoco;
+import restaurantsim.model.Piatto;
+import restaurantsim.model.Sala;
+import restaurantsim.view.MainPanel;
+import restaurantsim.view.PannelloCuoco;
+import restaurantsim.view.SalaPanel;
 
 public class ControllerCuoco implements ActionListener {
 	private Cuoco cuoco;

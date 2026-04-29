@@ -1,4 +1,4 @@
-package view;
+package restaurantsim.view;
 
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
@@ -31,27 +31,27 @@ public class Window extends JFrame implements WindowListener {
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-		// TODO Auto-generated method stub
+		// Non usato.
 		
 	}
 	@Override
 	public void windowIconified(WindowEvent e) {
-		// TODO Auto-generated method stub
+		// Non usato.
 		
 	}
 	@Override
 	public void windowDeiconified(WindowEvent e) {
-		// TODO Auto-generated method stub
+		// Non usato.
 		
 	}
 	@Override
 	public void windowActivated(WindowEvent e) {
-		// TODO Auto-generated method stub
+		// Non usato.
 		
 	}
 	@Override
 	public void windowDeactivated(WindowEvent e) {
-		// TODO Auto-generated method stub
+		// Non usato.
 		
 	}
 

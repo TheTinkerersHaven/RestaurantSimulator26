@@ -1,4 +1,4 @@
-package controller;
+package restaurantsim.controller;
 
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -32,19 +32,19 @@ public class PopupController implements MouseListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// Non usato.
 		
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// Non usato.
 		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// Non usato.
 		
 	}
 

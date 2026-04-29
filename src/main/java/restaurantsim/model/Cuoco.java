@@ -1,4 +1,4 @@
-package model;
+package restaurantsim.model;
 
 public class Cuoco implements Runnable {
 	private Piatto piattoInPreparazione;

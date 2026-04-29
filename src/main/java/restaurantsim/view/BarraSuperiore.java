@@ -1,10 +1,10 @@
-package view;
+package restaurantsim.view;
 
 import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JButton;
 import javax.swing.JMenu;
@@ -12,7 +12,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.SwingConstants;
 
-import controller.ControllerNotifiche;
+import restaurantsim.controller.ControllerNotifiche;
 
 @SuppressWarnings("serial")
 public class BarraSuperiore extends JMenuBar {
@@ -24,7 +24,6 @@ public class BarraSuperiore extends JMenuBar {
 	private JMenuItem mntmEsci;
 	
 	public BarraSuperiore(String buttonText, String actionCommand) {
-		setLayout(getLayout());
 		setLayout(new GridBagLayout());
 		
 		menuFile = new JMenu("File");
@@ -78,16 +77,18 @@ public class BarraSuperiore extends JMenuBar {
 		return btnCentrale;
 	}
 	
-	public void aggiornaMenuNotifiche(LinkedList<String> linkedList, ControllerNotifiche cn) {
+	public void aggiornaMenuNotifiche(List<String> list, ControllerNotifiche cn) {
 		menuNotifiche.removeAll();
-		if(!linkedList.isEmpty()) {
+
+		if(!list.isEmpty()) {
 			JMenuItem deleteAll = new JMenuItem("-- CANCELLA TUTTO --");
 			deleteAll.setActionCommand("del_all");
 			deleteAll.addActionListener(cn);
 			menuNotifiche.add(deleteAll);			
 		}
+
 		int i = 0;
-		for(String notif : linkedList) {
+		for(String notif : list) {
 			JMenuItem itemNotif = new JMenuItem(notif);
 			itemNotif.setActionCommand(String.valueOf(i));
 			itemNotif.addActionListener(cn);

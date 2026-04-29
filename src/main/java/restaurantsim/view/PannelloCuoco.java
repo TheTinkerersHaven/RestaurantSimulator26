@@ -1,4 +1,4 @@
-package view;
+package restaurantsim.view;
 
 import javax.swing.JLabel;
 import javax.swing.JMenuItem;
@@ -11,8 +11,8 @@ import java.net.URL;
 import java.awt.BorderLayout;
 import javax.swing.border.TitledBorder;
 
-import controller.ControllerCuoco;
-import controller.PopupController;
+import restaurantsim.controller.ControllerCuoco;
+import restaurantsim.controller.PopupController;
 
 import javax.swing.border.LineBorder;
 import java.awt.Color;

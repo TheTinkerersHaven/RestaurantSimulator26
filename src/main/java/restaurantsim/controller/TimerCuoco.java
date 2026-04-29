@@ -1,14 +1,14 @@
-package controller;
+package restaurantsim.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import model.Cuoco;
-import model.Piatto;
-import model.Sala;
-import view.MainPanel;
-import view.PannelloCuoco;
-import view.SalaPanel;
+import restaurantsim.model.Cuoco;
+import restaurantsim.model.Piatto;
+import restaurantsim.model.Sala;
+import restaurantsim.view.MainPanel;
+import restaurantsim.view.PannelloCuoco;
+import restaurantsim.view.SalaPanel;
 
 public class TimerCuoco implements ActionListener {
 	private Cuoco cuoco;
@@ -41,16 +41,16 @@ public class TimerCuoco implements ActionListener {
 
 		if (cuoco.getTempoRimanente() == 0) {
 			pc.rimuoviImmagine();
+
 			try {
 				sala.aggiungiPiatto(stavaPreparando);
+
 				String notifText = "Cuoco " + pc.getNumeroCuoco() + " ha finito di preparare " + stavaPreparando.toString() + "!"; 
-				mp.mostraNotifica(notifText, cn);
 				sala.registraNotifica(notifText);
-				mp.getSalaPanel().aggiornaNotifiche(sala.getNotifiche(), cn);
-				mp.getCucinaPanel().aggiornaNotifiche(sala.getNotifiche(), cn);
+
+				mp.mostraNotifica(sala.getNotifiche(), notifText, cn);
 			} catch (InterruptedException ie) {
-				// TODO: gestisci?
-				ie.printStackTrace();
+				return;
 			}
 
 			ps.aggiornaBancone(sala.getPiattiPronti());

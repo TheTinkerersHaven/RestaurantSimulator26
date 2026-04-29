@@ -1,4 +1,4 @@
-package view;
+package restaurantsim.view;
 
 import java.awt.Color;
 import java.awt.Component;
@@ -10,23 +10,30 @@ import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
-import controller.ControllerNotifiche;
+import restaurantsim.controller.ControllerNotifiche;
 
 @SuppressWarnings("serial")
 public class NotificaPanel extends JPanel {
 	JTextArea textAreaNotif;
 	JLabel lblCloseNotif;
+	private JPanel panel;
 	
 	public NotificaPanel(String testo) {
-		setBackground(Color.YELLOW);
-		setLayout(new BoxLayout(this, BoxLayout.X_AXIS));
+		setBorder(new EmptyBorder(0, 0, 10, 0));
+		setOpaque(false);
+		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 		setAlignmentX(RIGHT_ALIGNMENT);
 		
+		panel = new JPanel();
+		panel.setBackground(Color.YELLOW);
+		add(panel);
+		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		
 		textAreaNotif = new JTextArea(testo);
+		panel.add(textAreaNotif);
 		// Inserisco dei border direttamente sugli elementi per rendere anche gli spazi vuoti cliccabili
 		textAreaNotif.setBorder(new EmptyBorder(5, 5, 5, 2));
 		textAreaNotif.setName("textAreaNotif");
-		add(textAreaNotif);
 		
 		textAreaNotif.setOpaque(false);
 		textAreaNotif.setFont(new Font("Dialog", Font.BOLD, 12));
@@ -41,9 +48,9 @@ public class NotificaPanel extends JPanel {
 		
 		// Simbolo unicode per la "x" di chiusura
 		lblCloseNotif = new JLabel("\u2715");
+		panel.add(lblCloseNotif);
 		lblCloseNotif.setBorder(new EmptyBorder(3, 5, 5, 5));
 		lblCloseNotif.setName("lblCloseNotif");
-		add(lblCloseNotif);
 		
 		lblCloseNotif.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		lblCloseNotif.setFont(new Font("Dialog", Font.BOLD, 18));

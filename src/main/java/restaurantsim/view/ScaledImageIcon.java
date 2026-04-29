@@ -1,4 +1,4 @@
-package view;
+package restaurantsim.view;
 
 import java.awt.Component;
 import java.awt.Dimension;

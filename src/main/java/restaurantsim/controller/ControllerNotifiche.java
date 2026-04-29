@@ -1,14 +1,14 @@
-package controller;
+package restaurantsim.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-import model.Sala;
-import view.MainPanel;
-import view.NotificaPanel;
-import view.Window;
+import restaurantsim.model.Sala;
+import restaurantsim.view.MainPanel;
+import restaurantsim.view.NotificaPanel;
+import restaurantsim.view.Window;
 
 public class ControllerNotifiche implements MouseListener, ActionListener {
 	private Window window;
@@ -58,25 +58,25 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// Non usato.
 		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// Non usato.
 		
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// Non usato.
 		
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
+		// Non usato.
 		
 	}
 }
