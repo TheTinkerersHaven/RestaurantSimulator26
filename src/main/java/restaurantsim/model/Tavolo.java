@@ -101,4 +101,10 @@ public class Tavolo {
 	public void setOccupato(boolean occupato) {
 		this.occupato = occupato;
 	}
+
+	public void reset() {
+		this.occupato = false;
+		this.piattoOrdinato = Piatto.NESSUNO;
+		this.pazienza = 100;
+	}
 }

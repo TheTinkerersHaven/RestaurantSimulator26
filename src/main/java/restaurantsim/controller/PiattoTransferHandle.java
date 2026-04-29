@@ -9,9 +9,9 @@ import javax.swing.JComponent;
 import javax.swing.JOptionPane;
 import javax.swing.TransferHandler;
 
+import restaurantsim.model.Gioco;
 import restaurantsim.model.Notifica;
 import restaurantsim.model.Piatto;
-import restaurantsim.model.Sala;
 import restaurantsim.model.Tavolo;
 import restaurantsim.model.TransferPiatto;
 import restaurantsim.view.PannelloTavolo;
@@ -26,7 +26,7 @@ public class PiattoTransferHandle extends TransferHandler {
 
 	private TransferPiatto transferPiatto;
 
-	private Sala sala;
+	private Gioco gioco;
 	private Tavolo tavolo;
 	private SalaPanel salaPanel;
 	private PannelloTavolo pannelloTavolo;
@@ -37,7 +37,7 @@ public class PiattoTransferHandle extends TransferHandler {
 	 */
 	public PiattoTransferHandle(TransferPiatto piatto) {
 		this.transferPiatto = piatto;
-		this.sala = null;
+		this.gioco = null;
 		this.tavolo = null;
 		this.salaPanel = null;
 		this.pannelloTavolo = null;
@@ -47,9 +47,9 @@ public class PiattoTransferHandle extends TransferHandler {
 	/**
 	 * Crea un PiattoTransferHandle configurato per importare un piatto (rilascio)
 	 */
-	public PiattoTransferHandle(Sala sala, Tavolo tavolo, SalaPanel salaPanel, PannelloTavolo pannelloTavolo, ControllerNotifiche controllerNotifiche) {
+	public PiattoTransferHandle(Gioco gioco, Tavolo tavolo, SalaPanel salaPanel, PannelloTavolo pannelloTavolo, ControllerNotifiche controllerNotifiche) {
 		this.transferPiatto = null;
-		this.sala = sala;
+		this.gioco = gioco;
 		this.tavolo = tavolo;
 		this.salaPanel = salaPanel;
 		this.pannelloTavolo = pannelloTavolo;
@@ -113,9 +113,10 @@ public class PiattoTransferHandle extends TransferHandler {
 	/**
 	 * Registra i controller dei cuochi al mainPanel Crea un nuovo cuoco per ogni pannelloCuoco che verrà creato
 	 */
-	public static void registraTrasnferHandles(Sala sala, SalaPanel salaPanel, ControllerNotifiche controllerNotifiche) {
+	public static void registraTrasnferHandles(Gioco gioco, SalaPanel salaPanel, ControllerNotifiche controllerNotifiche) {
 		salaPanel.registraTransferHandlerPiatto(panel -> {
-			return new PiattoTransferHandle(sala, sala.getTavolo(panel.getNumeroTavolo()), salaPanel, panel, controllerNotifiche);
+			Tavolo tavolo = gioco.getSala().getTavolo(panel.getNumeroTavolo());
+			return new PiattoTransferHandle(gioco, tavolo, salaPanel, panel, controllerNotifiche);
 		});
 	}
 
@@ -136,14 +137,16 @@ public class PiattoTransferHandle extends TransferHandler {
 			return;
 		}
 
-		sala.rimuoviPiatto(indexPiatto);
+		gioco.getSala().rimuoviPiatto(indexPiatto);
+		gioco.aggiungiPunteggio(Gioco.PUNTEGGIO_PER_PIATTO);
 
-		salaPanel.aggiornaBancone(sala.getPiattiPronti());
+		salaPanel.aggiornaPunteggio(gioco.getPunteggio());
+		salaPanel.aggiornaBancone(gioco.getSala().getPiattiPronti());
 
 		pannelloTavolo.aggiornaTavolo(tavolo);
 
 		Notifica notifica = new Notifica("Tavolo " + numTavolo + " ha ricevuto " + piatto.toString(), ControllerNotifiche.ORIGINE_SALA);
-		sala.registraNotifica(notifica);
+		gioco.registraNotifica(notifica);
 		controllerNotifiche.mostraNotifica(notifica);
 
 		// Disolito i revalidate li fa Swing dopo un evento, ma qua non lo fa, quindi dobbiamo farlo a mano per aggiornare la UI dopo averla modificata

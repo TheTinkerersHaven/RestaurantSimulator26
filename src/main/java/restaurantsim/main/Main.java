@@ -9,30 +9,37 @@ import restaurantsim.controller.ControllerNavigazione;
 import restaurantsim.controller.ControllerNotifiche;
 import restaurantsim.controller.PiattoTransferHandle;
 import restaurantsim.controller.TimerTavolo;
+import restaurantsim.model.Gioco;
 import restaurantsim.model.Sala;
+import restaurantsim.model.Tavolo;
 import restaurantsim.view.MainPanel;
+import restaurantsim.view.PannelloTavolo;
+import restaurantsim.view.SalaPanel;
 import restaurantsim.view.Window;
 
 public class Main {
 	private static void mainUI() {
 		/// Model setup
-		Sala sala = new Sala();
+		Gioco gioco = new Gioco();
 
 		/// View setup
 		Window window = new Window();
 		MainPanel mainPanel = window.getPanel();
+		SalaPanel salaPanel = mainPanel.getSalaPanel();
 
 		/// Controller setup
-		ControllerNotifiche controllerNotifiche = new ControllerNotifiche(window, sala);
+		ControllerNotifiche controllerNotifiche = new ControllerNotifiche(window, gioco);
+		ControllerNavigazione controllerNavigazione = new ControllerNavigazione(window, gioco, controllerNotifiche);
 
-		@SuppressWarnings("unused")
-		ControllerNavigazione controllerNavigazione = new ControllerNavigazione(window, sala, controllerNotifiche);
+		ControllerCuoco.registraAscoltatori(mainPanel, salaPanel, gioco, controllerNotifiche);
+		PiattoTransferHandle.registraTrasnferHandles(gioco, salaPanel, controllerNotifiche);
 
-		ControllerCuoco.registraAscoltatori(mainPanel, mainPanel.getSalaPanel(), sala, controllerNotifiche);
-		PiattoTransferHandle.registraTrasnferHandles(sala, mainPanel.getSalaPanel(), controllerNotifiche);
+		for (int i = 0; i < Sala.NUM_TAVOLI; i++) {
+			Tavolo tavolo = gioco.getSala().getTavolo(i + 1);
+			PannelloTavolo pannelloTavolo = salaPanel.getPannelloTavolo(i + 1);
 
-		for (int i = 0; i < sala.getTavoli().size(); i++) {
-			Timer timer = new Timer(1000, new TimerTavolo(sala.getTavolo(i + 1), mainPanel.getSalaPanel().getPannelloTavolo(i + 1), sala, controllerNotifiche));
+			TimerTavolo timerTavolo = new TimerTavolo(tavolo, salaPanel, pannelloTavolo, gioco, controllerNotifiche, controllerNavigazione);
+			Timer timer = new Timer(1000, timerTavolo);
 			timer.start();
 		}
 
@@ -44,7 +51,7 @@ public class Main {
 		// try {
 		// sala.aggiungiPiatto(model.Piatto.SASHIMI);
 		// sala.aggiungiPiatto(model.Piatto.URAMAKI_RAINBOW);
-		// mainPanel.getSalaPanel().aggiornaBancone(sala.getPiattiPronti());
+		// salaPanel.aggiornaBancone(sala.getPiattiPronti());
 		// } catch (Exception e) {
 		// e.printStackTrace();
 		// }

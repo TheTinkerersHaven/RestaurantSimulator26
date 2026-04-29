@@ -5,6 +5,7 @@ import java.util.Random;
 
 import javax.swing.SwingWorker;
 
+import restaurantsim.model.Gioco;
 import restaurantsim.model.Notifica;
 import restaurantsim.model.Sala;
 import restaurantsim.model.Tavolo;
@@ -12,13 +13,13 @@ import restaurantsim.view.MainPanel;
 import restaurantsim.view.PannelloTavolo;
 
 public class ArrivoClientiWorker extends SwingWorker<Void, Integer> {
-	private Sala sala;
+	private Gioco gioco;
 	private MainPanel mainPanel;
 	private ControllerNotifiche controllerNotifiche;
 	private Random random;
 
-	public ArrivoClientiWorker(Sala sala, MainPanel mainPanel, ControllerNotifiche cn) {
-		this.sala = sala;
+	public ArrivoClientiWorker(Gioco gioco, MainPanel mainPanel, ControllerNotifiche cn) {
+		this.gioco = gioco;
 		this.mainPanel = mainPanel;
 		this.controllerNotifiche = cn;
 		this.random = new Random();
@@ -35,8 +36,8 @@ public class ArrivoClientiWorker extends SwingWorker<Void, Integer> {
 				Tavolo tavoloLibero = null;
 
 				int i = 0;
-				while (i < sala.getTavoli().size() && tavoloLibero == null) {
-					Tavolo t = sala.getTavolo(i + 1);
+				while (i < Sala.NUM_TAVOLI && tavoloLibero == null) {
+					Tavolo t = gioco.getSala().getTavolo(i + 1);
 					if (!t.isOccupato()) {
 						tavoloLibero = t;
 					}
@@ -58,7 +59,7 @@ public class ArrivoClientiWorker extends SwingWorker<Void, Integer> {
 				}
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			// Non fare nulla, la partita è stata interrotta
 		}
 
 		return null;
@@ -70,12 +71,12 @@ public class ArrivoClientiWorker extends SwingWorker<Void, Integer> {
 			for (Integer numeroTavolo : tavoliArrivati) {
 				Notifica notifica = new Notifica("Tavolo " + numeroTavolo + " ha un nuovo cliente!", ControllerNotifiche.ORIGINE_SALA);
 
-				sala.registraNotifica(notifica);
+				gioco.registraNotifica(notifica);
 				controllerNotifiche.mostraNotifica(notifica);
 
 				PannelloTavolo pannelloTavolo = mainPanel.getSalaPanel().getPannelloTavolo(tavoliArrivati.get(tavoliArrivati.size() - 1));
 
-				pannelloTavolo.aggiornaTavolo(sala.getTavolo(numeroTavolo));
+				pannelloTavolo.aggiornaTavolo(gioco.getSala().getTavolo(numeroTavolo));
 			}
 		} catch (InterruptedException ie) {
 			ie.printStackTrace();

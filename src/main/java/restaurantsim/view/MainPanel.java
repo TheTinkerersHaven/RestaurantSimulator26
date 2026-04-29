@@ -113,6 +113,7 @@ public class MainPanel extends JPanel {
 		NotificaPanel notif = new NotificaPanel(notifica);
 		notif.registraAscoltatori(controllerNotifiche);
 		overlayUI.add(notif);
+		overlayUI.revalidate();
 		overlayUI.repaint();
 
 		return notif;

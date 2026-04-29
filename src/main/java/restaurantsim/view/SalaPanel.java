@@ -20,6 +20,7 @@ import restaurantsim.controller.PiattoTransferHandle;
 import restaurantsim.model.Notifica;
 import restaurantsim.model.Piatto;
 import restaurantsim.model.TransferPiatto;
+import javax.swing.BoxLayout;
 
 @SuppressWarnings("serial")
 public class SalaPanel extends JPanel {
@@ -35,8 +36,21 @@ public class SalaPanel extends JPanel {
 	public SalaPanel() {
 		setLayout(new BorderLayout());
 
+		pannelloSuperiore = new JPanel();
+		add(pannelloSuperiore, BorderLayout.NORTH);
+		pannelloSuperiore.setLayout(new BoxLayout(pannelloSuperiore, BoxLayout.Y_AXIS));
+
 		barraSuperiore = new BarraSuperiore("Vai a cucina", "vai_cucina_da_sala");
-		add(barraSuperiore, BorderLayout.NORTH);
+		pannelloSuperiore.add(barraSuperiore);
+
+		pannelloPunteggio = new JPanel();
+		pannelloSuperiore.add(pannelloPunteggio);
+
+		lblPunteggioTesto = new JLabel("Punteggio: ");
+		pannelloPunteggio.add(lblPunteggioTesto);
+
+		lblPunteggio = new JLabel("0");
+		pannelloPunteggio.add(lblPunteggio);
 
 		panelTavoli = new JPanel();
 		panelTavoli.setBorder(new EmptyBorder(30, 50, 30, 50));
@@ -63,6 +77,10 @@ public class SalaPanel extends JPanel {
 
 	// 72 è quello che sembra essere la dimensione corretta per essere centrata in verticale
 	private final int DIMENSIONE_PIATTO = 72;
+	private JPanel pannelloSuperiore;
+	private JLabel lblPunteggioTesto;
+	private JPanel pannelloPunteggio;
+	private JLabel lblPunteggio;
 
 	private JLabel createPiattoLabel(URL link, PiattoTransferHandle transferHandle) {
 		JLabel label = new JLabel(new ScaledImageIcon(link));
@@ -111,5 +129,9 @@ public class SalaPanel extends JPanel {
 			default:
 				return null;
 		}
+	}
+
+	public void aggiornaPunteggio(int punteggio) {
+		lblPunteggio.setText(String.valueOf(punteggio));
 	}
 }

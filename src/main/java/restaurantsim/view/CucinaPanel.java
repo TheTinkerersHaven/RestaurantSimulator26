@@ -55,4 +55,17 @@ public class CucinaPanel extends JPanel {
 	public void aggiornaNotifiche(List<Notifica> list, ControllerNotifiche cn) {
 		barraSuperiore.aggiornaMenuNotifiche(list, cn);
 	}
+
+	public PannelloCuoco getPannelloCuoco(int id) {
+		switch (id) {
+			case 1:
+				return pannelloCuoco1;
+			case 2:
+				return pannelloCuoco2;
+			case 3:
+				return pannelloCuoco3;
+			default:
+				throw new IllegalArgumentException("Id cuoco non valido: " + id);
+		}
+	}
 }

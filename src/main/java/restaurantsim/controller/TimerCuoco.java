@@ -7,6 +7,7 @@ import restaurantsim.model.Cuoco;
 import restaurantsim.model.Notifica;
 import restaurantsim.model.Piatto;
 import restaurantsim.model.Sala;
+import restaurantsim.model.Gioco;
 import restaurantsim.view.PannelloCuoco;
 import restaurantsim.view.SalaPanel;
 
@@ -14,14 +15,14 @@ public class TimerCuoco implements ActionListener {
 	private Cuoco cuoco;
 	private PannelloCuoco pc;
 	private SalaPanel ps;
-	private Sala sala;
+	private Gioco gioco;
 	private ControllerNotifiche controllerNotifiche;
 
-	public TimerCuoco(Cuoco cuoco, PannelloCuoco pc, SalaPanel ps, Sala sala, ControllerNotifiche cn) {
+	public TimerCuoco(Cuoco cuoco, PannelloCuoco pc, SalaPanel ps, Gioco gioco, ControllerNotifiche cn) {
 		this.cuoco = cuoco;
 		this.pc = pc;
 		this.ps = ps;
-		this.sala = sala;
+		this.gioco = gioco;
 		this.controllerNotifiche = cn;
 	}
 
@@ -40,11 +41,13 @@ public class TimerCuoco implements ActionListener {
 		if (cuoco.getTempoRimanente() == 0) {
 			pc.rimuoviImmagine();
 
+			Sala sala = gioco.getSala();
+
 			try {
 				sala.aggiungiPiatto(stavaPreparando);
 
 				Notifica notifica = new Notifica("Cuoco " + pc.getNumeroCuoco() + " ha finito di preparare " + stavaPreparando.toString() + "!", ControllerNotifiche.ORIGINE_CUCINA);
-				sala.registraNotifica(notifica);
+				gioco.registraNotifica(notifica);
 				controllerNotifiche.mostraNotifica(notifica);
 			} catch (InterruptedException ie) {
 				return;

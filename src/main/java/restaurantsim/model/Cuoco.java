@@ -5,8 +5,8 @@ public class Cuoco implements Runnable {
 	private int tempoRimanente;
 
 	public Cuoco() {
-		this.piattoInPreparazione = Piatto.NESSUNO;
-		this.tempoRimanente = 0;
+		piattoInPreparazione = Piatto.NESSUNO;
+		tempoRimanente = 0;
 	}
 
 	public Piatto getPiattoInPreparazione() {
@@ -18,8 +18,8 @@ public class Cuoco implements Runnable {
 	}
 
 	public void iniziaPreparazione(Piatto piatto) {
-		this.piattoInPreparazione = piatto;
-		this.tempoRimanente = piatto.getTempoDiPreparazione();
+		piattoInPreparazione = piatto;
+		tempoRimanente = piatto.getTempoDiPreparazione();
 	}
 
 	@Override
@@ -30,6 +30,11 @@ public class Cuoco implements Runnable {
 		tempoRimanente--;
 		if (tempoRimanente == 0)
 			piattoInPreparazione = Piatto.NESSUNO;
+	}
+
+	public void reset() {
+		piattoInPreparazione = Piatto.NESSUNO;
+		tempoRimanente = 0;
 	}
 
 }

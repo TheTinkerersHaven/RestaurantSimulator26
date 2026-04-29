@@ -1,16 +1,14 @@
 package restaurantsim.model;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.Semaphore;
 
 public class Sala {
+	public static final int NUM_TAVOLI = 4;
+
 	private Semaphore mutexPiatti;
 	private ArrayList<Piatto> piattiPronti;
-
-	private Semaphore mutexNotifiche;
-	private LinkedList<Notifica> notifiche;
 
 	private ArrayList<Tavolo> tavoli;
 
@@ -18,11 +16,8 @@ public class Sala {
 		mutexPiatti = new Semaphore(1);
 		piattiPronti = new ArrayList<>();
 
-		mutexNotifiche = new Semaphore(1);
-		notifiche = new LinkedList<>();
-
-		tavoli = new ArrayList<>(4);
-		for (int i = 0; i < 4; i++) {
+		tavoli = new ArrayList<>(NUM_TAVOLI);
+		for (int i = 0; i < NUM_TAVOLI; i++) {
 			tavoli.add(new Tavolo(i + 1));
 		}
 	}
@@ -31,26 +26,12 @@ public class Sala {
 		return piattiPronti;
 	}
 
-	public List<Notifica> getNotifiche() {
-		return notifiche;
-	}
-
 	public List<Tavolo> getTavoli() {
 		return tavoli;
 	}
 
 	public Tavolo getTavolo(int numero) {
 		return tavoli.get(numero - 1);
-	}
-
-	public void registraNotifica(Notifica notif) throws InterruptedException {
-		mutexNotifiche.acquire();
-
-		notifiche.addFirst(notif);
-		if (notifiche.size() == 11)
-			notifiche.removeLast();
-
-		mutexNotifiche.release();
 	}
 
 	public void aggiungiPiatto(Piatto piatto) throws InterruptedException {
@@ -65,6 +46,19 @@ public class Sala {
 		mutexPiatti.acquire();
 
 		piattiPronti.remove(index);
+
+		mutexPiatti.release();
+	}
+
+	public void reset() {
+		// Aspettiamo eventuali operazioni
+		mutexPiatti.acquireUninterruptibly();
+
+		for (Tavolo tavolo : tavoli) {
+			tavolo.reset();
+		}
+
+		piattiPronti.clear();
 
 		mutexPiatti.release();
 	}

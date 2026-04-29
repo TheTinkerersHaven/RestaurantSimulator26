@@ -7,8 +7,8 @@ import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import restaurantsim.model.Cuoco;
+import restaurantsim.model.Gioco;
 import restaurantsim.model.Piatto;
-import restaurantsim.model.Sala;
 import restaurantsim.view.MainPanel;
 import restaurantsim.view.PannelloCuoco;
 import restaurantsim.view.SalaPanel;
@@ -16,12 +16,12 @@ import restaurantsim.view.SalaPanel;
 public class ControllerCuoco implements ActionListener {
 	private Cuoco cuoco;
 	private Timer timer;
-	private PannelloCuoco pc;
+	private PannelloCuoco pannelloCuoco;
 
-	public ControllerCuoco(Cuoco cuoco, PannelloCuoco pc, SalaPanel ps, Sala sala, ControllerNotifiche cn) {
+	public ControllerCuoco(Cuoco cuoco, PannelloCuoco pannelloCuoco, SalaPanel ps, Gioco gioco, ControllerNotifiche cn) {
 		this.cuoco = cuoco;
-		this.pc = pc;
-		this.timer = new Timer(1000, new TimerCuoco(cuoco, pc, ps, sala, cn));
+		this.pannelloCuoco = pannelloCuoco;
+		this.timer = new Timer(1000, new TimerCuoco(cuoco, pannelloCuoco, ps, gioco, cn));
 		this.timer.start();
 	}
 
@@ -31,7 +31,7 @@ public class ControllerCuoco implements ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (!cuoco.getPiattoInPreparazione().equals(Piatto.NESSUNO)) {
-			JOptionPane.showMessageDialog(pc, "C'è un piatto già in preparazione", "Avviso", JOptionPane.WARNING_MESSAGE);
+			JOptionPane.showMessageDialog(pannelloCuoco, "C'è un piatto già in preparazione", "Avviso", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
 
@@ -47,16 +47,16 @@ public class ControllerCuoco implements ActionListener {
 				break;
 		}
 
-		pc.mostraPiatto(cuoco.getPiattoInPreparazione().getImmaginePiatto());
+		pannelloCuoco.mostraPiatto(cuoco.getPiattoInPreparazione().getImmaginePiatto());
 	}
 
 	/**
 	 * Registra i controller dei cuochi al mainPanel Crea un nuovo cuoco per ogni pannelloCuoco che verrà creato
 	 */
-	public static void registraAscoltatori(MainPanel mp, SalaPanel ps, Sala sala, ControllerNotifiche cn) {
+	public static void registraAscoltatori(MainPanel mp, SalaPanel ps, Gioco gioco, ControllerNotifiche cn) {
 		mp.registraAscoltatoriCuochiMain((pannelloCuoco) -> {
-			Cuoco c = new Cuoco();
-			return new ControllerCuoco(c, pannelloCuoco, ps, sala, cn);
+			Cuoco cuoco = gioco.getCuoco(pannelloCuoco.getNumeroCuoco());
+			return new ControllerCuoco(cuoco, pannelloCuoco, ps, gioco, cn);
 		});
 	}
 }

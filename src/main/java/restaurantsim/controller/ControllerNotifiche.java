@@ -7,8 +7,8 @@ import java.awt.event.MouseListener;
 
 import javax.swing.Timer;
 
+import restaurantsim.model.Gioco;
 import restaurantsim.model.Notifica;
-import restaurantsim.model.Sala;
 import restaurantsim.view.MainPanel;
 import restaurantsim.view.NotificaPanel;
 import restaurantsim.view.Window;
@@ -19,24 +19,24 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 
 	private Window window;
 	private MainPanel mainPanel;
-	private Sala sala;
+	private Gioco gioco;
 
-	public ControllerNotifiche(Window window, Sala sala) {
+	public ControllerNotifiche(Window window, Gioco gioco) {
 		this.window = window;
 		this.mainPanel = window.getPanel();
-		this.sala = sala;
+		this.gioco = gioco;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals("del_all")) {
-			sala.getNotifiche().clear();
+			gioco.getNotifiche().clear();
 			aggiornaNotifiche();
 		} else {
 			int index = Integer.parseInt(e.getActionCommand());
-			Notifica notif = sala.getNotifiche().get(index);
+			Notifica notif = gioco.getNotifiche().get(index);
 
-			sala.getNotifiche().remove(index);
+			gioco.getNotifiche().remove(index);
 
 			aggiornaNotifiche();
 			window.setSize(mainPanel.cambiaPannello(notif.getOrigine()));
@@ -76,12 +76,12 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 	}
 
 	public void aggiornaNotifiche() {
-		mainPanel.aggiornaMenuNotifiche(sala.getNotifiche(), this);
+		mainPanel.aggiornaMenuNotifiche(gioco.getNotifiche(), this);
 	}
 
 	public void mostraNotifica(Notifica notifica) {
 		NotificaPanel notif = mainPanel.mostraNotifica(notifica, this);
-		mainPanel.aggiornaMenuNotifiche(sala.getNotifiche(), this);
+		mainPanel.aggiornaMenuNotifiche(gioco.getNotifiche(), this);
 
 		Timer timer = new Timer(5000, event -> {
 			mainPanel.getOverlayUI().remove(notif);
