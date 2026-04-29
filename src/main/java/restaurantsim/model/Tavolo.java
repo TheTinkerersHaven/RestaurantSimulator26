@@ -88,4 +88,24 @@ public class Tavolo {
 		this.piattoOrdinato = Piatto.NESSUNO;
 		this.pazienza = 100;
 	}
+
+	public void setNumeroTavolo(int numeroTavolo) {
+		this.numeroTavolo = numeroTavolo;
+	}
+
+	public void setNumeroClienti(int numeroClienti) {
+		this.numeroClienti = numeroClienti;
+	}
+
+	public void setPiattoOrdinato(Piatto piattoOrdinato) {
+		this.piattoOrdinato = piattoOrdinato;
+	}
+
+	public void setPazienza(int pazienza) {
+		this.pazienza = pazienza;
+	}
+
+	public void setOccupato(boolean occupato) {
+		this.occupato = occupato;
+	}
 }

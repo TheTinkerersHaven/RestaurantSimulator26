@@ -18,6 +18,7 @@ public class Sala {
 		mutexPiatti = new Semaphore(1);
 		piattiPronti = new ArrayList<>();
 
+		mutexNotifiche = new Semaphore(1);
 		notifiche = new LinkedList<>();
 
 		tavoli = new ArrayList<>(4);

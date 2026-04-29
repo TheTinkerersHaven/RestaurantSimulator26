@@ -3,14 +3,18 @@ package restaurantsim.view;
 import java.awt.Color;
 
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.JLabel;
+import javax.swing.JMenuItem;
+
 import java.awt.Font;
 import javax.swing.BoxLayout;
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.border.TitledBorder;
 
+import restaurantsim.controller.ControllerTavolo;
 import restaurantsim.model.Tavolo;
 
 import javax.swing.border.LineBorder;
@@ -23,6 +27,8 @@ public class PannelloTavolo extends JPanel {
 	private JProgressBar progressBar;
 	private Component verticalGlue_1;
 	private JPanel panel;
+	private JPopupMenu popupMenu;
+	private JMenuItem mntmServi;
 
 	private int numeroTavolo;
 
@@ -68,5 +74,14 @@ public class PannelloTavolo extends JPanel {
 	public void aggiornaTavolo(Tavolo tavolo) {
 		// TOOD: aggiorna i dati del tavolo (numero clienti, piatti ordinati, pazienza) in base allo stato del tavolo
 		System.out.println("Unimplemented method 'view.PannelloTavolo.aggiornaTavolo'");
+
+		
+	}
+	public void aggiornaProgresso(int perc) {
+	    progressBar.setValue(perc);
+	}
+
+	public void aggiungiAscoltatori(ControllerTavolo al) {
+	    mntmServi.addActionListener(al);
 	}
 }
