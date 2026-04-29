@@ -12,13 +12,13 @@ import javax.swing.ImageIcon;
 public class ScaledImageIcon extends ImageIcon {
 	private Image originalImage;
 	private Dimension currentScale;
-	
+
 	public ScaledImageIcon(URL location) {
 		super(location);
-		
-        originalImage = getImage();
-        currentScale = new Dimension(0, 0);
-    }
+
+		originalImage = getImage();
+		currentScale = new Dimension(0, 0);
+	}
 
 	@Override
 	public synchronized void paintIcon(Component c, Graphics g, int x, int y) {
@@ -28,11 +28,11 @@ public class ScaledImageIcon extends ImageIcon {
 
 		super.paintIcon(c, g, 0, 0);
 	}
-	
+
 	private void scaleImage(int width, int height) {
 		Image scaledImage = originalImage.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 		currentScale = new Dimension(width, height);
-		
+
 		setImage(scaledImage);
 	}
 }

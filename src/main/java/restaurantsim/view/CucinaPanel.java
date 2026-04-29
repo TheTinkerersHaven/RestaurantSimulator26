@@ -1,18 +1,17 @@
 package restaurantsim.view;
 
-import javax.swing.JPanel;
 import java.awt.BorderLayout;
+import java.awt.GridLayout;
+import java.util.List;
+import java.util.function.Function;
+
+import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import restaurantsim.controller.ControllerCuoco;
 import restaurantsim.controller.ControllerNavigazione;
 import restaurantsim.controller.ControllerNotifiche;
 import restaurantsim.model.Notifica;
-
-import java.awt.GridLayout;
-
-import java.util.List;
-import java.util.function.Function;
 
 @SuppressWarnings("serial")
 public class CucinaPanel extends JPanel {

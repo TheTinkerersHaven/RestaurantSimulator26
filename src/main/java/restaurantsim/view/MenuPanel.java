@@ -21,26 +21,25 @@ public class MenuPanel extends JPanel {
 		panelMenu = new JPanel();
 		add(panelMenu);
 		panelMenu.setLayout(new BorderLayout(0, 0));
-		
+
 		lblMenuImage = new JLabel(new ScaledImageIcon(MainPanel.class.getResource("/images/Restaurant Simulator V2.png")));
 		lblMenuImage.setOpaque(true);
 		panelMenu.add(lblMenuImage, BorderLayout.CENTER);
-		
+
 		panelPulsantiMenu = new JPanel();
 		add(panelPulsantiMenu, BorderLayout.SOUTH);
-			    
+
 		btnClassifica = new JButton("Classifica");
 		btnClassifica.setActionCommand("classifica");
 		panelPulsantiMenu.add(btnClassifica);
-			    
+
 		btnNuovaPartita = new JButton("Nuova partita");
 		btnNuovaPartita.setActionCommand("nuova_partita");
 		panelPulsantiMenu.add(btnNuovaPartita);
 	}
-	
+
 	public void registraAscoltatoriNavigazione(ControllerNavigazione c) {
 		btnClassifica.addActionListener(c);
 		btnNuovaPartita.addActionListener(c);
 	}
 }
-	

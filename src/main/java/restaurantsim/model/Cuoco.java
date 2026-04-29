@@ -8,7 +8,7 @@ public class Cuoco implements Runnable {
 		this.piattoInPreparazione = Piatto.NESSUNO;
 		this.tempoRimanente = 0;
 	}
-	
+
 	public Piatto getPiattoInPreparazione() {
 		return piattoInPreparazione;
 	}
@@ -24,10 +24,12 @@ public class Cuoco implements Runnable {
 
 	@Override
 	public void run() {
-		if (piattoInPreparazione.equals(Piatto.NESSUNO)) return;
-		
+		if (piattoInPreparazione.equals(Piatto.NESSUNO))
+			return;
+
 		tempoRimanente--;
-		if (tempoRimanente == 0) piattoInPreparazione = Piatto.NESSUNO;
+		if (tempoRimanente == 0)
+			piattoInPreparazione = Piatto.NESSUNO;
 	}
 
 }

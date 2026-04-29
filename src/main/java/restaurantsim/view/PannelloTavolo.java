@@ -1,20 +1,18 @@
 package restaurantsim.view;
 
 import java.awt.Color;
+import java.awt.Dimension;
 
-import javax.swing.JPanel;
-import javax.swing.JProgressBar;
-import javax.swing.JLabel;
-
-import javax.swing.BoxLayout;
 import javax.swing.BorderFactory;
 import javax.swing.Box;
+import javax.swing.BoxLayout;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JProgressBar;
+import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
 import restaurantsim.model.Tavolo;
-
-import javax.swing.border.LineBorder;
-import java.awt.Dimension;
 
 @SuppressWarnings("serial")
 public class PannelloTavolo extends JPanel {

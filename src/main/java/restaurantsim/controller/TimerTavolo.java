@@ -9,38 +9,38 @@ import restaurantsim.model.Tavolo;
 import restaurantsim.view.PannelloTavolo;
 
 public class TimerTavolo implements ActionListener {
-    private Tavolo tavolo;
-    private PannelloTavolo pannelloTavolo;
-    private Sala sala;
-    private ControllerNotifiche controllerNotifiche;
+	private Tavolo tavolo;
+	private PannelloTavolo pannelloTavolo;
+	private Sala sala;
+	private ControllerNotifiche controllerNotifiche;
 
-    public TimerTavolo(Tavolo tavolo, PannelloTavolo pannelloTavolo, Sala sala, ControllerNotifiche controllerNotifiche) {
-        this.tavolo = tavolo;
-        this.pannelloTavolo = pannelloTavolo;
-        this.sala = sala;
-        this.controllerNotifiche = controllerNotifiche;
-    }
+	public TimerTavolo(Tavolo tavolo, PannelloTavolo pannelloTavolo, Sala sala, ControllerNotifiche controllerNotifiche) {
+		this.tavolo = tavolo;
+		this.pannelloTavolo = pannelloTavolo;
+		this.sala = sala;
+		this.controllerNotifiche = controllerNotifiche;
+	}
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
-        if (!tavolo.isOccupato()) {
-            return;
-        }
+	@Override
+	public void actionPerformed(ActionEvent e) {
+		if (!tavolo.isOccupato()) {
+			return;
+		}
 
-        try {
-            boolean arrabbiato = tavolo.decrementaPazienza();
+		try {
+			boolean arrabbiato = tavolo.decrementaPazienza();
 
-            if (arrabbiato) {
-                Notifica notifica = new Notifica("Il cliente al tavolo " + tavolo.getNumeroTavolo() + " è arrabbiato!", ControllerNotifiche.ORIGINE_SALA);
-                sala.registraNotifica(notifica);
-                controllerNotifiche.mostraNotifica(notifica);
-            }
+			if (arrabbiato) {
+				Notifica notifica = new Notifica("Il cliente al tavolo " + tavolo.getNumeroTavolo() + " è arrabbiato!", ControllerNotifiche.ORIGINE_SALA);
+				sala.registraNotifica(notifica);
+				controllerNotifiche.mostraNotifica(notifica);
+			}
 
-            pannelloTavolo.aggiornaTavolo(tavolo);
-        } catch (InterruptedException ie) {
-            ie.printStackTrace();
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
-    }
+			pannelloTavolo.aggiornaTavolo(tavolo);
+		} catch (InterruptedException ie) {
+			ie.printStackTrace();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
 }
