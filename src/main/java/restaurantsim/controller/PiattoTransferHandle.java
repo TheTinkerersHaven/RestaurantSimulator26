@@ -7,7 +7,6 @@ import java.io.IOException;
 
 import javax.swing.JComponent;
 import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import javax.swing.TransferHandler;
 
 import restaurantsim.model.Notifica;
@@ -126,8 +125,6 @@ public class PiattoTransferHandle extends TransferHandler {
 	 * Metodo separato per separare la logica di importazione dal Transferable dal lavoro relativo al tavolo.
 	 */
 	private void processaRilascio(TransferPiatto transferPiatto) throws InterruptedException {
-		assert SwingUtilities.isEventDispatchThread();
-
 		Piatto piatto = transferPiatto.getPiatto();
 		int indexPiatto = transferPiatto.getIndexPiatto();
 		int numTavolo = tavolo.getNumeroTavolo();
