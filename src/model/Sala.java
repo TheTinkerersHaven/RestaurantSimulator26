@@ -35,4 +35,11 @@ public class Sala {
 
 		mutex.release();
 	}
+	public void rimuoviPiatto(Piatto piatto) throws InterruptedException {
+	    mutex.acquire();
+	    
+	    piattiPronti.remove(piatto);
+	    
+	    mutex.release();
+	}
 }

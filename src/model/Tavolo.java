@@ -47,6 +47,18 @@ public class Tavolo {
 	    	 pazienza=0;
 	     }
 	 }
+	 public void clienteArrabbiato() {
+	     this.occupato = false;
+	     this.numeroClienti = 0;
+	     this.piattoOrdinato = Piatto.NESSUNO;
+	     this.pazienza = 100;
+	 }
+	 public void servito() {
+	     this.occupato = false;
+	     this.numeroClienti = 0;
+	     this.piattoOrdinato = Piatto.NESSUNO;
+	     this.pazienza = 100;
+	 }
 	 
 	 public boolean isOccupato() { 
 		 return occupato; 
