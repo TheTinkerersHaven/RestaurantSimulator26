@@ -85,6 +85,7 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 
 		Timer timer = new Timer(5000, event -> {
 			mainPanel.getOverlayUI().remove(notif);
+			mainPanel.getOverlayUI().revalidate();
 			mainPanel.getOverlayUI().repaint();
 		});
 
