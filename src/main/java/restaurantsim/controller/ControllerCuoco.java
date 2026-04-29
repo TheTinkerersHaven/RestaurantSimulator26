@@ -17,11 +17,11 @@ public class ControllerCuoco implements ActionListener {
 	private Cuoco cuoco;
 	private Timer timer;
 	private PannelloCuoco pc;
-	
-	public ControllerCuoco(Cuoco cuoco, PannelloCuoco pc, SalaPanel ps, MainPanel mp, Sala sala, ControllerNotifiche cn) {
+
+	public ControllerCuoco(Cuoco cuoco, PannelloCuoco pc, SalaPanel ps, Sala sala, ControllerNotifiche cn) {
 		this.cuoco = cuoco;
 		this.pc = pc;
-		this.timer = new Timer(1000, new TimerCuoco(cuoco, pc, ps, mp, sala, cn));
+		this.timer = new Timer(1000, new TimerCuoco(cuoco, pc, ps, sala, cn));
 		this.timer.start();
 	}
 
@@ -34,7 +34,7 @@ public class ControllerCuoco implements ActionListener {
 			JOptionPane.showMessageDialog(pc, "C'è un piatto già in preparazione", "Avviso", JOptionPane.WARNING_MESSAGE);
 			return;
 		}
-		
+
 		switch (e.getActionCommand()) {
 			case "sashimi":
 				cuoco.iniziaPreparazione(Piatto.SASHIMI);
@@ -46,20 +46,17 @@ public class ControllerCuoco implements ActionListener {
 				cuoco.iniziaPreparazione(Piatto.HOSOMAKI_MAGURO);
 				break;
 		}
-		
+
 		pc.mostraPiatto(cuoco.getPiattoInPreparazione().getImmaginePiatto());
 	}
 
 	/**
-	 * Registra i controller dei cuochi al mainPanel
-	 * Crea un nuovo cuoco per ogni pannelloCuoco che verrà creato
+	 * Registra i controller dei cuochi al mainPanel Crea un nuovo cuoco per ogni pannelloCuoco che verrà creato
 	 */
 	public static void registraAscoltatori(MainPanel mp, SalaPanel ps, Sala sala, ControllerNotifiche cn) {
 		mp.registraAscoltatoriCuochiMain((pannelloCuoco) -> {
 			Cuoco c = new Cuoco();
-			return new ControllerCuoco(c, pannelloCuoco, ps, mp, sala, cn);
+			return new ControllerCuoco(c, pannelloCuoco, ps, sala, cn);
 		});
 	}
 }
-
-	

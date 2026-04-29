@@ -4,23 +4,23 @@ import java.net.URL;
 
 public enum Piatto {
 	NESSUNO,
- 	SASHIMI,
- 	URAMAKI_RAINBOW,
- 	HOSOMAKI_MAGURO;
-	
+	SASHIMI,
+	URAMAKI_RAINBOW,
+	HOSOMAKI_MAGURO;
+
 	public int getTempoDiPreparazione() {
 		switch (this) {
 			case SASHIMI:
-				return 2;
+				return 10;
 			case URAMAKI_RAINBOW:
-				return 180;
+				return 30;
 			case HOSOMAKI_MAGURO:
-				return 120;
+				return 20;
 			default:
 				throw new IllegalStateException("Impossibile calcolare il tempo di preparazione per un piatto invalido.");
 		}
 	}
-	
+
 	public URL getImmaginePiatto() {
 		switch (this) {
 			case SASHIMI:
@@ -33,7 +33,7 @@ public enum Piatto {
 				throw new IllegalStateException("Impossibile recuperare l'immagine per un piatto invalido.");
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		switch (this) {

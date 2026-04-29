@@ -2,10 +2,13 @@ package restaurantsim.main;
 
 import java.awt.EventQueue;
 
+import javax.swing.Timer;
+
 import restaurantsim.controller.ControllerCuoco;
 import restaurantsim.controller.ControllerNavigazione;
 import restaurantsim.controller.ControllerNotifiche;
 import restaurantsim.controller.PiattoTransferHandle;
+import restaurantsim.controller.TimerTavolo;
 import restaurantsim.model.Sala;
 import restaurantsim.view.MainPanel;
 import restaurantsim.view.Window;
@@ -23,10 +26,15 @@ public class Main {
 		ControllerNotifiche controllerNotifiche = new ControllerNotifiche(window, sala);
 
 		@SuppressWarnings("unused")
-		ControllerNavigazione controllerNavigazione = new ControllerNavigazione(window);
+		ControllerNavigazione controllerNavigazione = new ControllerNavigazione(window, sala, controllerNotifiche);
 
 		ControllerCuoco.registraAscoltatori(mainPanel, mainPanel.getSalaPanel(), sala, controllerNotifiche);
-		PiattoTransferHandle.registraTrasnferHandles(sala, mainPanel.getSalaPanel());
+		PiattoTransferHandle.registraTrasnferHandles(sala, mainPanel.getSalaPanel(), controllerNotifiche);
+
+		for (int i = 0; i < sala.getTavoli().size(); i++) {
+			Timer timer = new Timer(1000, new TimerTavolo(sala.getTavolo(i + 1), mainPanel.getSalaPanel().getPannelloTavolo(i + 1), sala, controllerNotifiche));
+			timer.start();
+		}
 
 		/// Debug
 		// Per fare delle navigazioni iniziali ed evitare di cliccare ogni volta nei pulsanti della nagivazione per testare le funzionalità

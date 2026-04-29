@@ -4,7 +4,6 @@ import java.util.Random;
 
 public class Tavolo {
 	private int numeroTavolo;
-	private int numeroClienti;
 	private Piatto piattoOrdinato;
 	private int pazienza;
 	private boolean occupato;
@@ -12,7 +11,6 @@ public class Tavolo {
 
 	public Tavolo(int numeroTavolo) {
 		this.numeroTavolo = numeroTavolo;
-		this.numeroClienti = 0;
 		this.piattoOrdinato = Piatto.NESSUNO;
 		this.pazienza = 100;
 		this.occupato = false;
@@ -24,7 +22,6 @@ public class Tavolo {
 		}
 
 		this.occupato = true;
-		this.numeroClienti = random.nextInt(4) + 1;
 		this.pazienza = 100;
 
 		int scelta = random.nextInt(3);
@@ -41,23 +38,26 @@ public class Tavolo {
 		}
 	}
 
-	public void decrementaPazienza() throws Exception {
+	public boolean decrementaPazienza() throws Exception {
 		if (!occupato) {
 			throw new Exception("Tavolo vuoto.");
 		}
 
-		pazienza -= 2;
-		if (pazienza < 0) {
-			pazienza = 0;
+		pazienza -= 1;
+
+		if (pazienza <= 0) {
+			occupato = false;
+			piattoOrdinato = Piatto.NESSUNO;
+			pazienza = 100;
+
+			return true;
 		}
+
+		return false;
 	}
 
 	public boolean isOccupato() {
 		return occupato;
-	}
-
-	public int getNumeroClienti() {
-		return numeroClienti;
 	}
 
 	public Piatto getPiattoOrdinato() {
@@ -72,29 +72,22 @@ public class Tavolo {
 		return numeroTavolo;
 	}
 
-	// TODO: Forse per questo un eccezione custom è più adatta
 	public void serviTavolo(Piatto piatto) throws Exception {
-		// TODO: Finche non implementiamo la logica dei tavoli, questi if sono commentati per poter provare il resto.
-		// if (!occupato || piattoOrdinato.equals(Piatto.NESSUNO)) {
-		// throw new Exception("Tavolo vuoto.");
-		// }
+		if (!occupato || piattoOrdinato.equals(Piatto.NESSUNO)) {
+			throw new Exception("Tavolo vuoto.");
+		}
 
-		// if (!piattoOrdinato.equals(piatto)) {
-		// throw new Exception("Piatto errato. Il tavolo " + numeroTavolo + " ha ordinato " + piattoOrdinato + ".");
-		// }
+		if (!piattoOrdinato.equals(piatto)) {
+			throw new Exception("Piatto errato. Il tavolo " + numeroTavolo + " ha ordinato " + piattoOrdinato + ".");
+		}
 
 		this.occupato = false;
-		this.numeroClienti = 0;
 		this.piattoOrdinato = Piatto.NESSUNO;
 		this.pazienza = 100;
 	}
 
 	public void setNumeroTavolo(int numeroTavolo) {
 		this.numeroTavolo = numeroTavolo;
-	}
-
-	public void setNumeroClienti(int numeroClienti) {
-		this.numeroClienti = numeroClienti;
 	}
 
 	public void setPiattoOrdinato(Piatto piattoOrdinato) {

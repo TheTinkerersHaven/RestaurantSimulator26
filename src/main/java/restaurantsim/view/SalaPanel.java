@@ -17,6 +17,7 @@ import restaurantsim.controller.ControllerNavigazione;
 import restaurantsim.controller.ControllerNotifiche;
 import restaurantsim.controller.DragAndDropMouseController;
 import restaurantsim.controller.PiattoTransferHandle;
+import restaurantsim.model.Notifica;
 import restaurantsim.model.Piatto;
 import restaurantsim.model.TransferPiatto;
 
@@ -93,7 +94,22 @@ public class SalaPanel extends JPanel {
 		}
 	}
 
-	public void aggiornaNotifiche(List<String> list, ControllerNotifiche cn) {
+	public void aggiornaNotifiche(List<Notifica> list, ControllerNotifiche cn) {
 		barraSuperiore.aggiornaMenuNotifiche(list, cn);
+	}
+
+	public PannelloTavolo getPannelloTavolo(int numeroTavolo) {
+		switch (numeroTavolo) {
+			case 1:
+				return tavolo1;
+			case 2:
+				return tavolo2;
+			case 3:
+				return tavolo3;
+			case 4:
+				return tavolo4;
+			default:
+				return null;
+		}
 	}
 }

@@ -2,7 +2,6 @@ package restaurantsim.view;
 
 import javax.swing.JPanel;
 import javax.swing.OverlayLayout;
-import javax.swing.Timer;
 
 import java.awt.CardLayout;
 import java.awt.BorderLayout;
@@ -17,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 import restaurantsim.controller.ControllerCuoco;
 import restaurantsim.controller.ControllerNavigazione;
 import restaurantsim.controller.ControllerNotifiche;
+import restaurantsim.model.Notifica;
 
 import java.util.List;
 import java.util.function.Function;
@@ -80,11 +80,11 @@ public class MainPanel extends JPanel {
 	public CardLayout getCardLayoutMainUI() {
 		return cardLayoutMainUI;
 	}
-	
+
 	public JPanel getMainUI() {
 		return mainUI;
 	}
-	
+
 	public JPanel getOverlayUI() {
 		return overlayUI;
 	}
@@ -95,42 +95,38 @@ public class MainPanel extends JPanel {
 		salaPanel.registraAscoltatoriNavigazione(controllerNavigazione);
 		cucinaPanel.aggiungiAscoltatoriNavigazione(controllerNavigazione);
 	}
-	
+
 	public void registraAscoltatoriCuochiMain(Function<PannelloCuoco, ControllerCuoco> creaControllerCuoco) {
 		cucinaPanel.aggiungiAscoltatoriCuochi(creaControllerCuoco);
 	}
-	
+
 	public Dimension cambiaPannello(String pannello) {
 		cardLayoutMainUI.show(mainUI, pannello);
-		if(pannello.equals("sala")) return new Dimension(600, 600);
-		else return new Dimension(600, 450);
+		if (pannello.equals("menu"))
+			return new Dimension(600, 450);
+		else
+			return new Dimension(700, 600);
 	}
 
-    public SalaPanel getSalaPanel() {
+	public SalaPanel getSalaPanel() {
 		return salaPanel;
-    }
-    
-    public void mostraNotifica(List<String> list, String text, ControllerNotifiche cn) {
-    	NotificaPanel notif = new NotificaPanel(text);
-    	notif.registraAscoltatori(cn);
+	}
+
+	public NotificaPanel mostraNotifica(Notifica notifica, ControllerNotifiche controllerNotifiche) {
+		NotificaPanel notif = new NotificaPanel(notifica);
+		notif.registraAscoltatori(controllerNotifiche);
 		overlayUI.add(notif);
 		overlayUI.repaint();
 
-		Timer timer = new Timer(5000, event -> {
-			overlayUI.remove(notif);
-			overlayUI.repaint();
-		});
-		
-		timer.setRepeats(false);
-		timer.start();
-		
-		cucinaPanel.aggiornaNotifiche(list, cn);
-		salaPanel.aggiornaNotifiche(list, cn);
+		return notif;
+	}
+
+	public void aggiornaMenuNotifiche(List<Notifica> list, ControllerNotifiche controllerNotifiche) {
+		cucinaPanel.aggiornaNotifiche(list, controllerNotifiche);
+		salaPanel.aggiornaNotifiche(list, controllerNotifiche);
 	}
 
 	public CucinaPanel getCucinaPanel() {
 		return cucinaPanel;
 	}
-
-	
 }

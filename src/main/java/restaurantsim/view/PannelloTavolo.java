@@ -3,68 +3,77 @@ package restaurantsim.view;
 import java.awt.Color;
 
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JProgressBar;
 import javax.swing.JLabel;
-import javax.swing.JMenuItem;
 
-import java.awt.Font;
 import javax.swing.BoxLayout;
-import java.awt.Component;
+import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.border.TitledBorder;
 
-import restaurantsim.controller.ControllerTavolo;
 import restaurantsim.model.Tavolo;
 
 import javax.swing.border.LineBorder;
+import java.awt.Dimension;
 
 @SuppressWarnings("serial")
 public class PannelloTavolo extends JPanel {
-	private Component verticalGlue;
-	private JLabel lblPresenzaClienti;
-	private JLabel lblOrdinePiatti;
+	private JLabel lblOrdinePiatto;
 	private JProgressBar progressBar;
-	private Component verticalGlue_1;
 	private JPanel panel;
-	private JPopupMenu popupMenu;
-	private JMenuItem mntmServi;
+	private JLabel lblPazienza;
+	private JPanel panelPiatto;
+	private JPanel panelPazienza;
+	private JLabel lblPiattoOrdinato;
 
 	private int numeroTavolo;
 
 	public PannelloTavolo(int numeroTavolo) {
 		this.numeroTavolo = numeroTavolo;
 
-		setBorder(new TitledBorder(new LineBorder(new Color(184, 207, 229)), "Tavolo " + numeroTavolo, TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0)));
+		LineBorder lineBorder = new LineBorder(new Color(184, 207, 229));
+		TitledBorder title = new TitledBorder(lineBorder, "Tavolo " + numeroTavolo, TitledBorder.CENTER, TitledBorder.TOP, null, new Color(0, 0, 0));
+		setBorder(BorderFactory.createCompoundBorder(title, BorderFactory.createEmptyBorder(5, 5, 5, 5)));
 
 		setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
 		panel = new JPanel();
-		add(panel);
 		panel.setBackground(new Color(126, 83, 1));
 		panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+		add(panel);
 
-		verticalGlue_1 = Box.createVerticalGlue();
-		panel.add(verticalGlue_1);
+		panel.add(Box.createVerticalGlue());
 
-		lblPresenzaClienti = new JLabel("Numero Clienti:");
-		panel.add(lblPresenzaClienti);
-		lblPresenzaClienti.setForeground(new Color(255, 255, 255));
-		lblPresenzaClienti.setFont(new Font("Arial", Font.PLAIN, 15));
+		panelPiatto = new JPanel();
+		panelPiatto.setMaximumSize(new Dimension(32767, 20));
+		panelPiatto.setOpaque(false);
+		panelPiatto.setVisible(false);
+		panel.add(panelPiatto);
 
-		lblOrdinePiatti = new JLabel("Piatti Ordinati:");
-		panel.add(lblOrdinePiatti);
-		lblOrdinePiatti.setForeground(new Color(255, 255, 255));
-		lblOrdinePiatti.setFont(new Font("Arial", Font.PLAIN, 15));
+		lblOrdinePiatto = new JLabel("Piatto Ordinato:");
+		lblOrdinePiatto.setForeground(Color.WHITE);
+		panelPiatto.add(lblOrdinePiatto);
+
+		lblPiattoOrdinato = new JLabel();
+		lblPiattoOrdinato.setForeground(Color.WHITE);
+		panelPiatto.add(lblPiattoOrdinato);
+
+		panelPazienza = new JPanel();
+		panelPazienza.setMaximumSize(new Dimension(32767, 20));
+		panelPazienza.setOpaque(false);
+		panelPazienza.setVisible(false);
+		panel.add(panelPazienza);
+
+		lblPazienza = new JLabel("Pazienza:");
+		lblPazienza.setForeground(Color.WHITE);
+		panelPazienza.add(lblPazienza);
 
 		progressBar = new JProgressBar();
-		panel.add(progressBar);
+		panelPazienza.add(progressBar);
 		progressBar.setForeground(new Color(255, 0, 0));
 		progressBar.setStringPainted(true);
-		progressBar.setValue(50);
 
-		verticalGlue = Box.createVerticalGlue();
-		panel.add(verticalGlue);
+		panel.add(Box.createVerticalGlue());
 	}
 
 	public int getNumeroTavolo() {
@@ -72,16 +81,16 @@ public class PannelloTavolo extends JPanel {
 	}
 
 	public void aggiornaTavolo(Tavolo tavolo) {
-		// TOOD: aggiorna i dati del tavolo (numero clienti, piatti ordinati, pazienza) in base allo stato del tavolo
-		System.out.println("Unimplemented method 'view.PannelloTavolo.aggiornaTavolo'");
+		if (!tavolo.isOccupato()) {
+			panelPiatto.setVisible(false);
+			panelPazienza.setVisible(false);
+			return;
+		}
 
-		
-	}
-	public void aggiornaProgresso(int perc) {
-	    progressBar.setValue(perc);
-	}
+		panelPiatto.setVisible(true);
+		panelPazienza.setVisible(true);
 
-	public void aggiungiAscoltatori(ControllerTavolo al) {
-	    mntmServi.addActionListener(al);
+		progressBar.setValue(tavolo.getPazienza());
+		lblPiattoOrdinato.setText(tavolo.getPiattoOrdinato().toString());
 	}
 }

@@ -13,6 +13,7 @@ import javax.swing.JMenuItem;
 import javax.swing.SwingConstants;
 
 import restaurantsim.controller.ControllerNotifiche;
+import restaurantsim.model.Notifica;
 
 @SuppressWarnings("serial")
 public class BarraSuperiore extends JMenuBar {
@@ -22,10 +23,10 @@ public class BarraSuperiore extends JMenuBar {
 	private JMenuItem mntmSalvaPartita;
 	private JMenuItem mntmTornaMenu;
 	private JMenuItem mntmEsci;
-	
+
 	public BarraSuperiore(String buttonText, String actionCommand) {
 		setLayout(new GridBagLayout());
-		
+
 		menuFile = new JMenu("File");
 		menuFile.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
 
@@ -37,7 +38,7 @@ public class BarraSuperiore extends JMenuBar {
 		fileConstrain.weightx = 1;
 		fileConstrain.weighty = 1;
 		add(menuFile, fileConstrain);
-		
+
 		btnCentrale = new JButton(buttonText);
 		btnCentrale.setActionCommand(actionCommand);
 
@@ -47,7 +48,7 @@ public class BarraSuperiore extends JMenuBar {
 		cucinaConstrain.fill = GridBagConstraints.VERTICAL;
 		cucinaConstrain.weighty = 1;
 		add(btnCentrale, cucinaConstrain);
-		
+
 		menuNotifiche = new JMenu("Notifiche");
 		menuNotifiche.setComponentOrientation(ComponentOrientation.RIGHT_TO_LEFT);
 
@@ -59,37 +60,37 @@ public class BarraSuperiore extends JMenuBar {
 		notificheConstrain.weightx = 1;
 		notificheConstrain.weighty = 1;
 		add(menuNotifiche, notificheConstrain);
-		
+
 		mntmSalvaPartita = new JMenuItem("Salva partita");
 		mntmSalvaPartita.setHorizontalAlignment(SwingConstants.RIGHT);
 		menuFile.add(mntmSalvaPartita);
-		
+
 		mntmTornaMenu = new JMenuItem("Torna al menu");
 		mntmTornaMenu.setHorizontalAlignment(SwingConstants.RIGHT);
 		menuFile.add(mntmTornaMenu);
-		
+
 		mntmEsci = new JMenuItem("Esci");
 		mntmEsci.setHorizontalAlignment(SwingConstants.RIGHT);
 		menuFile.add(mntmEsci);
 	}
-	
+
 	public JButton getBtnCentrale() {
 		return btnCentrale;
 	}
-	
-	public void aggiornaMenuNotifiche(List<String> list, ControllerNotifiche cn) {
+
+	public void aggiornaMenuNotifiche(List<Notifica> list, ControllerNotifiche cn) {
 		menuNotifiche.removeAll();
 
-		if(!list.isEmpty()) {
+		if (!list.isEmpty()) {
 			JMenuItem deleteAll = new JMenuItem("-- CANCELLA TUTTO --");
 			deleteAll.setActionCommand("del_all");
 			deleteAll.addActionListener(cn);
-			menuNotifiche.add(deleteAll);			
+			menuNotifiche.add(deleteAll);
 		}
 
 		int i = 0;
-		for(String notif : list) {
-			JMenuItem itemNotif = new JMenuItem(notif);
+		for (Notifica notif : list) {
+			JMenuItem itemNotif = new JMenuItem(notif.getTesto());
 			itemNotif.setActionCommand(String.valueOf(i));
 			itemNotif.addActionListener(cn);
 			menuNotifiche.add(itemNotif);

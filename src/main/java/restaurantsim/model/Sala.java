@@ -10,7 +10,7 @@ public class Sala {
 	private ArrayList<Piatto> piattiPronti;
 
 	private Semaphore mutexNotifiche;
-	private LinkedList<String> notifiche;
+	private LinkedList<Notifica> notifiche;
 
 	private ArrayList<Tavolo> tavoli;
 
@@ -31,7 +31,7 @@ public class Sala {
 		return piattiPronti;
 	}
 
-	public List<String> getNotifiche() {
+	public List<Notifica> getNotifiche() {
 		return notifiche;
 	}
 
@@ -43,7 +43,7 @@ public class Sala {
 		return tavoli.get(numero - 1);
 	}
 
-	public void registraNotifica(String notif) throws InterruptedException {
+	public void registraNotifica(Notifica notif) throws InterruptedException {
 		mutexNotifiche.acquire();
 
 		notifiche.addFirst(notif);

@@ -4,9 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import restaurantsim.model.Cuoco;
+import restaurantsim.model.Notifica;
 import restaurantsim.model.Piatto;
 import restaurantsim.model.Sala;
-import restaurantsim.view.MainPanel;
 import restaurantsim.view.PannelloCuoco;
 import restaurantsim.view.SalaPanel;
 
@@ -14,17 +14,15 @@ public class TimerCuoco implements ActionListener {
 	private Cuoco cuoco;
 	private PannelloCuoco pc;
 	private SalaPanel ps;
-	private MainPanel mp;
 	private Sala sala;
-	private ControllerNotifiche cn;
+	private ControllerNotifiche controllerNotifiche;
 
-	public TimerCuoco(Cuoco cuoco, PannelloCuoco pc, SalaPanel ps, MainPanel mp, Sala sala, ControllerNotifiche cn) {
+	public TimerCuoco(Cuoco cuoco, PannelloCuoco pc, SalaPanel ps, Sala sala, ControllerNotifiche cn) {
 		this.cuoco = cuoco;
 		this.pc = pc;
 		this.ps = ps;
-		this.mp = mp;
 		this.sala = sala;
-		this.cn = cn;
+		this.controllerNotifiche = cn;
 	}
 
 	/**
@@ -45,10 +43,9 @@ public class TimerCuoco implements ActionListener {
 			try {
 				sala.aggiungiPiatto(stavaPreparando);
 
-				String notifText = "Cuoco " + pc.getNumeroCuoco() + " ha finito di preparare " + stavaPreparando.toString() + "!"; 
-				sala.registraNotifica(notifText);
-
-				mp.mostraNotifica(sala.getNotifiche(), notifText, cn);
+				Notifica notifica = new Notifica("Cuoco " + pc.getNumeroCuoco() + " ha finito di preparare " + stavaPreparando.toString() + "!", ControllerNotifiche.ORIGINE_CUCINA);
+				sala.registraNotifica(notifica);
+				controllerNotifiche.mostraNotifica(notifica);
 			} catch (InterruptedException ie) {
 				return;
 			}
