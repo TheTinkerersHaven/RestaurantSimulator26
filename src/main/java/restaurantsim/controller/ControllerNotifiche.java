@@ -38,21 +38,32 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 	
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		NotificaPanel notifPanel = (NotificaPanel) e.getComponent().getParent();
-		switch(e.getComponent().getName()) {
-			case "textAreaNotif":
-				mainPanel.getOverlayUI().remove(notifPanel);
-				mainPanel.getOverlayUI().revalidate();
-				mainPanel.getOverlayUI().repaint();
-				window.setSize(mainPanel.cambiaPannello("cucina"));
-				break;
-			case "lblCloseNotif":
-				mainPanel.getOverlayUI().remove(notifPanel);
-				mainPanel.getOverlayUI().revalidate();
-				mainPanel.getOverlayUI().repaint();
-				break;
-			default:
-				throw new IllegalStateException("Azione non eseguibile.");
+		java.awt.Container parent = e.getComponent().getParent();
+		if (!(parent instanceof NotificaPanel)) {
+			// Se il genitore diretto non è NotificaPanel, provo a risalire la gerarchia
+			while (parent != null && !(parent instanceof NotificaPanel)) {
+				parent = parent.getParent();
+			}
+		}
+		
+		if (parent instanceof NotificaPanel) {
+			NotificaPanel notifPanel = (NotificaPanel) parent;
+			switch(e.getComponent().getName()) {
+				case "textAreaNotif":
+					mainPanel.getOverlayUI().remove(notifPanel);
+					mainPanel.getOverlayUI().revalidate();
+					mainPanel.getOverlayUI().repaint();
+					window.setSize(mainPanel.cambiaPannello("cucina"));
+					break;
+				case "lblCloseNotif":
+					mainPanel.getOverlayUI().remove(notifPanel);
+					mainPanel.getOverlayUI().revalidate();
+					mainPanel.getOverlayUI().repaint();
+					break;
+				default:
+					// Se il componente cliccato non è uno di quelli gestiti, non facciamo nulla invece di lanciare eccezione
+					break;
+			}
 		}
 	}
 

@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "Progetto/restaurantsim.main.Main",
+            "projectName": "ProgettoInfoTPS2026"
+        },
+        {
+            "type": "java",
+            "name": "Debug via Gradle Extension",
+            "request": "launch",
+            "mainClass": "restaurantsim.main.Main",
+            "projectName": "ProgettoInfoTPS2026",
+            "classPaths": [
+                "${workspaceFolder}/build/classes/java/main",
+                "${workspaceFolder}/build/resources/main"
+            ],
+            "preLaunchTask": "gradle: build"
+        }
+    ]
+}
