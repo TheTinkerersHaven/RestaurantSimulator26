@@ -2,7 +2,6 @@ package restaurantsim.main;
 
 import java.awt.EventQueue;
 
-import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
 import restaurantsim.controller.ControllerCuoco;

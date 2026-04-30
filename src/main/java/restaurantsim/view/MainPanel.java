@@ -16,7 +16,6 @@ import javax.swing.border.EmptyBorder;
 import restaurantsim.controller.ControllerCuoco;
 import restaurantsim.controller.ControllerNavigazione;
 import restaurantsim.controller.ControllerNotifiche;
-import restaurantsim.model.Classifica;
 import restaurantsim.model.Notifica;
 
 @SuppressWarnings("serial")
