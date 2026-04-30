@@ -7,5 +7,4 @@ public class ControllerSalvataggio {
 	// Questo raccoglie i dati da panel e model e li dà al model Salvataggio.java
 	private MainPanel mainPanel;
 	private Sala salaModel;
-
 }

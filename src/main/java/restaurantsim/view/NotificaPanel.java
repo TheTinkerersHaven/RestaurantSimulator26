@@ -31,8 +31,8 @@ public class NotificaPanel extends JPanel {
 
 		panel = new JPanel();
 		panel.setBackground(Color.YELLOW);
-		add(panel);
 		panel.setLayout(new BoxLayout(panel, BoxLayout.X_AXIS));
+		add(panel);
 
 		textAreaNotif = new JTextArea(notifica.getTesto());
 		panel.add(textAreaNotif);
@@ -64,6 +64,18 @@ public class NotificaPanel extends JPanel {
 	public void registraAscoltatori(ControllerNotifiche cn) {
 		textAreaNotif.addMouseListener(cn);
 		lblCloseNotif.addMouseListener(cn);
+	}
+
+	public JPanel getPanel() {
+		return panel;
+	}
+
+	public JTextArea getTextAreaNotif() {
+		return textAreaNotif;
+	}
+
+	public JLabel getLblCloseNotif() {
+		return lblCloseNotif;
 	}
 
 	public String getOrigine() {

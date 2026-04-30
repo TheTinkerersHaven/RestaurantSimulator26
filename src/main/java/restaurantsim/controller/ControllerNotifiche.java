@@ -1,10 +1,14 @@
 package restaurantsim.controller;
 
+import java.awt.Color;
+import java.awt.Container;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.util.HashMap;
 
+import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import restaurantsim.model.Gioco;
@@ -20,11 +24,13 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 	private Window window;
 	private MainPanel mainPanel;
 	private Gioco gioco;
+	private HashMap<NotificaPanel, Timer> timerPannelli;
 
 	public ControllerNotifiche(Window window, Gioco gioco) {
 		this.window = window;
 		this.mainPanel = window.getPanel();
 		this.gioco = gioco;
+		this.timerPannelli = new HashMap<>();
 	}
 
 	@Override
@@ -41,37 +47,29 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 			aggiornaNotifiche();
 			window.setSize(mainPanel.cambiaPannello(notif.getOrigine()));
 		}
-
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
-		java.awt.Container parent = e.getComponent().getParent();
-		if (!(parent instanceof NotificaPanel)) {
-			// Se il genitore diretto non è NotificaPanel, provo a risalire la gerarchia
-			while (parent != null && !(parent instanceof NotificaPanel)) {
-				parent = parent.getParent();
-			}
-		}
+		Container parent = e.getComponent().getParent().getParent();
+		if (!(parent instanceof NotificaPanel)) return;
 
-		if (parent instanceof NotificaPanel) {
-			NotificaPanel notifPanel = (NotificaPanel) parent;
+		NotificaPanel notifPanel = (NotificaPanel) parent;
 
-			mainPanel.getOverlayUI().remove(notifPanel);
-			mainPanel.getOverlayUI().revalidate();
-			mainPanel.getOverlayUI().repaint();
+		mainPanel.getOverlayUI().remove(notifPanel);
+		mainPanel.getOverlayUI().revalidate();
+		mainPanel.getOverlayUI().repaint();
 
-			switch (e.getComponent().getName()) {
-				case "textAreaNotif":
-					window.setSize(mainPanel.cambiaPannello(notifPanel.getOrigine()));
-					break;
-				case "lblCloseNotif":
-					// Non serve fare altro
-					break;
-				default:
-					// Se il componente cliccato non è uno di quelli gestiti, non facciamo nulla invece di lanciare eccezione
-					break;
-			}
+		switch (e.getComponent().getName()) {
+			case "textAreaNotif":
+				window.setSize(mainPanel.cambiaPannello(notifPanel.getOrigine()));
+				break;
+			case "lblCloseNotif":
+				// Non serve fare altro
+				break;
+			default:
+				// Se il componente cliccato non è uno di quelli gestiti, non facciamo nulla invece di lanciare eccezione
+				break;
 		}
 	}
 
@@ -87,7 +85,11 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 			mainPanel.getOverlayUI().remove(notif);
 			mainPanel.getOverlayUI().revalidate();
 			mainPanel.getOverlayUI().repaint();
+
+			timerPannelli.remove(notif);
 		});
+
+		timerPannelli.put(notif, timer);
 
 		timer.setRepeats(false);
 		timer.start();
@@ -105,11 +107,25 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// Non usato.
+		Container cont = e.getComponent().getParent().getParent();
+		if(!(cont instanceof NotificaPanel)) return;
+		NotificaPanel notifPanel = (NotificaPanel) cont;
+		JPanel panel = notifPanel.getPanel();
+
+		timerPannelli.get(notifPanel).stop();
+
+		panel.setBackground(Color.GREEN);
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// Non usato.
+		Container cont = e.getComponent().getParent().getParent();
+		if(!(cont instanceof NotificaPanel)) return;
+		NotificaPanel notifPanel = (NotificaPanel) cont;
+		JPanel panel = notifPanel.getPanel();
+
+		timerPannelli.get(notifPanel).start();
+
+		panel.setBackground(Color.YELLOW);
 	}
 }
