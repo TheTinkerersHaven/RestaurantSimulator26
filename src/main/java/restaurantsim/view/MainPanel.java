@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 import restaurantsim.controller.ControllerCuoco;
 import restaurantsim.controller.ControllerNavigazione;
 import restaurantsim.controller.ControllerNotifiche;
+import restaurantsim.model.Classifica;
 import restaurantsim.model.Notifica;
 
 @SuppressWarnings("serial")
@@ -107,6 +108,10 @@ public class MainPanel extends JPanel {
 
 	public SalaPanel getSalaPanel() {
 		return salaPanel;
+	}
+
+	public ClassificaPanel getClassificaPanel() {
+		return classificaPanel;
 	}
 
 	public NotificaPanel mostraNotifica(Notifica notifica, ControllerNotifiche controllerNotifiche) {

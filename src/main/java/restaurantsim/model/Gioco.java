@@ -20,7 +20,6 @@ public class Gioco {
 
     private Semaphore mutexNotifiche;
     private LinkedList<Notifica> notifiche;
-
     private ArrayList<Cuoco> cuochi;
 
     public Gioco() {

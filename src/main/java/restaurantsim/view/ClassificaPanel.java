@@ -1,6 +1,7 @@
 package restaurantsim.view;
 
 import java.awt.BorderLayout;
+import java.util.List;
 
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
@@ -35,8 +36,12 @@ public class ClassificaPanel extends JPanel {
 		panelPulsantiClassifica.add(btnIndietro);
 	}
 
+	public void aggiornaClassifica(List<String> lista) {
+		dlm.clear();
+		dlm.addAll(lista);
+	}
+
 	public void registraAscoltatoriNavigaione(ControllerNavigazione c) {
 		btnIndietro.addActionListener(c);
 	}
-
 }
