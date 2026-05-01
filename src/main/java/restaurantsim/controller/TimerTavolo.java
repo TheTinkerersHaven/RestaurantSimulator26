@@ -8,6 +8,7 @@ import javax.swing.Timer;
 import restaurantsim.model.Gioco;
 import restaurantsim.model.Notifica;
 import restaurantsim.model.Tavolo;
+import restaurantsim.model.TavoloNonOccupatoException;
 import restaurantsim.view.PannelloTavolo;
 import restaurantsim.view.PannelloSala;
 
@@ -115,9 +116,10 @@ public class TimerTavolo implements ActionListener {
 
 			pannelloTavolo.aggiornaTavolo(tavolo);
 		} catch (InterruptedException ie) {
-			ie.printStackTrace();
-		} catch (Exception ex) {
-			ex.printStackTrace();
+			// Ignora
+		} catch (TavoloNonOccupatoException tnoe) {
+			// Ignora, il tavolo è vuoto, quindi non c'è pazienza da decrementare
+			// Non dovrebbe mai accadere per via della check iniziale 
 		}
 	}
 }

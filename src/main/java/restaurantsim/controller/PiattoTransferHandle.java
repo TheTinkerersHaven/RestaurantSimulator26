@@ -12,7 +12,10 @@ import javax.swing.TransferHandler;
 import restaurantsim.model.Gioco;
 import restaurantsim.model.Notifica;
 import restaurantsim.model.Piatto;
+import restaurantsim.model.PiattoErratoException;
 import restaurantsim.model.Tavolo;
+import restaurantsim.model.TavoloNonOccupatoException;
+import restaurantsim.model.TavoloOccupatoException;
 import restaurantsim.model.TransferPiatto;
 import restaurantsim.view.PannelloTavolo;
 import restaurantsim.view.PannelloSala;
@@ -203,8 +206,11 @@ public class PiattoTransferHandle extends TransferHandler {
 
 		try {
 			tavolo.serviTavolo(piatto);
-		} catch (Exception e) {
-			JOptionPane.showMessageDialog(pannelloTavolo, e.getMessage(), "Piatto errato", JOptionPane.ERROR_MESSAGE);
+		} catch (TavoloNonOccupatoException tnoe) {
+			JOptionPane.showMessageDialog(pannelloSala, "Non c'è nessuno a questo tavolo!", "Tavolo vuoto.", JOptionPane.ERROR_MESSAGE);
+			return;
+		} catch (PiattoErratoException pee) {
+			JOptionPane.showMessageDialog(pannelloSala, pee.getMessage(), "Piatto errato.", JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 

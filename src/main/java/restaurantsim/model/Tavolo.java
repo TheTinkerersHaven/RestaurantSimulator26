@@ -42,11 +42,11 @@ public class Tavolo {
 	/**
 	 * Fai arrivare i clienti al tavolo, impostando lo stato del tavolo come occupato, assegnando un piatto ordinato casuale e resettando la pazienza al massimo.
 	 * 
-	 * @throws Exception se il tavolo è già occupato, poiché non è possibile far arrivare nuovi clienti a un tavolo già occupato.
+	 * @throws TavoloOccupatoException se il tavolo è già occupato, poiché non è possibile far arrivare clienti a un tavolo già occupato.
 	 */
-	public void faiArrivareClienti() throws Exception {
+	public void faiArrivareClienti() throws TavoloOccupatoException {
 		if (occupato) {
-			throw new Exception("Tavolo già occupato.");
+			throw new TavoloOccupatoException();
 		}
 
 		this.occupato = true;
@@ -70,11 +70,11 @@ public class Tavolo {
 	 * Decrementa la pazienza dei clienti al tavolo di 1 punto.
 	 * 
 	 * @return true se i clienti si sono arrabbiati (pazienza raggiunta 0), false altrimenti
-	 * @throws Exception se il tavolo è vuoto, poiché non è possibile decrementare la pazienza di un tavolo vuoto.
+	 * @throws TavoloNonOccupatoException se il tavolo è vuoto, poiché non è possibile decrementare la pazienza di un tavolo vuoto.
 	 */
-	public boolean decrementaPazienza() throws Exception {
+	public boolean decrementaPazienza() throws TavoloNonOccupatoException {
 		if (!occupato) {
-			throw new Exception("Tavolo vuoto.");
+			throw new TavoloNonOccupatoException();
 		}
 
 		pazienza -= 1;
@@ -166,15 +166,16 @@ public class Tavolo {
 	 * Serve il piatto al tavolo.
 	 * 
 	 * @param piatto il piatto da servire al tavolo
-	 * @throws Exception se il tavolo è vuoto, se il piatto servito non corrisponde al piatto ordinato.
+	 * @throws TavoloNonOccupatoException se il tavolo è vuoto, poiché non è possibile servire un piatto a un tavolo vuoto.
+	 * @throws PiattoErratoException      se il piatto da servire è diverso da quello ordinato al tavolo
 	 */
-	public void serviTavolo(Piatto piatto) throws Exception {
+	public void serviTavolo(Piatto piatto) throws TavoloNonOccupatoException, PiattoErratoException {
 		if (!occupato || piattoOrdinato.equals(Piatto.NESSUNO)) {
-			throw new Exception("Tavolo vuoto.");
+			throw new TavoloNonOccupatoException();
 		}
 
 		if (!piattoOrdinato.equals(piatto)) {
-			throw new Exception("Piatto errato. Il tavolo " + numeroTavolo + " ha ordinato " + piattoOrdinato + ".");
+			throw new PiattoErratoException("Piatto errato. Il tavolo " + numeroTavolo + " ha ordinato " + piattoOrdinato + ".");
 		}
 
 		this.occupato = false;

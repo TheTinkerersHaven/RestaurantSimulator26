@@ -9,6 +9,7 @@ import javax.swing.Timer;
 import restaurantsim.model.Gioco;
 import restaurantsim.model.Notifica;
 import restaurantsim.model.Tavolo;
+import restaurantsim.model.TavoloOccupatoException;
 import restaurantsim.view.PannelloTavolo;
 import restaurantsim.view.PannelloSala;
 
@@ -98,6 +99,9 @@ public class ArrivoClientiWorker extends SwingWorker<Void, Integer> {
 
 						// Publish chiamerà il metodo process() appena l'EDT sarà pronto a processare gli aggiornamenti
 						publish(tavoloLibero.getNumeroTavolo());
+					} catch (TavoloOccupatoException toe) {
+						// Lascia che il timer riprovi il prossimo ciclo.
+						// Questo non dovrebbe mai accadere per via dei controlli.
 					} catch (Exception e) {
 						System.out.println("Errore nell'arrivo dei clienti al tavolo " + tavoloLibero.getNumeroTavolo() + ": " + e.getMessage());
 
