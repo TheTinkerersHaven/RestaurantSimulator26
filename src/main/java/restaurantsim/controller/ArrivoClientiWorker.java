@@ -18,10 +18,10 @@ public class ArrivoClientiWorker extends SwingWorker<Void, Integer> {
 	private ControllerNotifiche controllerNotifiche;
 	private Random random;
 
-	public ArrivoClientiWorker(Gioco gioco, MainPanel mainPanel, ControllerNotifiche cn) {
+	public ArrivoClientiWorker(Gioco gioco, MainPanel mainPanel, ControllerNotifiche controllerNotifiche) {
 		this.gioco = gioco;
 		this.mainPanel = mainPanel;
-		this.controllerNotifiche = cn;
+		this.controllerNotifiche = controllerNotifiche;
 		this.random = new Random();
 	}
 

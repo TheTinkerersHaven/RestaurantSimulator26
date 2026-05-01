@@ -42,8 +42,8 @@ public class CucinaPanel extends JPanel {
 		panelCuochi.add(pannelloCuoco3);
 	}
 
-	public void aggiungiAscoltatoriNavigazione(ControllerNavigazione c) {
-		barraSuperiore.getBtnCentrale().addActionListener(c);
+	public void aggiungiAscoltatoriNavigazione(ControllerNavigazione controllerNavigazione) {
+		barraSuperiore.registraAscoltatoriBarraSuperiore(controllerNavigazione);
 	}
 
 	public void aggiungiAscoltatoriCuochi(Function<PannelloCuoco, ControllerCuoco> creaControllerCuoco) {
@@ -52,8 +52,8 @@ public class CucinaPanel extends JPanel {
 		pannelloCuoco3.aggiungiAscoltatori(creaControllerCuoco.apply(pannelloCuoco3));
 	}
 
-	public void aggiornaNotifiche(List<Notifica> list, ControllerNotifiche cn) {
-		barraSuperiore.aggiornaMenuNotifiche(list, cn);
+	public void aggiornaNotifiche(List<Notifica> list, ControllerNotifiche controllerNotifiche) {
+		barraSuperiore.aggiornaMenuNotifiche(list, controllerNotifiche);
 	}
 
 	public PannelloCuoco getPannelloCuoco(int id) {

@@ -40,7 +40,7 @@ public class TimerTavolo implements ActionListener {
 				gioco.incrementaClientiArrabbiati();
 
 				if (gioco.getClientiArrabbiati() == Gioco.MAX_CLIENTI_ARRABBIATI) {
-					controllerNavigazione.finisciPartita(true);
+					controllerNavigazione.finisciPartita(2);
 					return;
 				}
 

@@ -21,16 +21,16 @@ public class ControllerNavigazione implements ActionListener {
 
 	private Gioco gioco;
 	private Classifica classifica;
-	private ControllerNotifiche controllerNavigazione;
+	private ControllerNotifiche controllerNotifiche;
 
 	private ArrivoClientiWorker arrivoClientiWorker;
 
-	public ControllerNavigazione(Window window, Gioco gioco, Classifica classifica, ControllerNotifiche controllerNavigazione) {
+	public ControllerNavigazione(Window window, Gioco gioco, Classifica classifica, ControllerNotifiche controllerNotifiche) {
 		this.window = window;
 		this.panel = window.getPanel();
 		this.gioco = gioco;
 		this.classifica = classifica;
-		this.controllerNavigazione = controllerNavigazione;
+		this.controllerNotifiche = controllerNotifiche;
 		panel.registraAscoltatoriNavigazioneMain(this);
 	}
 
@@ -57,16 +57,16 @@ public class ControllerNavigazione implements ActionListener {
 	}
 
 	private void nuovaParita() {
-		arrivoClientiWorker = new ArrivoClientiWorker(gioco, panel, controllerNavigazione);
+		arrivoClientiWorker = new ArrivoClientiWorker(gioco, panel, controllerNotifiche);
 		arrivoClientiWorker.execute();
 	}
 
-	public void finisciPartita(boolean sconfitta) {
+	public void finisciPartita(int status) {
 		arrivoClientiWorker.cancel(true);
 
-		if(sconfitta) {
+		if(status > 0) {
 			ClassificaPanel classificaPanel = panel.getClassificaPanel(); 
-			JOptionPane.showMessageDialog(window, "Gioco terminato! Hai fatto arrabbiare troppi clienti!", "Partita finita", JOptionPane.INFORMATION_MESSAGE);
+			if(status == 1) JOptionPane.showMessageDialog(window, "Gioco terminato! Hai fatto arrabbiare troppi clienti!", "Partita finita", JOptionPane.INFORMATION_MESSAGE);
 			String nomeGiocatore;
 			do {
 				nomeGiocatore = JOptionPane.showInputDialog(window, "Inserisci il nome del giocatore.", "Inserisci nome", JOptionPane.INFORMATION_MESSAGE);
@@ -81,7 +81,7 @@ public class ControllerNavigazione implements ActionListener {
 
 		/// View reset
 		// Notifiche
-		panel.aggiornaMenuNotifiche(gioco.getNotifiche(), controllerNavigazione);
+		panel.aggiornaMenuNotifiche(gioco.getNotifiche(), controllerNotifiche);
 
 		// Sala
 		SalaPanel salaPanel = panel.getSalaPanel();

@@ -93,8 +93,8 @@ public class SalaPanel extends JPanel {
 		return label;
 	}
 
-	public void registraAscoltatoriNavigazione(ControllerNavigazione c) {
-		barraSuperiore.getBtnCentrale().addActionListener(c);
+	public void registraAscoltatoriNavigazione(ControllerNavigazione controllerNavigazione) {
+		barraSuperiore.registraAscoltatoriBarraSuperiore(controllerNavigazione);
 	}
 
 	public void registraTransferHandlerPiatto(Function<PannelloTavolo, PiattoTransferHandle> creaTransferHandle) {
@@ -112,8 +112,8 @@ public class SalaPanel extends JPanel {
 		}
 	}
 
-	public void aggiornaNotifiche(List<Notifica> list, ControllerNotifiche cn) {
-		barraSuperiore.aggiornaMenuNotifiche(list, cn);
+	public void aggiornaNotifiche(List<Notifica> list, ControllerNotifiche controllerNotifiche) {
+		barraSuperiore.aggiornaMenuNotifiche(list, controllerNotifiche);
 	}
 
 	public PannelloTavolo getPannelloTavolo(int numeroTavolo) {

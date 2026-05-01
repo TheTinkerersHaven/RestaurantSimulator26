@@ -18,10 +18,10 @@ public class ControllerCuoco implements ActionListener {
 	private Timer timer;
 	private PannelloCuoco pannelloCuoco;
 
-	public ControllerCuoco(Cuoco cuoco, PannelloCuoco pannelloCuoco, SalaPanel ps, Gioco gioco, ControllerNotifiche cn) {
+	public ControllerCuoco(Cuoco cuoco, PannelloCuoco pannelloCuoco, SalaPanel ps, Gioco gioco, ControllerNotifiche controllerNotifiche) {
 		this.cuoco = cuoco;
 		this.pannelloCuoco = pannelloCuoco;
-		this.timer = new Timer(1000, new TimerCuoco(cuoco, pannelloCuoco, ps, gioco, cn));
+		this.timer = new Timer(1000, new TimerCuoco(cuoco, pannelloCuoco, ps, gioco, controllerNotifiche));
 		this.timer.start();
 	}
 
@@ -53,10 +53,10 @@ public class ControllerCuoco implements ActionListener {
 	/**
 	 * Registra i controller dei cuochi al mainPanel Crea un nuovo cuoco per ogni pannelloCuoco che verrà creato
 	 */
-	public static void registraAscoltatori(MainPanel mp, SalaPanel ps, Gioco gioco, ControllerNotifiche cn) {
+	public static void registraAscoltatori(MainPanel mp, SalaPanel ps, Gioco gioco, ControllerNotifiche controllerNotifiche) {
 		mp.registraAscoltatoriCuochiMain((pannelloCuoco) -> {
 			Cuoco cuoco = gioco.getCuoco(pannelloCuoco.getNumeroCuoco());
-			return new ControllerCuoco(cuoco, pannelloCuoco, ps, gioco, cn);
+			return new ControllerCuoco(cuoco, pannelloCuoco, ps, gioco, controllerNotifiche);
 		});
 	}
 }

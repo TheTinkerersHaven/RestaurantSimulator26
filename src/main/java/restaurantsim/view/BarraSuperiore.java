@@ -4,6 +4,7 @@ import java.awt.ComponentOrientation;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.JButton;
@@ -12,6 +13,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.SwingConstants;
 
+import restaurantsim.controller.ControllerNavigazione;
 import restaurantsim.controller.ControllerNotifiche;
 import restaurantsim.model.Notifica;
 
@@ -67,10 +69,12 @@ public class BarraSuperiore extends JMenuBar {
 
 		mntmTornaMenu = new JMenuItem("Torna al menu");
 		mntmTornaMenu.setHorizontalAlignment(SwingConstants.RIGHT);
+		mntmSalvaPartita.setActionCommand("menu_torna_a_menu");
 		menuFile.add(mntmTornaMenu);
 
 		mntmEsci = new JMenuItem("Esci");
 		mntmEsci.setHorizontalAlignment(SwingConstants.RIGHT);
+		mntmEsci.setActionCommand("menu_esci");
 		menuFile.add(mntmEsci);
 	}
 
@@ -78,13 +82,19 @@ public class BarraSuperiore extends JMenuBar {
 		return btnCentrale;
 	}
 
-	public void aggiornaMenuNotifiche(List<Notifica> list, ControllerNotifiche cn) {
+	public void registraAscoltatoriBarraSuperiore(ControllerNavigazione controllerNavigazione) {
+		mntmTornaMenu.addActionListener(controllerNavigazione);
+		mntmEsci.addActionListener(controllerNavigazione);
+		btnCentrale.addActionListener(controllerNavigazione);
+	}
+
+	public void aggiornaMenuNotifiche(List<Notifica> list, ControllerNotifiche controllerNotifiche) {
 		menuNotifiche.removeAll();
 
 		if (!list.isEmpty()) {
 			JMenuItem deleteAll = new JMenuItem("-- CANCELLA TUTTO --");
 			deleteAll.setActionCommand("del_all");
-			deleteAll.addActionListener(cn);
+			deleteAll.addActionListener(controllerNotifiche);
 			menuNotifiche.add(deleteAll);
 		}
 
@@ -92,7 +102,7 @@ public class BarraSuperiore extends JMenuBar {
 		for (Notifica notif : list) {
 			JMenuItem itemNotif = new JMenuItem(notif.getTesto());
 			itemNotif.setActionCommand(String.valueOf(i));
-			itemNotif.addActionListener(cn);
+			itemNotif.addActionListener(controllerNotifiche);
 			menuNotifiche.add(itemNotif);
 			i++;
 		}

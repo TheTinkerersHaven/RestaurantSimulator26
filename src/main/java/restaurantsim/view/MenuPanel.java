@@ -38,8 +38,8 @@ public class MenuPanel extends JPanel {
 		panelPulsantiMenu.add(btnNuovaPartita);
 	}
 
-	public void registraAscoltatoriNavigazione(ControllerNavigazione c) {
-		btnClassifica.addActionListener(c);
-		btnNuovaPartita.addActionListener(c);
+	public void registraAscoltatoriNavigazione(ControllerNavigazione controllerNavigazione) {
+		btnClassifica.addActionListener(controllerNavigazione);
+		btnNuovaPartita.addActionListener(controllerNavigazione);
 	}
 }

@@ -18,12 +18,12 @@ public class TimerCuoco implements ActionListener {
 	private Gioco gioco;
 	private ControllerNotifiche controllerNotifiche;
 
-	public TimerCuoco(Cuoco cuoco, PannelloCuoco pc, SalaPanel ps, Gioco gioco, ControllerNotifiche cn) {
+	public TimerCuoco(Cuoco cuoco, PannelloCuoco pc, SalaPanel ps, Gioco gioco, ControllerNotifiche controllerNotifiche) {
 		this.cuoco = cuoco;
 		this.pc = pc;
 		this.ps = ps;
 		this.gioco = gioco;
-		this.controllerNotifiche = cn;
+		this.controllerNotifiche = controllerNotifiche;
 	}
 
 	/**

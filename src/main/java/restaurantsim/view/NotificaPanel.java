@@ -61,9 +61,9 @@ public class NotificaPanel extends JPanel {
 		lblCloseNotif.setFont(new Font("Dialog", Font.BOLD, 18));
 	}
 
-	public void registraAscoltatori(ControllerNotifiche cn) {
-		textAreaNotif.addMouseListener(cn);
-		lblCloseNotif.addMouseListener(cn);
+	public void registraAscoltatori(ControllerNotifiche controllerNotifiche) {
+		textAreaNotif.addMouseListener(controllerNotifiche);
+		lblCloseNotif.addMouseListener(controllerNotifiche);
 	}
 
 	public JPanel getPanel() {

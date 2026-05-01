@@ -41,7 +41,7 @@ public class ClassificaPanel extends JPanel {
 		dlm.addAll(lista);
 	}
 
-	public void registraAscoltatoriNavigaione(ControllerNavigazione c) {
-		btnIndietro.addActionListener(c);
+	public void registraAscoltatoriNavigaione(ControllerNavigazione controllerNavigazione) {
+		btnIndietro.addActionListener(controllerNavigazione);
 	}
 }
