@@ -53,6 +53,12 @@ public class ControllerNavigazione implements ActionListener {
 			case "vai_sala_da_cucina":
 				cambiaMenu("sala");
 				break;
+			case "menu_torna_a_menu":
+				finisciPartita(1);
+				break;
+			case "menu_esci":
+				window.chiudiFinestraConConferma();
+				break;
 		}
 	}
 
@@ -66,7 +72,7 @@ public class ControllerNavigazione implements ActionListener {
 
 		if(status > 0) {
 			ClassificaPanel classificaPanel = panel.getClassificaPanel(); 
-			if(status == 1) JOptionPane.showMessageDialog(window, "Gioco terminato! Hai fatto arrabbiare troppi clienti!", "Partita finita", JOptionPane.INFORMATION_MESSAGE);
+			if(status == 2) JOptionPane.showMessageDialog(window, "Gioco terminato! Hai fatto arrabbiare troppi clienti!", "Partita finita", JOptionPane.INFORMATION_MESSAGE);
 			String nomeGiocatore;
 			do {
 				nomeGiocatore = JOptionPane.showInputDialog(window, "Inserisci il nome del giocatore.", "Inserisci nome", JOptionPane.INFORMATION_MESSAGE);

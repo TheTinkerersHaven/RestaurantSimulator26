@@ -69,7 +69,7 @@ public class BarraSuperiore extends JMenuBar {
 
 		mntmTornaMenu = new JMenuItem("Torna al menu");
 		mntmTornaMenu.setHorizontalAlignment(SwingConstants.RIGHT);
-		mntmSalvaPartita.setActionCommand("menu_torna_a_menu");
+		mntmTornaMenu.setActionCommand("menu_torna_a_menu");
 		menuFile.add(mntmTornaMenu);
 
 		mntmEsci = new JMenuItem("Esci");

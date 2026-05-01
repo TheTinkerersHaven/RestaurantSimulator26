@@ -26,9 +26,7 @@ public class Window extends JFrame implements WindowListener {
 
 	@Override
 	public void windowClosing(WindowEvent e) {
-		int esito = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler uscire?", "Conferma uscita", JOptionPane.YES_NO_OPTION);
-		if (esito == JOptionPane.YES_OPTION)
-			System.exit(0);
+		chiudiFinestraConConferma();
 	}
 
 	@Override
@@ -63,5 +61,11 @@ public class Window extends JFrame implements WindowListener {
 
 	public MainPanel getPanel() {
 		return panel;
+	}
+
+	public void chiudiFinestraConConferma() {
+		int esito = JOptionPane.showConfirmDialog(this, "Sei sicuro di voler uscire?", "Conferma uscita", JOptionPane.YES_NO_OPTION);
+		if (esito == JOptionPane.YES_OPTION)
+			System.exit(0); 
 	}
 }
