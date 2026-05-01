@@ -25,6 +25,11 @@ public class ControllerNavigazione implements ActionListener {
 
 	private ArrivoClientiWorker arrivoClientiWorker;
 
+	// delle constanti per rendere più chiaro il fine partita
+	public static final int ESCI_SENZA_MESSAGGIO = 1;
+	public static final int ESCI_SOLO_NOME = 2;
+	public static final int ESCI_NOME_E_SCONFITTA = 3;
+
 	public ControllerNavigazione(Window window, Gioco gioco, Classifica classifica, ControllerNotifiche controllerNotifiche) {
 		this.window = window;
 		this.panel = window.getPanel();
@@ -54,7 +59,7 @@ public class ControllerNavigazione implements ActionListener {
 				cambiaMenu("sala");
 				break;
 			case "menu_torna_a_menu":
-				finisciPartita(1);
+				finisciPartita(ESCI_SOLO_NOME);
 				break;
 			case "menu_esci":
 				window.chiudiFinestraConConferma();
@@ -70,9 +75,9 @@ public class ControllerNavigazione implements ActionListener {
 	public void finisciPartita(int status) {
 		arrivoClientiWorker.cancel(true);
 
-		if(status > 0) {
+		if(status == ESCI_SOLO_NOME) {
 			ClassificaPanel classificaPanel = panel.getClassificaPanel(); 
-			if(status == 2) JOptionPane.showMessageDialog(window, "Gioco terminato! Hai fatto arrabbiare troppi clienti!", "Partita finita", JOptionPane.INFORMATION_MESSAGE);
+			if(status == ESCI_NOME_E_SCONFITTA) JOptionPane.showMessageDialog(window, "Gioco terminato! Hai fatto arrabbiare troppi clienti!", "Partita finita", JOptionPane.INFORMATION_MESSAGE);
 			String nomeGiocatore;
 			do {
 				nomeGiocatore = JOptionPane.showInputDialog(window, "Inserisci il nome del giocatore.", "Inserisci nome", JOptionPane.INFORMATION_MESSAGE);
