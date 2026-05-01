@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import javax.swing.SwingWorker;
+import javax.swing.Timer;
 
 import restaurantsim.model.Gioco;
 import restaurantsim.model.Notifica;
@@ -16,12 +17,14 @@ public class ArrivoClientiWorker extends SwingWorker<Void, Integer> {
 	private Gioco gioco;
 	private MainPanel mainPanel;
 	private ControllerNotifiche controllerNotifiche;
+	private ControllerPartita controllerPartita;
 	private Random random;
 
-	public ArrivoClientiWorker(Gioco gioco, MainPanel mainPanel, ControllerNotifiche controllerNotifiche) {
+	public ArrivoClientiWorker(Gioco gioco, MainPanel mainPanel, ControllerNotifiche controllerNotifiche, ControllerPartita controllerPartita) {
 		this.gioco = gioco;
 		this.mainPanel = mainPanel;
 		this.controllerNotifiche = controllerNotifiche;
+		this.controllerPartita = controllerPartita;
 		this.random = new Random();
 	}
 
@@ -47,7 +50,10 @@ public class ArrivoClientiWorker extends SwingWorker<Void, Integer> {
 				// Se c'è un tavolo libero, fai arrivare i clienti
 				if (tavoloLibero != null) {
 					try {
+						Timer timer = controllerPartita.getTimerTavolo(tavoloLibero.getNumeroTavolo());
+
 						tavoloLibero.faiArrivareClienti();
+						timer.start();
 
 						// Publish chiamerà il metodo process() appena l'EDT sarà pronto a processare gli aggiornamenti
 						publish(tavoloLibero.getNumeroTavolo());

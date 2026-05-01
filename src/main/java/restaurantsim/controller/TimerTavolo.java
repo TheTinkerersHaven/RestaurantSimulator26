@@ -3,6 +3,8 @@ package restaurantsim.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Timer;
+
 import restaurantsim.model.Gioco;
 import restaurantsim.model.Notifica;
 import restaurantsim.model.Tavolo;
@@ -16,14 +18,18 @@ public class TimerTavolo implements ActionListener {
 	private Gioco gioco;
 	private ControllerNotifiche controllerNotifiche;
 	private ControllerNavigazione controllerNavigazione;
+	private ControllerPartita controllerPartita;
+	private Timer timer;
 
-	public TimerTavolo(Tavolo tavolo, SalaPanel salaPanel, PannelloTavolo pannelloTavolo, Gioco gioco, ControllerNotifiche controllerNotifiche, ControllerNavigazione controllerNavigazione) {
+	public TimerTavolo(Tavolo tavolo, SalaPanel salaPanel, PannelloTavolo pannelloTavolo, Gioco gioco, ControllerNotifiche controllerNotifiche, ControllerNavigazione controllerNavigazione, ControllerPartita controllerPartita, Timer timer) {
 		this.tavolo = tavolo;
 		this.salaPanel = salaPanel;
 		this.pannelloTavolo = pannelloTavolo;
 		this.gioco = gioco;
 		this.controllerNotifiche = controllerNotifiche;
 		this.controllerNavigazione = controllerNavigazione;
+		this.controllerPartita = controllerPartita;
+		this.timer = timer;
 	}
 
 	@Override
@@ -36,11 +42,14 @@ public class TimerTavolo implements ActionListener {
 			boolean arrabbiato = tavolo.decrementaPazienza();
 
 			if (arrabbiato) {
+				timer.stop();
+
 				gioco.aggiungiPunteggio(Gioco.PUNTEGGIO_PER_CLIENTE_ARRABBIATO);
 				gioco.incrementaClientiArrabbiati();
 
 				if (gioco.getClientiArrabbiati() == Gioco.MAX_CLIENTI_ARRABBIATI) {
-					controllerNavigazione.finisciPartita(ControllerNavigazione.ESCI_NOME_E_SCONFITTA);
+					controllerPartita.finisciPartita(ControllerPartita.ESCI_NOME_E_SCONFITTA);
+					controllerNavigazione.cambiaMenu("menu");
 					return;
 				}
 

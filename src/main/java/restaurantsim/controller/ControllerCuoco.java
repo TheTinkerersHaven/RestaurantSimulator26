@@ -9,20 +9,18 @@ import javax.swing.Timer;
 import restaurantsim.model.Cuoco;
 import restaurantsim.model.Gioco;
 import restaurantsim.model.Piatto;
-import restaurantsim.view.MainPanel;
+import restaurantsim.view.CucinaPanel;
 import restaurantsim.view.PannelloCuoco;
-import restaurantsim.view.SalaPanel;
 
 public class ControllerCuoco implements ActionListener {
 	private Cuoco cuoco;
-	private Timer timer;
 	private PannelloCuoco pannelloCuoco;
+	private Timer timerPreparazione;
 
-	public ControllerCuoco(Cuoco cuoco, PannelloCuoco pannelloCuoco, SalaPanel ps, Gioco gioco, ControllerNotifiche controllerNotifiche) {
+	public ControllerCuoco(Cuoco cuoco, PannelloCuoco pannelloCuoco, Timer timerPreparazione) {
 		this.cuoco = cuoco;
 		this.pannelloCuoco = pannelloCuoco;
-		this.timer = new Timer(1000, new TimerCuoco(cuoco, pannelloCuoco, ps, gioco, controllerNotifiche));
-		this.timer.start();
+		this.timerPreparazione = timerPreparazione;
 	}
 
 	/**
@@ -47,16 +45,18 @@ public class ControllerCuoco implements ActionListener {
 				break;
 		}
 
+		timerPreparazione.start();
 		pannelloCuoco.mostraPiatto(cuoco.getPiattoInPreparazione().getImmaginePiatto());
 	}
 
 	/**
 	 * Registra i controller dei cuochi al mainPanel Crea un nuovo cuoco per ogni pannelloCuoco che verrà creato
 	 */
-	public static void registraAscoltatori(MainPanel mp, SalaPanel ps, Gioco gioco, ControllerNotifiche controllerNotifiche) {
-		mp.registraAscoltatoriCuochiMain((pannelloCuoco) -> {
-			Cuoco cuoco = gioco.getCuoco(pannelloCuoco.getNumeroCuoco());
-			return new ControllerCuoco(cuoco, pannelloCuoco, ps, gioco, controllerNotifiche);
+	public static void registraAscoltatori(CucinaPanel cucinaPanel, Gioco gioco, ControllerPartita controllerPartita) {
+		cucinaPanel.aggiungiAscoltatoriCuochi((pannelloCuoco) -> {
+			int numeroCuoco = pannelloCuoco.getNumeroCuoco();
+			Cuoco cuoco = gioco.getCuoco(numeroCuoco);
+			return new ControllerCuoco(cuoco, pannelloCuoco, controllerPartita.getTimerCuoco(numeroCuoco));
 		});
 	}
 }

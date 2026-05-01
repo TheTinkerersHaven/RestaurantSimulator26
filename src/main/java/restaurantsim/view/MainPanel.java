@@ -5,7 +5,6 @@ import java.awt.CardLayout;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.util.List;
-import java.util.function.Function;
 
 import javax.swing.BoxLayout;
 import javax.swing.JLayeredPane;
@@ -13,7 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.OverlayLayout;
 import javax.swing.border.EmptyBorder;
 
-import restaurantsim.controller.ControllerCuoco;
 import restaurantsim.controller.ControllerNavigazione;
 import restaurantsim.controller.ControllerNotifiche;
 import restaurantsim.model.Notifica;
@@ -91,10 +89,6 @@ public class MainPanel extends JPanel {
 		classificaPanel.registraAscoltatoriNavigaione(controllerNavigazione);
 		salaPanel.registraAscoltatoriNavigazione(controllerNavigazione);
 		cucinaPanel.aggiungiAscoltatoriNavigazione(controllerNavigazione);
-	}
-
-	public void registraAscoltatoriCuochiMain(Function<PannelloCuoco, ControllerCuoco> creaControllerCuoco) {
-		cucinaPanel.aggiungiAscoltatoriCuochi(creaControllerCuoco);
 	}
 
 	public Dimension cambiaPannello(String pannello) {

@@ -7,6 +7,7 @@ import java.util.concurrent.Semaphore;
 
 public class Gioco {
     public static final int NUM_CUOCHI = 3;
+    public static final int NUM_TAVOLI = 4;
 
     public static final int PUNTEGGIO_PER_PIATTO = 10;
     public static final int PUNTEGGIO_PER_CLIENTE_ARRABBIATO = -5;

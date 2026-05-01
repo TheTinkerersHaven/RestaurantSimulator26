@@ -32,6 +32,13 @@ public class SalaPanel extends JPanel {
 	private JScrollPane scrollPaneBancone;
 	private JPanel scrollPaneViewportView;
 	private BarraSuperiore barraSuperiore;
+	private JPanel pannelloSuperiore;
+	private JLabel lblPunteggioTesto;
+	private JPanel pannelloPunteggio;
+	private JLabel lblPunteggio;
+
+	// 72 è quello che sembra essere la dimensione corretta per essere centrata in verticale
+	private final int DIMENSIONE_PIATTO = 72;
 
 	public SalaPanel() {
 		setLayout(new BorderLayout());
@@ -74,13 +81,6 @@ public class SalaPanel extends JPanel {
 
 		add(scrollPaneBancone, BorderLayout.SOUTH);
 	}
-
-	// 72 è quello che sembra essere la dimensione corretta per essere centrata in verticale
-	private final int DIMENSIONE_PIATTO = 72;
-	private JPanel pannelloSuperiore;
-	private JLabel lblPunteggioTesto;
-	private JPanel pannelloPunteggio;
-	private JLabel lblPunteggio;
 
 	private JLabel createPiattoLabel(URL link, PiattoTransferHandle transferHandle) {
 		JLabel label = new JLabel(new ScaledImageIcon(link));

@@ -3,6 +3,8 @@ package restaurantsim.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.Timer;
+
 import restaurantsim.model.Cuoco;
 import restaurantsim.model.Notifica;
 import restaurantsim.model.Piatto;
@@ -17,13 +19,15 @@ public class TimerCuoco implements ActionListener {
 	private SalaPanel ps;
 	private Gioco gioco;
 	private ControllerNotifiche controllerNotifiche;
+	private Timer timer;
 
-	public TimerCuoco(Cuoco cuoco, PannelloCuoco pc, SalaPanel ps, Gioco gioco, ControllerNotifiche controllerNotifiche) {
+	public TimerCuoco(Cuoco cuoco, PannelloCuoco pc, SalaPanel ps, Gioco gioco, ControllerNotifiche controllerNotifiche, Timer timer) {
 		this.cuoco = cuoco;
 		this.pc = pc;
 		this.ps = ps;
 		this.gioco = gioco;
 		this.controllerNotifiche = controllerNotifiche;
+		this.timer = timer;
 	}
 
 	/**
@@ -54,6 +58,7 @@ public class TimerCuoco implements ActionListener {
 			}
 
 			ps.aggiornaBancone(sala.getPiattiPronti());
+			timer.stop();
 
 			return;
 		}

@@ -1,0 +1,58 @@
+package restaurantsim.controller;
+
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+
+import javax.swing.JOptionPane;
+
+import restaurantsim.view.Window;
+
+public class ControllerFinestra implements WindowListener {
+    private Window window;
+
+    public ControllerFinestra(Window window) {
+        this.window = window;
+        window.registraController(this);
+    }
+
+    @Override
+    public void windowOpened(WindowEvent e) {
+        // Non usato.
+    }
+
+    @Override
+    public void windowClosing(WindowEvent e) {
+        chiudiFinestraConConferma();
+    }
+
+    @Override
+    public void windowClosed(WindowEvent e) {
+        // Non usato.
+    }
+
+    @Override
+    public void windowIconified(WindowEvent e) {
+        // Non usato.
+    }
+
+    @Override
+    public void windowDeiconified(WindowEvent e) {
+        // Non usato.
+    }
+
+    @Override
+    public void windowActivated(WindowEvent e) {
+        // Non usato.
+    }
+
+    @Override
+    public void windowDeactivated(WindowEvent e) {
+        // Non usato.
+    }
+
+    public void chiudiFinestraConConferma() {
+        int esito = JOptionPane.showConfirmDialog(window, "Sei sicuro di voler uscire?", "Conferma uscita", JOptionPane.YES_NO_OPTION);
+        if (esito == JOptionPane.YES_OPTION)
+            System.exit(0);
+    }
+}

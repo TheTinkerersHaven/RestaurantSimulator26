@@ -113,7 +113,7 @@ public class PiattoTransferHandle extends TransferHandler {
 	/**
 	 * Registra i controller dei cuochi al mainPanel Crea un nuovo cuoco per ogni pannelloCuoco che verrà creato
 	 */
-	public static void registraTrasnferHandles(Gioco gioco, SalaPanel salaPanel, ControllerNotifiche controllerNotifiche) {
+	public static void registraTransferHandles(Gioco gioco, SalaPanel salaPanel, ControllerNotifiche controllerNotifiche) {
 		salaPanel.registraTransferHandlerPiatto(panel -> {
 			Tavolo tavolo = gioco.getSala().getTavolo(panel.getNumeroTavolo());
 			return new PiattoTransferHandle(gioco, tavolo, salaPanel, panel, controllerNotifiche);
