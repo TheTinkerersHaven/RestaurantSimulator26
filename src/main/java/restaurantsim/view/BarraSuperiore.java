@@ -16,16 +16,31 @@ import restaurantsim.controller.ControllerNavigazione;
 import restaurantsim.controller.ControllerNotifiche;
 import restaurantsim.model.Notifica;
 
+/**
+ * Barra superiore nella sala e nella cucina
+ */
 @SuppressWarnings("serial")
 public class BarraSuperiore extends JMenuBar {
+	/** Menu per "File" */
 	private JMenu menuFile;
+	/** Menu per "Notifiche" */
 	private JMenu menuNotifiche;
+	/** Bottone centrale, usato per cambiare pannello */
 	private JButton btnCentrale;
+	/** MenuItem "Salva partita" */
 	private JMenuItem mntmSalvaPartita;
+	/** MenuItem "Torna al menu" */
 	private JMenuItem mntmTornaMenu;
+	/** MenuItem "Esci" */
 	private JMenuItem mntmEsci;
 
-	public BarraSuperiore(String buttonText, String actionCommand) {
+	/**
+	 * Inizializza i componenti
+	 * 
+	 * @param testoBottone  il testo da mostrare sul pulsante centrale
+	 * @param actionCommand l'action command da associare al pulsante centrale
+	 */
+	public BarraSuperiore(String testoBottone, String actionCommand) {
 		setLayout(new GridBagLayout());
 
 		menuFile = new JMenu("File");
@@ -40,7 +55,7 @@ public class BarraSuperiore extends JMenuBar {
 		fileConstrain.weighty = 1;
 		add(menuFile, fileConstrain);
 
-		btnCentrale = new JButton(buttonText);
+		btnCentrale = new JButton(testoBottone);
 		btnCentrale.setActionCommand(actionCommand);
 
 		GridBagConstraints cucinaConstrain = new GridBagConstraints();
@@ -77,28 +92,35 @@ public class BarraSuperiore extends JMenuBar {
 		menuFile.add(mntmEsci);
 	}
 
-	public JButton getBtnCentrale() {
-		return btnCentrale;
-	}
-
+	/**
+	 * Registra gli ascoltatori per i componenti della barra superiore
+	 * 
+	 * @param controllerNavigazione il controller navigazione da registrare come ascoltatore
+	 */
 	public void registraAscoltatoriBarraSuperiore(ControllerNavigazione controllerNavigazione) {
 		mntmTornaMenu.addActionListener(controllerNavigazione);
 		mntmEsci.addActionListener(controllerNavigazione);
 		btnCentrale.addActionListener(controllerNavigazione);
 	}
 
-	public void aggiornaMenuNotifiche(List<Notifica> list, ControllerNotifiche controllerNotifiche) {
+	/**
+	 * Aggiorna il menu delle notifiche con le notifiche presenti nella lista
+	 * 
+	 * @param lista               la lista di notifiche da mostrare nel menu
+	 * @param controllerNotifiche il controller notifiche da registrare come ascoltatore alle voci del menu
+	 */
+	public void aggiornaMenuNotifiche(List<Notifica> lista, ControllerNotifiche controllerNotifiche) {
 		menuNotifiche.removeAll();
 
-		if (!list.isEmpty()) {
+		if (!lista.isEmpty()) {
 			JMenuItem deleteAll = new JMenuItem("-- CANCELLA TUTTO --");
-			deleteAll.setActionCommand("del_all");
+			deleteAll.setActionCommand(ControllerNotifiche.CANCELLA_TUTTE_NOTIFICHE);
 			deleteAll.addActionListener(controllerNotifiche);
 			menuNotifiche.add(deleteAll);
 		}
 
 		int i = 0;
-		for (Notifica notif : list) {
+		for (Notifica notif : lista) {
 			JMenuItem itemNotif = new JMenuItem(notif.getTesto());
 			itemNotif.setActionCommand(String.valueOf(i));
 			itemNotif.addActionListener(controllerNotifiche);

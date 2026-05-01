@@ -14,18 +14,36 @@ import javax.swing.border.TitledBorder;
 
 import restaurantsim.model.Tavolo;
 
+/**
+ * Pannello che mostra un tavolo, con il piatto ordinato e la pazienza del cliente se il tavolo è occupato
+ */
 @SuppressWarnings("serial")
 public class PannelloTavolo extends JPanel {
+	/** Label per mostrare il testo "Piatto Ordinato: " prima del piatto ordinato */
 	private JLabel lblOrdinePiatto;
+	/** Barra di progresso per mostrare la pazienza del cliente al tavolo */
 	private JProgressBar progressBar;
+	/** Panel che contiene le informazioni del tavolo, come il piatto ordinato e la pazienza del cliente */
 	private JPanel panel;
+	/** Label per mostrare la pazienza del cliente al tavolo */
 	private JLabel lblPazienza;
+	/** Label per mostrare il piatto ordinato al tavolo */
 	private JPanel panelPiatto;
+	/** Label per mostrare il testo "Pazienza: " prima della pazienza del cliente */
 	private JPanel panelPazienza;
+	/** Label per mostrare il piatto ordinato al tavolo */
 	private JLabel lblPiattoOrdinato;
 
+	/**
+	 * Numero del tavolo che è rappresentato da questo pannello
+	 */
 	private int numeroTavolo;
 
+	/**
+	 * Inizializza i componenti.
+	 * 
+	 * @param numeroTavolo il numero del tavolo che è rappresentato da questo pannello
+	 */
 	public PannelloTavolo(int numeroTavolo) {
 		this.numeroTavolo = numeroTavolo;
 
@@ -74,10 +92,20 @@ public class PannelloTavolo extends JPanel {
 		panel.add(Box.createVerticalGlue());
 	}
 
+	/**
+	 * Restituisce il numero del tavolo rappresentato da questo pannello
+	 * 
+	 * @return il numero del tavolo rappresentato da questo pannello
+	 */
 	public int getNumeroTavolo() {
 		return numeroTavolo;
 	}
 
+	/**
+	 * Aggiorna il pannello del tavolo con i dati del tavolo dato, mostrando o nascondendo il piatto ordinato e la pazienza a seconda che il tavolo sia occupato o meno, e aggiornando i valori mostrati con quelli del tavolo dato
+	 * 
+	 * @param tavolo il tavolo con i dati da mostrare in questo pannello
+	 */
 	public void aggiornaTavolo(Tavolo tavolo) {
 		if (!tavolo.isOccupato()) {
 			panelPiatto.setVisible(false);

@@ -8,59 +8,98 @@ import javax.swing.Timer;
 import restaurantsim.model.Classifica;
 import restaurantsim.model.Cuoco;
 import restaurantsim.model.Gioco;
-import restaurantsim.model.Sala;
 import restaurantsim.model.Tavolo;
 import restaurantsim.view.ClassificaPanel;
-import restaurantsim.view.CucinaPanel;
-import restaurantsim.view.MainPanel;
+import restaurantsim.view.PannelloCucina;
+import restaurantsim.view.PannelloPrincipale;
 import restaurantsim.view.PannelloCuoco;
 import restaurantsim.view.PannelloTavolo;
-import restaurantsim.view.SalaPanel;
+import restaurantsim.view.PannelloSala;
 
+/**
+ * Controller che si occupa di gestire la partita
+ */
 public class ControllerPartita {
-    private MainPanel panel;
-
+    /**
+     * Gioco a cui si riferisce il controller
+     */
     private Gioco gioco;
+    /**
+     * Classifica a cui si riferisce il controller per poter aggiornare la classifica quando necessario
+     */
     private Classifica classifica;
+    /**
+     * Riferimento al pannello principale per poter aggiornare la view quando necessario
+     */
+    private PannelloPrincipale mainPanel;
+    /**
+     * Riferimento al controller notifiche per poter aggiornare le notifiche quando necessario
+     */
     private ControllerNotifiche controllerNotifiche;
-
+    /**
+     * Timer per i tavoli
+     */
     private ArrayList<Timer> timerTavoli;
+    /**
+     * Timer per i cuochi
+     */
     private ArrayList<Timer> timerCuochi;
-
+    /**
+     * SwingWorker che si occupa di far arrivare i clienti
+     */
     private ArrivoClientiWorker arrivoClientiWorker;
 
-    // delle constanti per rendere più chiaro il fine partita
-    public static final int ESCI_SENZA_MESSAGGIO = 1;
-    public static final int ESCI_SOLO_NOME = 2;
-    public static final int ESCI_NOME_E_SCONFITTA = 3;
+    // Delle constanti per rendere più chiaro il fine partita
+    /** Esci dalla partita senza sconfitta e senza chiedere il nome dell'utente */
+    public static final int ESCI_SENZA_MESSAGGIO = 0;
+    /** Esci dalla partita chiedendo solo il nome dell'utente */
+    public static final int ESCI_SOLO_NOME = 1;
+    /** Esci dalla partita informando della sconditta e chiedend il nome dell'utente */
+    public static final int ESCI_NOME_E_SCONFITTA = 2;
 
-    public ControllerPartita(MainPanel panel, Gioco gioco, Classifica classifica, ControllerNotifiche controllerNotifiche) {
-        this.panel = panel;
+    /**
+     * Inizializza il controller partita.
+     * 
+     * @param panel               il pannello principale, necessario per aggiornare la view quando necessario
+     * @param gioco               il gioco, necessario per aggiornare il model quando necessario
+     * @param classifica          la classifica, necessaria per aggiornare la classifica quando necessario
+     * @param controllerNotifiche il controller notifiche, necessario per aggiornare le notifiche quando necessario
+     */
+    public ControllerPartita(PannelloPrincipale panel, Gioco gioco, Classifica classifica, ControllerNotifiche controllerNotifiche) {
+        this.mainPanel = panel;
         this.gioco = gioco;
         this.classifica = classifica;
         this.controllerNotifiche = controllerNotifiche;
 
         this.timerTavoli = new ArrayList<>(Gioco.NUM_TAVOLI);
         this.timerCuochi = new ArrayList<>(Gioco.NUM_CUOCHI);
-        this.arrivoClientiWorker = new ArrivoClientiWorker(gioco, panel, controllerNotifiche, this);
+        this.arrivoClientiWorker = new ArrivoClientiWorker(gioco, panel.getSalaPanel(), controllerNotifiche, this);
     }
 
+    /**
+     * Inizia una nuova partita, facendo partire il worker che fa arrivare i clienti
+     */
     public void nuovaParita() {
-        iniziaPartita();
+        arrivoClientiWorker.execute();
     }
 
+    /**
+     * Finisce la partita.
+     * 
+     * @param status il tipo di fine partita, che determina se mostrare un messaggio di sconfitta e se chiedere il nome dell'utente per aggiornare la classifica, deve essere uno dei valori delle costanti {@link #ESCI_SENZA_MESSAGGIO}, {@link #ESCI_SOLO_NOME} o {@link #ESCI_NOME_E_SCONFITTA}
+     */
     public void finisciPartita(int status) {
         interrompiPartita();
 
-        if (status == ESCI_SOLO_NOME) {
-            ClassificaPanel classificaPanel = panel.getClassificaPanel();
+        if (status == ESCI_SOLO_NOME || status == ESCI_NOME_E_SCONFITTA) {
+            ClassificaPanel classificaPanel = mainPanel.getClassificaPanel();
             if (status == ESCI_NOME_E_SCONFITTA)
-                JOptionPane.showMessageDialog(panel, "Gioco terminato! Hai fatto arrabbiare troppi clienti!", "Partita finita", JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(mainPanel, "Gioco terminato! Hai fatto arrabbiare troppi clienti!", "Partita finita", JOptionPane.INFORMATION_MESSAGE);
             String nomeGiocatore;
             do {
-                nomeGiocatore = JOptionPane.showInputDialog(panel, "Inserisci il nome del giocatore.", "Inserisci nome", JOptionPane.INFORMATION_MESSAGE);
+                nomeGiocatore = JOptionPane.showInputDialog(mainPanel, "Inserisci il nome del giocatore.", "Inserisci nome", JOptionPane.INFORMATION_MESSAGE);
                 if (nomeGiocatore == null || nomeGiocatore.isBlank())
-                    JOptionPane.showMessageDialog(panel, "Non puoi non inserire un nome.", "Errore", JOptionPane.OK_OPTION);
+                    JOptionPane.showMessageDialog(mainPanel, "Non puoi non inserire un nome.", "Errore", JOptionPane.OK_OPTION);
             } while (nomeGiocatore == null || nomeGiocatore.isBlank());
             classifica.inserisciPartita(nomeGiocatore, gioco.getPunteggio());
             classificaPanel.aggiornaClassifica(classifica.getClassifica());
@@ -71,18 +110,18 @@ public class ControllerPartita {
 
         /// View reset
         // Notifiche
-        panel.aggiornaMenuNotifiche(gioco.getNotifiche(), controllerNotifiche);
+        mainPanel.aggiornaMenuNotifiche(gioco.getNotifiche(), controllerNotifiche);
 
         // Sala
-        SalaPanel salaPanel = panel.getSalaPanel();
+        PannelloSala salaPanel = mainPanel.getSalaPanel();
         salaPanel.aggiornaPunteggio(gioco.getPunteggio());
         salaPanel.aggiornaBancone(gioco.getSala().getPiattiPronti());
-        for (int i = 1; i <= Sala.NUM_TAVOLI; i++) {
+        for (int i = 1; i <= Gioco.NUM_TAVOLI; i++) {
             salaPanel.getPannelloTavolo(i).aggiornaTavolo(gioco.getSala().getTavolo(i));
         }
 
         // Cucina
-        CucinaPanel cucinaPanel = panel.getCucinaPanel();
+        PannelloCucina cucinaPanel = mainPanel.getCucinaPanel();
         for (int i = 1; i <= Gioco.NUM_CUOCHI; i++) {
             PannelloCuoco pannelloCuoco = cucinaPanel.getPannelloCuoco(i);
             pannelloCuoco.aggiornaProgresso(0);
@@ -90,10 +129,9 @@ public class ControllerPartita {
         }
     }
 
-    private void iniziaPartita() {
-        arrivoClientiWorker.execute();
-    }
-
+    /**
+     * Interrompe la partita, fermando i timer dei tavoli e dei cuochi e cancellando il worker che fa arrivare i clienti
+     */
     private void interrompiPartita() {
         arrivoClientiWorker.cancel(true);
 
@@ -106,13 +144,19 @@ public class ControllerPartita {
         }
     }
 
-    public void initializzaTimerTavoli(SalaPanel salaPanel, ControllerNavigazione controllerNavigazione) {
-        for (int i = 1; i <= Sala.NUM_TAVOLI; i++) {
+    /**
+     * Inizializza i timer dei tavoli.
+     * 
+     * @param salaPanel             il pannello della sala, necessario per aggiornare il pannello del tavolo
+     * @param controllerNavigazione il controller di navigazione
+     */
+    public void initializzaTimerTavoli(PannelloSala salaPanel, ControllerNavigazione controllerNavigazione) {
+        for (int i = 1; i <= Gioco.NUM_TAVOLI; i++) {
             Tavolo tavolo = gioco.getSala().getTavolo(i);
             PannelloTavolo pannelloTavolo = salaPanel.getPannelloTavolo(i);
 
-            Timer timer = new Timer(1000, null);
-            TimerTavolo timerTavolo = new TimerTavolo(tavolo, salaPanel, pannelloTavolo, gioco, controllerNotifiche, controllerNavigazione, this, timer);
+            Timer timer = new Timer(TimerTavolo.INTERVALLO, null);
+            TimerTavolo timerTavolo = new TimerTavolo(gioco, tavolo, salaPanel, pannelloTavolo, controllerNotifiche, controllerNavigazione, this, timer);
 
             timer.addActionListener(timerTavolo);
 
@@ -120,13 +164,19 @@ public class ControllerPartita {
         }
     }
 
-    public void initializzaTimerCuochi(SalaPanel salaPanel, CucinaPanel cucinaPanel) {
+    /**
+     * Inizializza i timer dei cuochi.
+     * 
+     * @param salaPanel   il pannello della sala, necessario per aggiornare la sala quando un cuoco finisce di preparare un piatto e deve essere spostato al bancone
+     * @param cucinaPanel il pannello della cucina, necessario per aggiornare il pannello del cuoco
+     */
+    public void initializzaTimerCuochi(PannelloSala salaPanel, PannelloCucina cucinaPanel) {
         for (int i = 1; i <= Gioco.NUM_CUOCHI; i++) {
             PannelloCuoco pannelloCuoco = cucinaPanel.getPannelloCuoco(i);
             Cuoco cuoco = gioco.getCuoco(i);
 
-            Timer timer = new Timer(1000, null);
-            TimerCuoco timerCuoco = new TimerCuoco(cuoco, pannelloCuoco, salaPanel, gioco, controllerNotifiche, timer);
+            Timer timer = new Timer(TimerCuoco.INTERVALLO, null);
+            TimerCuoco timerCuoco = new TimerCuoco(gioco, cuoco, pannelloCuoco, salaPanel, controllerNotifiche, timer);
 
             timer.addActionListener(timerCuoco);
 
@@ -134,10 +184,22 @@ public class ControllerPartita {
         }
     }
 
+    /**
+     * Restituisce il timer del cuoco con il numero specificato
+     * 
+     * @param numeroCuoco il numero del cuoco di cui si vuole ottenere il timer
+     * @return il timer del cuoco con il numero specificato
+     */
     public Timer getTimerCuoco(int numeroCuoco) {
         return timerCuochi.get(numeroCuoco - 1);
     }
 
+    /**
+     * Restituisce il timer del tavolo con il numero specificato
+     * 
+     * @param numeroTavolo il numero del tavolo di cui si vuole ottenere il timer
+     * @return il timer del tavolo con il numero specificato
+     */
     public Timer getTimerTavolo(int numeroTavolo) {
         return timerTavoli.get(numeroTavolo - 1);
     }

@@ -13,15 +13,24 @@ import restaurantsim.controller.ControllerNavigazione;
 import restaurantsim.controller.ControllerNotifiche;
 import restaurantsim.model.Notifica;
 
+/**
+ * Pannello che mostra la cucina, con i suoi cuochi, una barra superiore e le notifiche
+ */
 @SuppressWarnings("serial")
-public class CucinaPanel extends JPanel {
+public class PannelloCucina extends JPanel {
+	/** Barra superiore del pannello cucina */
 	private BarraSuperiore barraSuperiore;
+	/** Pannello che contiene i pannelli dei cuochi */
 	private JPanel panelCuochi;
+	/** Pannello del cuoco 1 */
 	private PannelloCuoco pannelloCuoco1;
+	/** Pannello del cuoco 2 */
 	private PannelloCuoco pannelloCuoco2;
+	/** Pannello del cuoco 3 */
 	private PannelloCuoco pannelloCuoco3;
 
-	public CucinaPanel() {
+	/** Inizializza i componenti */
+	public PannelloCucina() {
 		setLayout(new BorderLayout(0, 0));
 
 		barraSuperiore = new BarraSuperiore("Vai a sala", "vai_sala_da_cucina");
@@ -42,22 +51,45 @@ public class CucinaPanel extends JPanel {
 		panelCuochi.add(pannelloCuoco3);
 	}
 
+	/**
+	 * Registra gli ascoltatori per la navigazione per i componenti di questo pannello
+	 * 
+	 * @param controllerNavigazione il controller navigazione da registrare come ascoltatore per i componenti di questo pannello
+	 */
 	public void aggiungiAscoltatoriNavigazione(ControllerNavigazione controllerNavigazione) {
 		barraSuperiore.registraAscoltatoriBarraSuperiore(controllerNavigazione);
 	}
 
+	/**
+	 * Registra gli ascoltatori per i cuochi di questo pannello
+	 * 
+	 * @param creaControllerCuoco una funzione che dato un pannello cuoco restituisce un controller cuoco da registrare come ascoltatore per quel pannello
+	 */
 	public void aggiungiAscoltatoriCuochi(Function<PannelloCuoco, ControllerCuoco> creaControllerCuoco) {
 		pannelloCuoco1.aggiungiAscoltatori(creaControllerCuoco.apply(pannelloCuoco1));
 		pannelloCuoco2.aggiungiAscoltatori(creaControllerCuoco.apply(pannelloCuoco2));
 		pannelloCuoco3.aggiungiAscoltatori(creaControllerCuoco.apply(pannelloCuoco3));
 	}
 
-	public void aggiornaNotifiche(List<Notifica> list, ControllerNotifiche controllerNotifiche) {
-		barraSuperiore.aggiornaMenuNotifiche(list, controllerNotifiche);
+	/**
+	 * Aggiorna le notifiche mostrate nella barra superiore con i dati presenti nella lista
+	 * 
+	 * @param lista               la lista di notifiche da mostrare nella barra superiore
+	 * @param controllerNotifiche il controller notifiche da registrare come ascoltatore alle voci del menu delle notifiche nella barra superiore
+	 */
+	public void aggiornaNotifiche(List<Notifica> lista, ControllerNotifiche controllerNotifiche) {
+		barraSuperiore.aggiornaMenuNotifiche(lista, controllerNotifiche);
 	}
 
-	public PannelloCuoco getPannelloCuoco(int id) {
-		switch (id) {
+	/**
+	 * Restituisce il pannello cuoco corrispondente al numero dato
+	 * 
+	 * @param num il numero del cuoco di cui restituire il pannello (da 1 a 3)
+	 * @return il pannello cuoco corrispondente al numero dato
+	 * @throws IllegalArgumentException se il numero del cuoco dato non è valido (non compreso tra 1 e 3)
+	 */
+	public PannelloCuoco getPannelloCuoco(int num) {
+		switch (num) {
 			case 1:
 				return pannelloCuoco1;
 			case 2:
@@ -65,7 +97,7 @@ public class CucinaPanel extends JPanel {
 			case 3:
 				return pannelloCuoco3;
 			default:
-				throw new IllegalArgumentException("Id cuoco non valido: " + id);
+				throw new IllegalArgumentException("Id cuoco non valido: " + num);
 		}
 	}
 }

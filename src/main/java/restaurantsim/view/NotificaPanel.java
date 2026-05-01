@@ -13,14 +13,26 @@ import javax.swing.border.EmptyBorder;
 import restaurantsim.controller.ControllerNotifiche;
 import restaurantsim.model.Notifica;
 
+/**
+ * Pannello che mostra una singola notifica
+ */
 @SuppressWarnings("serial")
 public class NotificaPanel extends JPanel {
+	/** Area di testo per mostrare il testo della notifica */
 	private JTextArea textAreaNotif;
+	/** Etichetta per il simbolo di chiusura della notifica */
 	private JLabel lblCloseNotif;
+	/** Pannello che contiene la notifica, usato distanziare le notifiche tra di loro */
 	private JPanel panel;
 
+	/** Origine di questa notifica, cioè da quale pannello deriva */
 	private String origine;
 
+	/**
+	 * Inizializza i componenti.
+	 * 
+	 * @param notifica la notifica da mostrare in questo pannello
+	 */
 	public NotificaPanel(Notifica notifica) {
 		this.origine = notifica.getOrigine();
 
@@ -35,11 +47,9 @@ public class NotificaPanel extends JPanel {
 		add(panel);
 
 		textAreaNotif = new JTextArea(notifica.getTesto());
-		panel.add(textAreaNotif);
 		// Inserisco dei border direttamente sugli elementi per rendere anche gli spazi vuoti cliccabili
 		textAreaNotif.setBorder(new EmptyBorder(5, 5, 5, 2));
-		textAreaNotif.setName("textAreaNotif");
-
+		textAreaNotif.setName(ControllerNotifiche.NOME_TESTO_NOTIFICA);
 		textAreaNotif.setOpaque(false);
 		textAreaNotif.setFont(new Font("Dialog", Font.BOLD, 12));
 		textAreaNotif.setEnabled(false);
@@ -50,34 +60,41 @@ public class NotificaPanel extends JPanel {
 		textAreaNotif.setBackground(Color.YELLOW);
 		// getPreferredSize è calcolato in base al testo, se impostiamo il max a preferred gli diamo lo spazio minimo
 		textAreaNotif.setMaximumSize(textAreaNotif.getPreferredSize());
+		panel.add(textAreaNotif);
 
 		// Simbolo unicode per la "x" di chiusura
 		lblCloseNotif = new JLabel("\u2715");
-		panel.add(lblCloseNotif);
 		lblCloseNotif.setBorder(new EmptyBorder(3, 5, 5, 5));
-		lblCloseNotif.setName("lblCloseNotif");
-
+		lblCloseNotif.setName(ControllerNotifiche.NOME_LABEL_CHIUDI_NOTIFICA);
 		lblCloseNotif.setAlignmentX(Component.RIGHT_ALIGNMENT);
 		lblCloseNotif.setFont(new Font("Dialog", Font.BOLD, 18));
+		panel.add(lblCloseNotif);
 	}
 
+	/**
+	 * Registra gli ascoltatori per i componenti di questo pannello
+	 * 
+	 * @param controllerNotifiche il controller notifiche da registrare come ascoltatore per i componenti del pannello
+	 */
 	public void registraAscoltatori(ControllerNotifiche controllerNotifiche) {
 		textAreaNotif.addMouseListener(controllerNotifiche);
 		lblCloseNotif.addMouseListener(controllerNotifiche);
 	}
 
+	/**
+	 * Restituisce il pannello che contiene la notifica
+	 * 
+	 * @return il pannello che contiene la notifica
+	 */
 	public JPanel getPanel() {
 		return panel;
 	}
 
-	public JTextArea getTextAreaNotif() {
-		return textAreaNotif;
-	}
-
-	public JLabel getLblCloseNotif() {
-		return lblCloseNotif;
-	}
-
+	/**
+	 * Restituisce l'origine di questa notifica, cioè da quale pannello deriva
+	 * 
+	 * @return l'origine di questa notifica, cioè da quale pannello deriva
+	 */
 	public String getOrigine() {
 		return origine;
 	}

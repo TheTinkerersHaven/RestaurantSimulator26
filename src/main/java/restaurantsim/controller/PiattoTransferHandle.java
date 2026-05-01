@@ -15,8 +15,11 @@ import restaurantsim.model.Piatto;
 import restaurantsim.model.Tavolo;
 import restaurantsim.model.TransferPiatto;
 import restaurantsim.view.PannelloTavolo;
-import restaurantsim.view.SalaPanel;
+import restaurantsim.view.PannelloSala;
 
+/**
+ * Handle che gestisce la logica del drag and drop (DnD) dei piatti dalla sala ai tavoli. Viene usato sia per esportare un piatto (drag) che per importare un piatto (rilascio).
+ */
 @SuppressWarnings("serial")
 public class PiattoTransferHandle extends TransferHandler {
 	/**
@@ -24,36 +27,81 @@ public class PiattoTransferHandle extends TransferHandler {
 	 */
 	public static final DataFlavor PIATTO_DATA_FLAVOR = new DataFlavor(DataFlavor.javaJVMLocalObjectMimeType + ";class=" + TransferPiatto.class.getName(), "Piatto");
 
+	/**
+	 * Dati del piatto da trasferire.
+	 * 
+	 * Presente solo se questo handle ha lo scopo di esportare.
+	 */
 	private TransferPiatto transferPiatto;
 
+	/**
+	 * Gioco a cui questo handle è associato.
+	 * 
+	 * Presenti solo se questo handle ha lo scopo di importare.
+	 */
 	private Gioco gioco;
+	/**
+	 * Tavolo a cui questo handle è associato.
+	 * 
+	 * Presenti solo se questo handle ha lo scopo di importare.
+	 */
 	private Tavolo tavolo;
-	private SalaPanel salaPanel;
+	/**
+	 * Pannello per aggiornare la UI della sala dopo l'importazione del piatto.
+	 * 
+	 * Presenti solo se questo handle ha lo scopo di importare.
+	 */
+	private PannelloSala pannelloSala;
+	/**
+	 * Pannello per aggiornare la UI del tavolo dopo l'importazione del piatto.
+	 * 
+	 * Presenti solo se questo handle ha lo scopo di importare.
+	 */
 	private PannelloTavolo pannelloTavolo;
+	/**
+	 * Controller per mostrare le notifiche dopo l'importazione del piatto.
+	 * 
+	 * Presenti solo se questo handle ha lo scopo di importare.
+	 */
 	private ControllerNotifiche controllerNotifiche;
+	/**
+	 * 
+	 */
+	private ControllerPartita controllerPartita;
 
 	/**
 	 * Crea un PiattoTransferHandle configurato per esportare un piatto (drag)
+	 *
+	 * @param piatto Il piatto da trasferire
 	 */
 	public PiattoTransferHandle(TransferPiatto piatto) {
 		this.transferPiatto = piatto;
 		this.gioco = null;
 		this.tavolo = null;
-		this.salaPanel = null;
+		this.pannelloSala = null;
 		this.pannelloTavolo = null;
 		this.controllerNotifiche = null;
+		this.controllerPartita = null;
 	}
 
 	/**
 	 * Crea un PiattoTransferHandle configurato per importare un piatto (rilascio)
+	 * 
+	 * @param gioco               Il gioco a cui questo handle è associato
+	 * @param tavolo              Il tavolo a cui questo handle è associato
+	 * @param pannelloSala        Il pannello della sala
+	 * @param pannelloTavolo      Il pannello del tavolo
+	 * @param controllerNotifiche Il controller delle notifiche
+	 * @param controllerPartita   Il controller della partita
 	 */
-	public PiattoTransferHandle(Gioco gioco, Tavolo tavolo, SalaPanel salaPanel, PannelloTavolo pannelloTavolo, ControllerNotifiche controllerNotifiche) {
+	public PiattoTransferHandle(Gioco gioco, Tavolo tavolo, PannelloSala pannelloSala, PannelloTavolo pannelloTavolo, ControllerNotifiche controllerNotifiche, ControllerPartita controllerPartita) {
 		this.transferPiatto = null;
 		this.gioco = gioco;
 		this.tavolo = tavolo;
-		this.salaPanel = salaPanel;
+		this.pannelloSala = pannelloSala;
 		this.pannelloTavolo = pannelloTavolo;
 		this.controllerNotifiche = controllerNotifiche;
+		this.controllerPartita = controllerPartita;
 	}
 
 	/**
@@ -66,11 +114,21 @@ public class PiattoTransferHandle extends TransferHandler {
 	}
 
 	/// Export del piatto - Drag
+	/**
+	 * Crea un instanza del {@link PiattoTransferable} per esportare il piatto associato a questo handle.
+	 * 
+	 * @param c Il componente da cui viene iniziato il drag - Non utilizzato
+	 */
 	@Override
 	protected Transferable createTransferable(JComponent c) {
 		return new PiattoTransferable(transferPiatto);
 	}
 
+	/**
+	 * Determina l'azione che deve essere compiuta al Piatto quando viene trasciato.
+	 * 
+	 * Se non ce un piatto per questo handle il drag viene disabiliato.
+	 */
 	@Override
 	public int getSourceActions(JComponent c) {
 		// NONE disabilita il drag
@@ -78,6 +136,11 @@ public class PiattoTransferHandle extends TransferHandler {
 	}
 
 	/// Import del piatto - Rilascio
+	/**
+	 * Controllo se il trasferimento in corso è compatibile con questo handle.
+	 * 
+	 * Per essere compatibile il trasferimento deve avere solo il DataFlavor PIATTO_DATA_FLAVOR e questo handle non deve avere già un piatto.
+	 */
 	@Override
 	public boolean canImport(TransferSupport support) {
 		if (isPiattoPresente()) {
@@ -91,6 +154,9 @@ public class PiattoTransferHandle extends TransferHandler {
 		return support.isDataFlavorSupported(PIATTO_DATA_FLAVOR);
 	}
 
+	/**
+	 * Importa il piatto trasferito e aggiorna la UI.
+	 */
 	@Override
 	public boolean importData(TransferSupport support) {
 		Transferable transferable = support.getTransferable();
@@ -112,11 +178,16 @@ public class PiattoTransferHandle extends TransferHandler {
 
 	/**
 	 * Registra i controller dei cuochi al mainPanel Crea un nuovo cuoco per ogni pannelloCuoco che verrà creato
+	 * 
+	 * @param gioco               Il gioco a cui associare i controller dei cuochi
+	 * @param salaPanel           Il pannello della sala a cui associare i controller dei cuochi
+	 * @param controllerNotifiche Il controller delle notifiche a cui associare i controller dei cuochi
+	 * @param controllerPartita   Il controller della partita a cui associare i controller dei cuochi
 	 */
-	public static void registraTransferHandles(Gioco gioco, SalaPanel salaPanel, ControllerNotifiche controllerNotifiche) {
+	public static void registraTransferHandles(Gioco gioco, PannelloSala salaPanel, ControllerNotifiche controllerNotifiche, ControllerPartita controllerPartita) {
 		salaPanel.registraTransferHandlerPiatto(panel -> {
 			Tavolo tavolo = gioco.getSala().getTavolo(panel.getNumeroTavolo());
-			return new PiattoTransferHandle(gioco, tavolo, salaPanel, panel, controllerNotifiche);
+			return new PiattoTransferHandle(gioco, tavolo, salaPanel, panel, controllerNotifiche, controllerPartita);
 		});
 	}
 
@@ -137,11 +208,14 @@ public class PiattoTransferHandle extends TransferHandler {
 			return;
 		}
 
+		// Interrompi il timer del tavolo in quanto non più necessario.
+		controllerPartita.getTimerTavolo(numTavolo).stop();
+
 		gioco.getSala().rimuoviPiatto(indexPiatto);
 		gioco.aggiungiPunteggio(Gioco.PUNTEGGIO_PER_PIATTO);
 
-		salaPanel.aggiornaPunteggio(gioco.getPunteggio());
-		salaPanel.aggiornaBancone(gioco.getSala().getPiattiPronti());
+		pannelloSala.aggiornaPunteggio(gioco.getPunteggio());
+		pannelloSala.aggiornaBancone(gioco.getSala().getPiattiPronti());
 
 		pannelloTavolo.aggiornaTavolo(tavolo);
 
@@ -150,8 +224,8 @@ public class PiattoTransferHandle extends TransferHandler {
 		controllerNotifiche.mostraNotifica(notifica);
 
 		// Disolito i revalidate li fa Swing dopo un evento, ma qua non lo fa, quindi dobbiamo farlo a mano per aggiornare la UI dopo averla modificata
-		salaPanel.revalidate();
-		salaPanel.repaint();
+		pannelloSala.revalidate();
+		pannelloSala.repaint();
 
 		pannelloTavolo.revalidate();
 		pannelloTavolo.repaint();

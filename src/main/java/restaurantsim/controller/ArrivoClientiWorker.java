@@ -8,38 +8,79 @@ import javax.swing.Timer;
 
 import restaurantsim.model.Gioco;
 import restaurantsim.model.Notifica;
-import restaurantsim.model.Sala;
 import restaurantsim.model.Tavolo;
-import restaurantsim.view.MainPanel;
 import restaurantsim.view.PannelloTavolo;
+import restaurantsim.view.PannelloSala;
 
+/**
+ * Worker che gestisce l'arrivo dei clienti ai tavoli.
+ */
 public class ArrivoClientiWorker extends SwingWorker<Void, Integer> {
+	/**
+	 * Tempo minimo in millisecondi tra l'arrivo di un cliente e l'altro.
+	 */
+	private static final int TEMPO_MINIMO_ARRIVO = 8000;
+	/**
+	 * Tempo massimo in millisecondi tra l'arrivo di un cliente e l'altro.
+	 */
+	private static final int TEMPO_MASSIMO_ARRIVO = 15000;
+
+	/**
+	 * Gioco a cui appartiene il worker.
+	 */
 	private Gioco gioco;
-	private MainPanel mainPanel;
+	/**
+	 * Interfaccia grafica della sala.
+	 */
+	private PannelloSala pannelloSala;
+	/**
+	 * Controller delle notifiche per mostrare le notifiche quando arrivano i clienti.
+	 */
 	private ControllerNotifiche controllerNotifiche;
+	/**
+	 * Controller della partita per gestire i timer dei tavoli quando arrivano i clienti.
+	 */
 	private ControllerPartita controllerPartita;
+	/**
+	 * Generatore di numeri casuali per determinare i tempi di arrivo dei clienti.
+	 */
 	private Random random;
 
-	public ArrivoClientiWorker(Gioco gioco, MainPanel mainPanel, ControllerNotifiche controllerNotifiche, ControllerPartita controllerPartita) {
+	/**
+	 * Inizializza il worker
+	 *
+	 * @param gioco               Il gioco a cui appartiene il worker
+	 * @param pannelloSala        L'interfaccia grafica della sala
+	 * @param controllerNotifiche Il controller delle notifiche
+	 * @param controllerPartita   Il controller della partita
+	 */
+	public ArrivoClientiWorker(Gioco gioco, PannelloSala pannelloSala, ControllerNotifiche controllerNotifiche, ControllerPartita controllerPartita) {
 		this.gioco = gioco;
-		this.mainPanel = mainPanel;
+		this.pannelloSala = pannelloSala;
 		this.controllerNotifiche = controllerNotifiche;
 		this.controllerPartita = controllerPartita;
 		this.random = new Random();
 	}
 
+	/**
+	 * Aspetta il tempo randomico e cerca un tavolo libero. Se ne trova uno, fa arrivare i clienti e pubblica l'aggiornamento.
+	 * 
+	 * @return Nulla, il metodo è void. {@link java.lang.Void} è una classe non instanziabile usata per indicare che non viene restituito alcun valore.
+	 */
 	@Override
 	public Void doInBackground() {
 		try {
+			// Usiamo isCancelled per sapere quando la partita è stata interrotta e fermare il ciclo
 			while (!isCancelled()) {
-				int attesa = 8000 + random.nextInt(7000); // da 8 a 15 secondi
+				// random.nextInt usa il limite superiore esclusivo, quindi dobbiamo aggiungere 1 per includere TEMPO_MASSIMO_ARRIVO
+				int attesa = random.nextInt(TEMPO_MINIMO_ARRIVO, TEMPO_MASSIMO_ARRIVO - TEMPO_MINIMO_ARRIVO + 1);
 				Thread.sleep(attesa);
 
 				// Trova il primo tavolo non occupato
 				Tavolo tavoloLibero = null;
 
 				int i = 0;
-				while (i < Sala.NUM_TAVOLI && tavoloLibero == null) {
+				while (i < Gioco.NUM_TAVOLI && tavoloLibero == null) {
 					Tavolo t = gioco.getSala().getTavolo(i + 1);
 					if (!t.isOccupato()) {
 						tavoloLibero = t;
@@ -71,6 +112,11 @@ public class ArrivoClientiWorker extends SwingWorker<Void, Integer> {
 		return null;
 	}
 
+	/**
+	 * Processa gli aggiornamenti pubblicati da doInBackground, aggiornando l'interfaccia e mostrando le notifiche.
+	 *
+	 * @param tavoliArrivati La lista dei numeri dei tavoli a cui sono arrivati i clienti
+	 */
 	@Override
 	protected void process(List<Integer> tavoliArrivati) {
 		try {
@@ -80,7 +126,7 @@ public class ArrivoClientiWorker extends SwingWorker<Void, Integer> {
 				gioco.registraNotifica(notifica);
 				controllerNotifiche.mostraNotifica(notifica);
 
-				PannelloTavolo pannelloTavolo = mainPanel.getSalaPanel().getPannelloTavolo(tavoliArrivati.get(tavoliArrivati.size() - 1));
+				PannelloTavolo pannelloTavolo = pannelloSala.getPannelloTavolo(tavoliArrivati.get(tavoliArrivati.size() - 1));
 
 				pannelloTavolo.aggiornaTavolo(gioco.getSala().getTavolo(numeroTavolo));
 			}

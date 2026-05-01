@@ -22,30 +22,50 @@ import restaurantsim.model.Piatto;
 import restaurantsim.model.TransferPiatto;
 import javax.swing.BoxLayout;
 
+/**
+ * Pannello che mostra la sala, con i suoi tavoli, il bancone con i piatti pronti, una barra superiore e le notifiche
+ */
 @SuppressWarnings("serial")
-public class SalaPanel extends JPanel {
+public class PannelloSala extends JPanel {
+	/** Pannello del tavolo 1 */
 	private PannelloTavolo tavolo1;
+	/** Pannello del tavolo 2 */
 	private PannelloTavolo tavolo2;
+	/** Pannello del tavolo 3 */
 	private PannelloTavolo tavolo3;
+	/** Pannello del tavolo 4 */
 	private PannelloTavolo tavolo4;
+	/** Panel che contiene i tavoli */
 	private JPanel panelTavoli;
+	/** ScrollPane per il bancone con i piatti pronti */
 	private JScrollPane scrollPaneBancone;
+	/** Panel che contiene le etichette dei piatti pronti da mostrare nel bancone */
 	private JPanel scrollPaneViewportView;
+	/** Barra superiore del pannello sala */
 	private BarraSuperiore barraSuperiore;
+	/** Pannello superiore del pannello sala, che contiene la barra superiore e il punteggio */
 	private JPanel pannelloSuperiore;
-	private JLabel lblPunteggioTesto;
+	/** Label per mostrare il punteggio attuale */
 	private JPanel pannelloPunteggio;
+	/** Label per mostrare il testo "Punteggio: " prima del punteggio */
+	private JLabel lblPunteggioTesto;
+	/** Label per mostrare il punteggio attuale */
 	private JLabel lblPunteggio;
 
-	// 72 è quello che sembra essere la dimensione corretta per essere centrata in verticale
+	/**
+	 * Dimensione dell'immagine del piatto nel bancone, in pixel.
+	 * 
+	 * 72 è quello che sembra essere la dimensione corretta per essere centrata in verticale
+	 */
 	private final int DIMENSIONE_PIATTO = 72;
 
-	public SalaPanel() {
+	/** Inizializza i componenti */
+	public PannelloSala() {
 		setLayout(new BorderLayout());
 
 		pannelloSuperiore = new JPanel();
-		add(pannelloSuperiore, BorderLayout.NORTH);
 		pannelloSuperiore.setLayout(new BoxLayout(pannelloSuperiore, BoxLayout.Y_AXIS));
+		add(pannelloSuperiore, BorderLayout.NORTH);
 
 		barraSuperiore = new BarraSuperiore("Vai a cucina", "vai_cucina_da_sala");
 		pannelloSuperiore.add(barraSuperiore);
@@ -82,6 +102,16 @@ public class SalaPanel extends JPanel {
 		add(scrollPaneBancone, BorderLayout.SOUTH);
 	}
 
+	/**
+	 * Crea un'etichetta per un piatto, con l'immagine del piatto e il transfer handler per il drag and drop.
+	 * 
+	 * @param link           il link dell'immagine del piatto da mostrare nell'etichetta
+	 * @param transferHandle il transfer handler da assegnare all'etichetta per il drag and drop del piatto
+	 * @return l'etichetta creata per il piatto, con l'immagine del piatto e il transfer handler per il drag and drop
+	 * @see PiattoTransferHandle
+	 * @see DragAndDropMouseController
+	 * @see #aggiornaBancone(List)
+	 */
 	private JLabel createPiattoLabel(URL link, PiattoTransferHandle transferHandle) {
 		JLabel label = new JLabel(new ScaledImageIcon(link));
 		label.setPreferredSize(new Dimension(DIMENSIONE_PIATTO, DIMENSIONE_PIATTO));
@@ -93,10 +123,20 @@ public class SalaPanel extends JPanel {
 		return label;
 	}
 
+	/**
+	 * Registra gli ascoltatori per la navigazione per i componenti di questo pannello
+	 * 
+	 * @param controllerNavigazione il controller navigazione da registrare come ascoltatore per i componenti di questo pannello
+	 */
 	public void registraAscoltatoriNavigazione(ControllerNavigazione controllerNavigazione) {
 		barraSuperiore.registraAscoltatoriBarraSuperiore(controllerNavigazione);
 	}
 
+	/**
+	 * Registra gli i TransferHandler per i tavoli di questo pannello
+	 * 
+	 * @param creaTransferHandle una funzione che, dato un pannello tavolo, restituisce il TransferHandler da assegnare a quel pannello tavolo per il drag and drop dei piatti
+	 */
 	public void registraTransferHandlerPiatto(Function<PannelloTavolo, PiattoTransferHandle> creaTransferHandle) {
 		tavolo1.setTransferHandler(creaTransferHandle.apply(tavolo1));
 		tavolo2.setTransferHandler(creaTransferHandle.apply(tavolo2));
@@ -104,18 +144,38 @@ public class SalaPanel extends JPanel {
 		tavolo4.setTransferHandler(creaTransferHandle.apply(tavolo4));
 	}
 
-	public void aggiornaBancone(List<Piatto> piatto) {
+	/**
+	 * Aggiorna il bancone con i piatti pronti.
+	 * 
+	 * Rimuove tutti i piatti attualmente mostrati nel bancone e li sostituisce con quelli della lista, creando per ognuno un'etichetta con l'immagine del piatto e il transfer handler per il drag and drop.
+	 * 
+	 * @param piatti la lista di piatti pronti da mostrare nel bancone
+	 */
+	public void aggiornaBancone(List<Piatto> piatti) {
 		scrollPaneViewportView.removeAll();
-		for (int idx = 0; idx < piatto.size(); idx++) {
-			Piatto p = piatto.get(idx);
+		for (int idx = 0; idx < piatti.size(); idx++) {
+			Piatto p = piatti.get(idx);
 			scrollPaneViewportView.add(createPiattoLabel(p.getImmaginePiatto(), new PiattoTransferHandle(new TransferPiatto(p, idx))));
 		}
 	}
 
-	public void aggiornaNotifiche(List<Notifica> list, ControllerNotifiche controllerNotifiche) {
-		barraSuperiore.aggiornaMenuNotifiche(list, controllerNotifiche);
+	/**
+	 * Aggiorna le notifiche mostrate nella barra superiore con i dati presenti nella lista
+	 * 
+	 * @param lista               la lista di notifiche da mostrare nella barra superiore
+	 * @param controllerNotifiche il controller notifiche da registrare come ascoltatore alle voci del menu delle notifiche nella barra superiore
+	 */
+	public void aggiornaNotifiche(List<Notifica> lista, ControllerNotifiche controllerNotifiche) {
+		barraSuperiore.aggiornaMenuNotifiche(lista, controllerNotifiche);
 	}
 
+	/**
+	 * Restituisce il pannello del tavolo dato il numero del tavolo
+	 * 
+	 * @param numeroTavolo il numero del tavolo di cui restituire il pannello (da 1 a 4)
+	 * @return il pannello del tavolo corrispondente al numero del tavolo dato
+	 * @throws IllegalArgumentException se il numero del tavolo dato non è valido (non compreso tra 1 e 4)
+	 */
 	public PannelloTavolo getPannelloTavolo(int numeroTavolo) {
 		switch (numeroTavolo) {
 			case 1:
@@ -127,10 +187,15 @@ public class SalaPanel extends JPanel {
 			case 4:
 				return tavolo4;
 			default:
-				return null;
+				throw new IllegalArgumentException("Numero tavolo non valido: " + numeroTavolo);
 		}
 	}
 
+	/**
+	 * Aggiorna il punteggio mostrato nel pannello, dato il nuovo punteggio da mostrare
+	 * 
+	 * @param punteggio il nuovo punteggio da mostrare nel pannello
+	 */
 	public void aggiornaPunteggio(int punteggio) {
 		lblPunteggio.setText(String.valueOf(punteggio));
 	}
