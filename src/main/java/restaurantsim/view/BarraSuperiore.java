@@ -64,16 +64,16 @@ public class BarraSuperiore extends JMenuBar {
 		add(menuNotifiche, notificheConstrain);
 
 		mntmSalvaPartita = new JMenuItem("Salva partita");
-		mntmSalvaPartita.setHorizontalAlignment(SwingConstants.RIGHT);
+		mntmSalvaPartita.setHorizontalAlignment(SwingConstants.LEFT);
 		menuFile.add(mntmSalvaPartita);
 
 		mntmTornaMenu = new JMenuItem("Torna al menu");
-		mntmTornaMenu.setHorizontalAlignment(SwingConstants.RIGHT);
+		mntmTornaMenu.setHorizontalAlignment(SwingConstants.LEFT);
 		mntmTornaMenu.setActionCommand("menu_torna_a_menu");
 		menuFile.add(mntmTornaMenu);
 
 		mntmEsci = new JMenuItem("Esci");
-		mntmEsci.setHorizontalAlignment(SwingConstants.RIGHT);
+		mntmEsci.setHorizontalAlignment(SwingConstants.LEFT);
 		mntmEsci.setActionCommand("menu_esci");
 		menuFile.add(mntmEsci);
 	}
