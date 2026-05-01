@@ -15,7 +15,6 @@ import restaurantsim.model.Piatto;
 import restaurantsim.model.PiattoErratoException;
 import restaurantsim.model.Tavolo;
 import restaurantsim.model.TavoloNonOccupatoException;
-import restaurantsim.model.TavoloOccupatoException;
 import restaurantsim.model.TransferPiatto;
 import restaurantsim.view.PannelloTavolo;
 import restaurantsim.view.PannelloSala;
