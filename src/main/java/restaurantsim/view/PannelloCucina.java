@@ -33,7 +33,7 @@ public class PannelloCucina extends JPanel {
 	public PannelloCucina() {
 		setLayout(new BorderLayout(0, 0));
 
-		barraSuperiore = new BarraSuperiore("Vai a sala", ControllerNavigazione.NAGIVA_VAI_SALA_DA_CUCINA);
+		barraSuperiore = new BarraSuperiore("Vai a sala", ControllerNavigazione.NAVIGA_VAI_SALA_DA_CUCINA);
 		add(barraSuperiore, BorderLayout.NORTH);
 
 		panelCuochi = new JPanel();
@@ -57,7 +57,7 @@ public class PannelloCucina extends JPanel {
 	 * @param controllerNavigazione il controller navigazione da registrare come ascoltatore per i componenti di questo pannello
 	 */
 	public void aggiungiAscoltatoriNavigazione(ControllerNavigazione controllerNavigazione) {
-		barraSuperiore.registraAscoltatoriBarraSuperiore(controllerNavigazione);
+		barraSuperiore.registraAscoltatori(controllerNavigazione);
 	}
 
 	/**

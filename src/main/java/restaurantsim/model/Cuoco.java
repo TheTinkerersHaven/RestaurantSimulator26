@@ -68,4 +68,14 @@ public class Cuoco {
 		piattoInPreparazione = Piatto.NESSUNO;
 		tempoRimanente = 0;
 	}
+
+	/**
+	 * Carica lo stato del cuoco da un altro oggetto cuoco salvato.
+	 * 
+	 * @param cuoco il cuoco da cui caricare lo stato
+	 */
+	public void caricaCuoco(Cuoco cuoco) {
+		this.piattoInPreparazione = cuoco.piattoInPreparazione;
+		this.tempoRimanente = cuoco.tempoRimanente;
+	}
 }

@@ -41,11 +41,13 @@ public class ControllerFinestra implements WindowListener {
     }
 
     /**
-     * Quando si chiude la finestra, mostra una finestra di conferma, se l'utente conferma, chiude la finestra.
+     * Quando si chiude la finestra, mostra una finestra di conferma, se l'utente conferma, chiude la finestra. In questo caso, eventuali dati non verranno salvati.
      */
     @Override
     public void windowClosing(WindowEvent e) {
-        chiudiFinestraConConferma();
+        if(chiediConfermaChiusura("Sei sicuro di voler uscire? Se sei in partita, i dati non verranno salvati.")) {
+            chiudiFinestra();
+        }
     }
 
     /** {@inheritDoc} */
@@ -79,15 +81,23 @@ public class ControllerFinestra implements WindowListener {
     }
 
     /**
-     * Mostra una finestra di conferma per chiudere la finestra, se l'utente conferma, chiude la finestra.
+     * Mostra una finestra di conferma per chiudere la finestra.
+     * 
+     * @param messaggio Il messaggio da mostrare nella finestra di dialogo.
+     * @return l'esito della richiesta (true se l'utente conferma, false altrimenti).
      */
-    public void chiudiFinestraConConferma() {
-        int esito = JOptionPane.showConfirmDialog(finestra, "Sei sicuro di voler uscire?", "Conferma uscita", JOptionPane.YES_NO_OPTION);
-        if (esito == JOptionPane.YES_OPTION) {
-            controllerPartita.finisciPartita(ControllerPartita.ESCI_SENZA_MESSAGGIO);
-            // Permetti a Swing/AWT di terminare l'applicazione, dato che non rimaranno thread attivi la JVM terminerà da sola.
-            // https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/doc-files/AWTThreadIssues.html
-            finestra.dispose();
-        }
+    public boolean chiediConfermaChiusura(String messaggio) {
+        int esito = JOptionPane.showConfirmDialog(finestra, messaggio, "Conferma uscita", JOptionPane.YES_NO_OPTION);
+        return esito == JOptionPane.YES_OPTION;
+    }
+
+    /**
+     * Chiude la finestra.
+     */
+    public void chiudiFinestra() {
+        controllerPartita.finisciPartita(ControllerPartita.ESCI_SENZA_MESSAGGIO);
+        // Permetti a Swing/AWT di terminare l'applicazione, dato che non rimaranno thread attivi la JVM terminerà da sola.
+        // https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/doc-files/AWTThreadIssues.html
+        finestra.dispose();
     }
 }

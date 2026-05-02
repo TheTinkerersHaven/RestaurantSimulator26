@@ -64,8 +64,7 @@ public enum Piatto {
 	/**
 	 * Restituisce una rappresentazione testuale del piatto, utilizzando il nome del piatto invece del nome dell'enum.
 	 * 
-	 * @return una stringa che rappresenta il nome del piatto
-	 * @throws IllegalStateException se il piatto è NESSUNO o un valore non valido, poiché non è possibile recuperare il nome per un piatto non selezionato o invalido.
+	 * @return una stringa che rappresenta il nome del piatto, o null se il piatto è nullo
 	 */
 	@Override
 	public String toString() {
@@ -77,7 +76,7 @@ public enum Piatto {
 			case HOSOMAKI_MAGURO:
 				return "Hosomaki Maguro";
 			default:
-				throw new IllegalStateException("Impossibile recuperare il nome per un piatto invalido.");
+				return null;
 		}
 	}
 }

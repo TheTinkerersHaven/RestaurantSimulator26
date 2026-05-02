@@ -22,7 +22,9 @@
             "projectName": "ProgettoInfoTPS2026",
             "classPaths": [
                 "${workspaceFolder}/build/classes/java/main",
-                "${workspaceFolder}/build/resources/main"
+                "${workspaceFolder}/build/resources/main",
+                "$Auto",
+                "$Runtime"
             ],
             "preLaunchTask": "gradle: build"
         }

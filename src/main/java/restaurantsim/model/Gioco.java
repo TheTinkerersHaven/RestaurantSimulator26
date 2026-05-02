@@ -161,6 +161,15 @@ public class Gioco {
     }
 
     /**
+     * Restituisce l'ArrayList dei cuochi.
+     * 
+     * @return l'ArrayList dei cuochi.
+     */
+    public List<Cuoco> getCuochi() {
+        return cuochi;
+    }
+
+    /**
      * Registra una nuova notifica da mostrare al giocatore, inserendola in cima alla lista delle notifiche.
      * 
      * Se la lista supera le 10 notifiche, la più vecchia viene rimossa.
@@ -197,5 +206,21 @@ public class Gioco {
         }
 
         mutexNotifiche.release();
+    }
+
+    /**
+     * Carica lo stato del gioco da un oggetto Salvataggio.
+     * 
+     * @param salvataggio l'oggetto contenente i dati da caricare
+     */
+    public void carica(Salvataggio salvataggio) {
+        this.punteggio = salvataggio.getPunteggio();
+        this.clientiArrabbiati = salvataggio.getClientiArrabbiati();
+        this.notifiche = new LinkedList<>(salvataggio.getNotifiche());
+        for (int i = 0; i < this.cuochi.size(); i++) {
+            this.cuochi.get(i).caricaCuoco(salvataggio.getCuochi().get(i));
+        }
+        this.sala.setPiattiPronti(new ArrayList<>(salvataggio.getPiattiPronti()));
+        this.sala.caricaTavoli(new ArrayList<>(salvataggio.getTavoli()));
     }
 }

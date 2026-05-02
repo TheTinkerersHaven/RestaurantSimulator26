@@ -23,6 +23,8 @@ public class PannelloMenu extends JPanel {
 	private JButton btnClassifica;
 	/** Bottone per iniziare una nuova partita */
 	private JButton btnNuovaPartita;
+	/** Bottone per caricare una partita salvata */
+	private JButton btnCaricaPartita;
 
 	/** Inizializza i componenti */
 	public PannelloMenu() {
@@ -45,6 +47,10 @@ public class PannelloMenu extends JPanel {
 		btnNuovaPartita = new JButton("Nuova partita");
 		btnNuovaPartita.setActionCommand(ControllerNavigazione.NAVIGA_NUOVA_PARTITA);
 		panelPulsantiMenu.add(btnNuovaPartita);
+		
+		btnCaricaPartita = new JButton("Carica partita");
+		btnCaricaPartita.setActionCommand(ControllerNavigazione.NAVIGA_CARICA_PARTITA);
+		panelPulsantiMenu.add(btnCaricaPartita);
 	}
 
 	/**
@@ -55,5 +61,6 @@ public class PannelloMenu extends JPanel {
 	public void registraAscoltatoriNavigazione(ControllerNavigazione controllerNavigazione) {
 		btnClassifica.addActionListener(controllerNavigazione);
 		btnNuovaPartita.addActionListener(controllerNavigazione);
+		btnCaricaPartita.addActionListener(controllerNavigazione);
 	}
 }

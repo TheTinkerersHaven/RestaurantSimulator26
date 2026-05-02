@@ -107,4 +107,24 @@ public class Sala {
 
 		mutexPiatti.release();
 	}
+
+	/**
+	 * Imposta la lista dei piatti pronti.
+	 * 
+	 * @param piattiPronti la lista dei piatti pronti da impostare
+	 */
+	public void setPiattiPronti(ArrayList<Piatto> piattiPronti) {
+		this.piattiPronti = piattiPronti;
+	}
+
+	/**
+	 * Carica lo stato dei tavoli da una lista di tavoli salvati.
+	 * 
+	 * @param tavoli la lista dei tavoli da cui caricare lo stato
+	 */
+	public void caricaTavoli(ArrayList<Tavolo> tavoli) {
+		for (int i = 0; i < this.tavoli.size(); i++) {
+			this.tavoli.get(i).caricaTavolo(tavoli.get(i));
+		}
+	}
 }

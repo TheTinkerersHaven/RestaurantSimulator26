@@ -14,6 +14,11 @@ public class Notifica {
 	private String origine;
 
 	/**
+	 * Inizializza una notifica vuota. Necessario per Jackson.
+	 */
+	public Notifica() {}
+
+	/**
 	 * Inizializza una notifica con il testo e l'origine specificati.
 	 * 
 	 * @param testo   Il testo della notifica da mostrare al giocatore.

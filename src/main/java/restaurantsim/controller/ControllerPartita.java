@@ -1,13 +1,22 @@
 package restaurantsim.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.core.exc.StreamWriteException;
+import com.fasterxml.jackson.databind.DatabindException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import restaurantsim.model.Classifica;
 import restaurantsim.model.Cuoco;
 import restaurantsim.model.Gioco;
+import restaurantsim.model.Piatto;
+import restaurantsim.model.Salvataggio;
 import restaurantsim.model.Tavolo;
 import restaurantsim.view.ClassificaPanel;
 import restaurantsim.view.PannelloCucina;
@@ -109,6 +118,13 @@ public class ControllerPartita {
         gioco.reset();
 
         /// View reset
+        aggiornaView();
+    }
+
+    /**
+     * Aggiorna tutti i pannelli della view basandosi sullo stato attuale del modello Gioco.
+     */
+    private void aggiornaView() {
         // Notifiche
         mainPanel.aggiornaMenuNotifiche(gioco.getNotifiche(), controllerNotifiche);
 
@@ -124,8 +140,15 @@ public class ControllerPartita {
         PannelloCucina cucinaPanel = mainPanel.getCucinaPanel();
         for (int i = 1; i <= Gioco.NUM_CUOCHI; i++) {
             PannelloCuoco pannelloCuoco = cucinaPanel.getPannelloCuoco(i);
-            pannelloCuoco.aggiornaProgresso(0);
-            pannelloCuoco.rimuoviImmagine();
+            Cuoco cuoco = this.gioco.getCuoco(i);
+            if (cuoco.getPiattoInPreparazione().equals(Piatto.NESSUNO)) {
+                pannelloCuoco.aggiornaProgresso(0);
+                pannelloCuoco.rimuoviImmagine();
+            } else {
+                double progresso = ((double) cuoco.getTempoRimanente()) / cuoco.getPiattoInPreparazione().getTempoDiPreparazione();
+                pannelloCuoco.aggiornaProgresso(100 - (int) (progresso * 100));
+                pannelloCuoco.mostraPiatto(cuoco.getPiattoInPreparazione().getImmaginePiatto());
+            }
         }
     }
 
@@ -202,5 +225,50 @@ public class ControllerPartita {
      */
     public Timer getTimerTavolo(int numeroTavolo) {
         return timerTavoli.get(numeroTavolo - 1);
+    }
+
+    /**
+     * Salva lo stato attuale della partita su un file JSON.
+     * 
+     * @throws StreamWriteException se si verifica un errore durante la scrittura dello stream
+     * @throws DatabindException     se si verifica un errore durante il binding dei dati
+     * @throws IOException           se si verifica un errore di I/O
+     */
+    public void salvaPartita() throws StreamWriteException, DatabindException, IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        Salvataggio salvataggio = new Salvataggio(gioco);
+        File file = new File("salvataggio.json");
+
+        mapper.writerWithDefaultPrettyPrinter().writeValue(file, salvataggio);
+    }
+
+    /**
+     * Carica lo stato della partita da un file JSON e riavvia i timer necessari.
+     * 
+     * @throws StreamReadException se si verifica un errore durante la lettura dello stream
+     * @throws DatabindException    se si verifica un errore durante il binding dei dati
+     * @throws IOException          se si verifica un errore di I/O
+     */
+    public void caricaPartita() throws StreamReadException, DatabindException, IOException {
+        ObjectMapper mapper = new ObjectMapper();
+        File file = new File("salvataggio.json");
+
+        Salvataggio salvataggio = mapper.readValue(file, Salvataggio.class);
+
+        gioco.carica(salvataggio);
+
+        aggiornaView();
+
+        this.arrivoClientiWorker.execute();
+        for (int i = 0; i < Gioco.NUM_CUOCHI; i++) {
+            if (!this.gioco.getCuoco(i + 1).getPiattoInPreparazione().equals(Piatto.NESSUNO)) {
+                this.timerCuochi.get(i).start();
+            }
+        }
+        for (int i = 0; i < Gioco.NUM_TAVOLI; i++) {
+            if (this.gioco.getSala().getTavolo(i + 1).isOccupato()) {
+                this.timerTavoli.get(i).start();
+            }
+        }
     }
 }

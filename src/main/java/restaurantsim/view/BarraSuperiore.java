@@ -79,25 +79,27 @@ public class BarraSuperiore extends JMenuBar {
 
 		mntmSalvaPartita = new JMenuItem("Salva partita");
 		mntmSalvaPartita.setHorizontalAlignment(SwingConstants.LEFT);
+		mntmSalvaPartita.setActionCommand(ControllerNavigazione.NAVIGA_SALVA_PARTITA);
 		menuFile.add(mntmSalvaPartita);
 
-		mntmTornaMenu = new JMenuItem("Torna al menu");
+		mntmTornaMenu = new JMenuItem("Salva e torna al menu");
 		mntmTornaMenu.setHorizontalAlignment(SwingConstants.LEFT);
-		mntmTornaMenu.setActionCommand(ControllerNavigazione.NAGIVA_MENU_TORNA_A_MENU);
+		mntmTornaMenu.setActionCommand(ControllerNavigazione.NAVIGA_MENU_TORNA_A_MENU);
 		menuFile.add(mntmTornaMenu);
 
-		mntmEsci = new JMenuItem("Esci");
+		mntmEsci = new JMenuItem("Salva ed esci");
 		mntmEsci.setHorizontalAlignment(SwingConstants.LEFT);
-		mntmEsci.setActionCommand(ControllerNavigazione.NAGIVA_MENU_ESCI);
+		mntmEsci.setActionCommand(ControllerNavigazione.NAVIGA_MENU_ESCI);
 		menuFile.add(mntmEsci);
 	}
 
 	/**
-	 * Registra gli ascoltatori per i componenti della barra superiore
+	 * Registra gli ascoltatori per i componenti
 	 * 
 	 * @param controllerNavigazione il controller navigazione da registrare come ascoltatore
 	 */
-	public void registraAscoltatoriBarraSuperiore(ControllerNavigazione controllerNavigazione) {
+	public void registraAscoltatori(ControllerNavigazione controllerNavigazione) {
+		mntmSalvaPartita.addActionListener(controllerNavigazione);
 		mntmTornaMenu.addActionListener(controllerNavigazione);
 		mntmEsci.addActionListener(controllerNavigazione);
 		btnCentrale.addActionListener(controllerNavigazione);

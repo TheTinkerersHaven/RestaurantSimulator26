@@ -57,3 +57,5 @@ build
 # Ignore Kotlin plugin data
 .kotlin
 
+# Ignore savefiles
+salvataggio.json

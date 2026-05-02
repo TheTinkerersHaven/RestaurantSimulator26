@@ -28,6 +28,11 @@ public class Tavolo {
 	private Random random = new Random();
 
 	/**
+	 * Inizializza un oggetto tavolo vuoto. Necessario per Jackson.
+	 */
+	public Tavolo() {}
+
+	/**
 	 * Inizializza un tavolo con il numero specificato, impostando lo stato iniziale del tavolo come vuoto, con pazienza al massimo e non occupato.
 	 * 
 	 * @param numeroTavolo il numero del tavolo da inizializzare
@@ -190,5 +195,16 @@ public class Tavolo {
 		this.occupato = false;
 		this.piattoOrdinato = Piatto.NESSUNO;
 		this.pazienza = 100;
+	}
+
+	/**
+	 * Carica lo stato del tavolo da un altro oggetto tavolo salvato.
+	 * 
+	 * @param tavolo il tavolo da cui caricare lo stato
+	 */
+	public void caricaTavolo(Tavolo tavolo) {
+		this.occupato = tavolo.occupato;
+		this.piattoOrdinato = tavolo.piattoOrdinato;
+		this.pazienza = tavolo.pazienza;
 	}
 }
