@@ -24,6 +24,8 @@ public class ClassificaPanel extends JPanel {
 	private JPanel panelPulsantiClassifica;
 	/** Bottone per tornare indietro */
 	private JButton btnIndietro;
+	/** Bottone per svuotare la classifica */
+	private JButton btnPulisciClassifica;
 
 	/** Inizializza i componenti */
 	public ClassificaPanel() {
@@ -38,6 +40,10 @@ public class ClassificaPanel extends JPanel {
 
 		panelPulsantiClassifica = new JPanel();
 		add(panelPulsantiClassifica, BorderLayout.SOUTH);
+		
+		btnPulisciClassifica = new JButton("Pulisci classifica");
+		btnPulisciClassifica.setActionCommand(ControllerNavigazione.PULISCI_CLASSIFICA);
+		panelPulsantiClassifica.add(btnPulisciClassifica);
 
 		btnIndietro = new JButton("Indietro");
 		btnIndietro.setActionCommand(ControllerNavigazione.NAVIGA_INDIETRO_CLASSIFICA);
@@ -60,6 +66,7 @@ public class ClassificaPanel extends JPanel {
 	 * @param controllerNavigazione il controller navigazione da registrare come ascoltatore per il pulsante indietro
 	 */
 	public void registraAscoltatoriNavigaione(ControllerNavigazione controllerNavigazione) {
+		btnPulisciClassifica.addActionListener(controllerNavigazione);
 		btnIndietro.addActionListener(controllerNavigazione);
 	}
 }

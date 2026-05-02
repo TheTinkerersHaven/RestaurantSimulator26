@@ -12,6 +12,8 @@ import com.fasterxml.jackson.core.exc.StreamWriteException;
 import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+
 import restaurantsim.model.Classifica;
 import restaurantsim.model.Cuoco;
 import restaurantsim.model.Gioco;
@@ -112,6 +114,16 @@ public class ControllerPartita {
             } while (nomeGiocatore == null || nomeGiocatore.isBlank());
             classifica.inserisciPartita(nomeGiocatore, gioco.getPunteggio());
             classificaPanel.aggiornaClassifica(classifica.getClassifica());
+            
+            ObjectMapper mapper = new ObjectMapper();
+            File file = new File("classifica.json");
+
+            try {
+                mapper.writerWithDefaultPrettyPrinter().writeValue(file, classifica.getClassifica());
+            } catch (IOException ex) {
+                JOptionPane.showMessageDialog(mainPanel, "Errore nel salvataggio della classifica.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
+                ex.printStackTrace();
+            }
         }
 
         /// Model reset
@@ -155,7 +167,7 @@ public class ControllerPartita {
     /**
      * Interrompe la partita, fermando i timer dei tavoli e dei cuochi e cancellando il worker che fa arrivare i clienti
      */
-    private void interrompiPartita() {
+    public void interrompiPartita() {
         arrivoClientiWorker.cancel(true);
 
         for (Timer timer : timerTavoli) {
@@ -270,5 +282,37 @@ public class ControllerPartita {
                 this.timerTavoli.get(i).start();
             }
         }
+    }
+
+    /**
+     * Carica la classifica dal file JSON.
+     */
+    public void caricaClassifica() {
+        ObjectMapper mapper = new ObjectMapper();
+        File file = new File("classifica.json");
+
+        if (!file.exists()) {
+            return;
+        }
+
+        try {
+            ArrayList<String> classificaList = mapper.readValue(file, new TypeReference<ArrayList<String>>() {});
+            classifica.getClassifica().clear();
+            classifica.getClassifica().addAll(classificaList);
+            mainPanel.getClassificaPanel().aggiornaClassifica(classifica.getClassifica());
+        } catch (IOException e) {
+            System.err.println("Errore nel caricamento della classifica");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Elimina il file della classifica e pulisce la lista dei punteggi nel modello e nella view.
+     */
+    public void pulisciClassifica() {
+        File file = new File("classifica.json");
+        file.delete();
+        classifica.getClassifica().clear();
+        mainPanel.getClassificaPanel().aggiornaClassifica(classifica.getClassifica());
     }
 }

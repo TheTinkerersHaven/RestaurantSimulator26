@@ -20,6 +20,8 @@ public class ControllerNavigazione implements ActionListener {
 	public static final String NAVIGA_NUOVA_PARTITA = "nuova_partita";
 	/** Carica la partita salvata e naviga alla sala */
 	public static final String NAVIGA_CARICA_PARTITA = "carica_partita";
+	/** Pulisci la classifica */
+	public static final String PULISCI_CLASSIFICA = "pulisci_classifica";
 	/** Naviga al menu */
 	public static final String NAVIGA_INDIETRO_CLASSIFICA = "indietro_classifica";
 	/** Naviga alla cucina */
@@ -76,6 +78,7 @@ public class ControllerNavigazione implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		switch (e.getActionCommand()) {
 			case NAVIGA_CLASSIFICA:
+				controllerPartita.caricaClassifica();
 				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_CLASSIFICA);
 				break;
 			case NAVIGA_NUOVA_PARTITA:
@@ -90,6 +93,10 @@ public class ControllerNavigazione implements ActionListener {
 					break;
 				}
 				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_SALA);
+				break;
+			case PULISCI_CLASSIFICA:
+				int esito = JOptionPane.showConfirmDialog(finestra, "Sei sicuro di voler pulire la classifica?", "Conferma pulizia", JOptionPane.YES_NO_OPTION);
+				if(esito == JOptionPane.YES_OPTION) controllerPartita.pulisciClassifica();
 				break;
 			case NAVIGA_INDIETRO_CLASSIFICA:
 				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_MENU);
@@ -116,6 +123,7 @@ public class ControllerNavigazione implements ActionListener {
 					JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Non verrai portato al menu.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
 					break;
 				}
+				controllerPartita.interrompiPartita();
 				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_MENU);
 				break;
 			case NAVIGA_MENU_ESCI:
@@ -128,6 +136,7 @@ public class ControllerNavigazione implements ActionListener {
 					JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Il gioco non verrà chiuso.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
 					break;
 				}
+				controllerPartita.interrompiPartita();
 				controllerFinestra.chiudiFinestra();
 				break;
 		}
