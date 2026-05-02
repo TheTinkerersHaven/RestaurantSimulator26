@@ -59,15 +59,15 @@ public class PannelloCuoco extends JPanel {
 		popupMenu = new JPopupMenu();
 
 		mntmPiatto1 = new JMenuItem("Sashimi");
-		mntmPiatto1.setActionCommand("sashimi");
+		mntmPiatto1.setActionCommand(ControllerCuoco.SASHIMI_ACTION_COMMAND);
 		popupMenu.add(mntmPiatto1);
 
 		mntmPiatto2 = new JMenuItem("Uramaki Rainbow");
-		mntmPiatto2.setActionCommand("uramakiRainbow");
+		mntmPiatto2.setActionCommand(ControllerCuoco.URAMAKI_RAINBOW_ACTION_COMMAND);
 		popupMenu.add(mntmPiatto2);
 
 		mntmPiatto3 = new JMenuItem("Hosomaki Maguro");
-		mntmPiatto3.setActionCommand("hosomakiMaguro");
+		mntmPiatto3.setActionCommand(ControllerCuoco.HOSOMAKI_MAGURO_ACTION_COMMAND);
 		popupMenu.add(mntmPiatto3);
 	}
 

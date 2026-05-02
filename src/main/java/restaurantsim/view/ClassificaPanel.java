@@ -40,7 +40,7 @@ public class ClassificaPanel extends JPanel {
 		add(panelPulsantiClassifica, BorderLayout.SOUTH);
 
 		btnIndietro = new JButton("Indietro");
-		btnIndietro.setActionCommand("indietro_classifica");
+		btnIndietro.setActionCommand(ControllerNavigazione.NAVIGA_INDIETRO_CLASSIFICA);
 		panelPulsantiClassifica.add(btnIndietro);
 	}
 

@@ -39,11 +39,11 @@ public class PannelloMenu extends JPanel {
 		add(panelPulsantiMenu, BorderLayout.SOUTH);
 
 		btnClassifica = new JButton("Classifica");
-		btnClassifica.setActionCommand("classifica");
+		btnClassifica.setActionCommand(ControllerNavigazione.NAVIGA_CLASSIFICA);
 		panelPulsantiMenu.add(btnClassifica);
 
 		btnNuovaPartita = new JButton("Nuova partita");
-		btnNuovaPartita.setActionCommand("nuova_partita");
+		btnNuovaPartita.setActionCommand(ControllerNavigazione.NAVIGA_NUOVA_PARTITA);
 		panelPulsantiMenu.add(btnNuovaPartita);
 	}
 

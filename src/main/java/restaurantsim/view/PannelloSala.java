@@ -67,7 +67,7 @@ public class PannelloSala extends JPanel {
 		pannelloSuperiore.setLayout(new BoxLayout(pannelloSuperiore, BoxLayout.Y_AXIS));
 		add(pannelloSuperiore, BorderLayout.NORTH);
 
-		barraSuperiore = new BarraSuperiore("Vai a cucina", "vai_cucina_da_sala");
+		barraSuperiore = new BarraSuperiore("Vai a cucina", ControllerNavigazione.NAGIVA_VAI_CUCINA_DA_SALA);
 		pannelloSuperiore.add(barraSuperiore);
 
 		pannelloPunteggio = new JPanel();
