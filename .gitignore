@@ -51,5 +51,9 @@ Thumbs.db
 # Ignore Gradle build output directory
 build
 
+# Include gradle wrapper jar
+!gradle/wrapper/gradle-wrapper.jar
+
 # Ignore Kotlin plugin data
 .kotlin
+
