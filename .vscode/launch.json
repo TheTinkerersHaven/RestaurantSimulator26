@@ -5,6 +5,13 @@
             "name": "Main",
             "request": "launch",
             "mainClass": "restaurantsim.main.Main",
+            "projectName": "RestaurantSimulator"
+        },
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "restaurantsim.main.Main",
             "projectName": "ProgettoInfoTPS2026-RestaurantSimulator"
         },
         {

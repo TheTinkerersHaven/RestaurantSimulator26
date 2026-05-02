@@ -3,7 +3,6 @@ package restaurantsim.model;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
 /**
  * Oggetto principale che rappresenta lo stato del gioco. Contiene la sala, i cuochi, il punteggio, il numero di clienti arrabbiati e le notifiche da mostrare al giocatore.
@@ -47,18 +46,16 @@ public class Gioco {
     private int clientiArrabbiati;
 
     /**
-     * Il semaforo per sincronizzare l'accesso alla lista delle notifiche, che contiene le notifiche da mostrare al giocatore.
-     */
-    private Semaphore mutexNotifiche;
-    /**
      * La lista delle notifiche da mostrare al giocatore, con le notifiche più recenti in cima alla lista.
      * 
-     * L'accesso a questa lista è sincronizzato tramite il semaforo {@link #mutexNotifiche}.
+     * L'accesso a questa lista non è thread-safe! Deve essere usato solo sull'EDT
      */
     private LinkedList<Notifica> notifiche;
 
     /**
      * La lista dei cuochi, che contiene lo stato di ogni cuoco (il piatto che sta preparando e il tempo rimanente per completarlo).
+     * 
+     * L'accesso a questa lista non è thread-safe! Deve essere usato solo sull'EDT
      */
     private ArrayList<Cuoco> cuochi;
 
@@ -71,7 +68,6 @@ public class Gioco {
         punteggio = 0;
         clientiArrabbiati = 0;
 
-        mutexNotifiche = new Semaphore(1);
         notifiche = new LinkedList<>();
 
         cuochi = new ArrayList<>(NUM_CUOCHI);
@@ -175,45 +171,63 @@ public class Gioco {
      * Se la lista supera le 10 notifiche, la più vecchia viene rimossa.
      * 
      * @param notifica la notifica da registrare
-     * @throws InterruptedException se il thread viene interrotto mentre si registra la notifica.
      */
-    public void registraNotifica(Notifica notifica) throws InterruptedException {
-        mutexNotifiche.acquire();
-
+    public void registraNotifica(Notifica notifica) {
         notifiche.addFirst(notifica);
         if (notifiche.size() == 11)
             notifiche.removeLast();
+    }
 
-        mutexNotifiche.release();
+    /**
+     * Rimuove una notifica dalla lista.
+     * 
+     * @param index L'indice della notifica da rimuovere.
+     */
+    public void rimuoviNotifica(int index) {
+        notifiche.remove(index);
+    }
+
+    /**
+     * Restituisce una notifica specifica.
+     * 
+     * @param index L'indice della notifica da restituire.
+     * @return La notifica all'indice specificato.
+     */
+    public Notifica getNotifica(int index) {
+        return notifiche.get(index);
+    }
+
+    /**
+     * Rimuove tutte le notifiche registrate.
+     */
+    public void cancellaNotifiche() {
+        notifiche.clear();
     }
 
     /**
      * Resetta lo stato del gioco.
+     * 
+     * @throws InterruptedException se il thread viene interrotto durante il reset della sala.
      */
-    public void reset() {
-        // Aspettiamo che eventuali operazioni su notifiche in corso finiscano prima di resettare tutto
-        mutexNotifiche.acquireUninterruptibly();
-
+    public void reset() throws InterruptedException {
         sala.reset();
         punteggio = 0;
         clientiArrabbiati = 0;
 
         notifiche.clear();
-        mutexNotifiche.release();
 
         for (Cuoco cuoco : cuochi) {
             cuoco.reset();
         }
-
-        mutexNotifiche.release();
     }
 
     /**
      * Carica lo stato del gioco da un oggetto Salvataggio.
-     * 
+     *
      * @param salvataggio l'oggetto contenente i dati da caricare
+     * @throws InterruptedException se il thread viene interrotto durante il caricamento dello stato dei tavoli.
      */
-    public void carica(Salvataggio salvataggio) {
+    public void carica(Salvataggio salvataggio) throws InterruptedException {
         this.punteggio = salvataggio.getPunteggio();
         this.clientiArrabbiati = salvataggio.getClientiArrabbiati();
         this.notifiche = new LinkedList<>(salvataggio.getNotifiche());

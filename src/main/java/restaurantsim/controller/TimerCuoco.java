@@ -85,15 +85,11 @@ public class TimerCuoco implements ActionListener {
 
 			Sala sala = gioco.getSala();
 
-			try {
-				sala.aggiungiPiatto(stavaPreparando);
+			sala.aggiungiPiatto(stavaPreparando);
 
-				Notifica notifica = new Notifica("Cuoco " + pannelloCuoco.getNumeroCuoco() + " ha finito di preparare " + stavaPreparando.toString() + "!", ControllerNotifiche.ORIGINE_CUCINA);
-				gioco.registraNotifica(notifica);
-				controllerNotifiche.mostraNotifica(notifica);
-			} catch (InterruptedException ie) {
-				return;
-			}
+			Notifica notifica = new Notifica("Cuoco " + pannelloCuoco.getNumeroCuoco() + " ha finito di preparare " + stavaPreparando.toString() + "!", ControllerNotifiche.ORIGINE_CUCINA);
+			gioco.registraNotifica(notifica);
+			controllerNotifiche.mostraNotifica(notifica);
 
 			pannelloSala.aggiornaBancone(sala.getPiattiPronti());
 			timer.stop();

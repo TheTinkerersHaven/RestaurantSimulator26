@@ -92,13 +92,13 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		if (e.getActionCommand().equals(CANCELLA_TUTTE_NOTIFICHE)) {
-			gioco.getNotifiche().clear();
+			gioco.cancellaNotifiche();
 			aggiornaNotifiche();
 		} else {
 			int index = Integer.parseInt(e.getActionCommand());
-			Notifica notif = gioco.getNotifiche().get(index);
+			Notifica notif = gioco.getNotifica(index);
 
-			gioco.getNotifiche().remove(index);
+			gioco.rimuoviNotifica(index);
 
 			aggiornaNotifiche();
 			controllerNavigazione.cambiaMenu(notif.getOrigine());

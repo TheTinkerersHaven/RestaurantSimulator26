@@ -88,7 +88,8 @@ public class ControllerNavigazione implements ActionListener {
 			case NAVIGA_CARICA_PARTITA:
 				try {
 					controllerPartita.caricaPartita();
-				} catch (IOException ex) {
+				} catch (IOException | InterruptedException ex) {
+					ex.printStackTrace();
 					JOptionPane.showMessageDialog(finestra, "Errore nel caricamento della partita.", "Errore caricamento", JOptionPane.ERROR_MESSAGE);
 					break;
 				}
@@ -96,7 +97,9 @@ public class ControllerNavigazione implements ActionListener {
 				break;
 			case PULISCI_CLASSIFICA:
 				int esito = JOptionPane.showConfirmDialog(finestra, "Sei sicuro di voler pulire la classifica?", "Conferma pulizia", JOptionPane.YES_NO_OPTION);
-				if(esito == JOptionPane.YES_OPTION) controllerPartita.pulisciClassifica();
+				if (esito == JOptionPane.YES_OPTION) {
+					controllerPartita.pulisciClassifica();
+				}
 				break;
 			case NAVIGA_INDIETRO_CLASSIFICA:
 				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_MENU);
@@ -110,7 +113,7 @@ public class ControllerNavigazione implements ActionListener {
 			case NAVIGA_SALVA_PARTITA:
 				try {
 					controllerPartita.salvaPartita();
-				} catch (IOException ex) {
+				} catch (IOException | InterruptedException ex) {
 					ex.printStackTrace();
 					JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Riprova più tardi.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
 				}
@@ -118,25 +121,37 @@ public class ControllerNavigazione implements ActionListener {
 			case NAVIGA_MENU_TORNA_A_MENU:
 				try {
 					controllerPartita.salvaPartita();
-				} catch (IOException ex) {
+				} catch (IOException | InterruptedException ex) {
 					ex.printStackTrace();
 					JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Non verrai portato al menu.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
 					break;
 				}
-				controllerPartita.interrompiPartita();
+				try {
+					controllerPartita.finisciPartita(ControllerPartita.ESCI_SENZA_MESSAGGIO);
+				} catch (InterruptedException ex) {
+					ex.printStackTrace();
+					JOptionPane.showMessageDialog(finestra, "Impossibile terminare la partita. Verrai portato al menu ma potrebbero verificarsi degli imprevisti.", "Errore terminazione", JOptionPane.WARNING_MESSAGE);
+				}
 				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_MENU);
 				break;
 			case NAVIGA_MENU_ESCI:
 				boolean conferma = controllerFinestra.chiediConfermaChiusura("Sei sicuro di voler uscire? I tuoi dati saranno salvati.");
-				if(!conferma) break;
+				if (!conferma) {
+					break;
+				}
 				try {
 					controllerPartita.salvaPartita();
-				} catch (IOException ex) {
+				} catch (IOException | InterruptedException ex) {
 					ex.printStackTrace();
 					JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Il gioco non verrà chiuso.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
 					break;
 				}
-				controllerPartita.interrompiPartita();
+				try {
+					controllerPartita.finisciPartita(ControllerPartita.ESCI_SENZA_MESSAGGIO);
+				} catch (InterruptedException ex) {
+					ex.printStackTrace();
+					// Stiamo per terminare il gioco quindi non succederà nulla anche se il model e la view non finiscono di aggiornarsi.
+				}
 				controllerFinestra.chiudiFinestra();
 				break;
 		}

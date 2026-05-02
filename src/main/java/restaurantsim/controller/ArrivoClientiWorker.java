@@ -8,6 +8,7 @@ import javax.swing.Timer;
 
 import restaurantsim.model.Gioco;
 import restaurantsim.model.Notifica;
+import restaurantsim.model.StatoTavolo;
 import restaurantsim.model.Tavolo;
 import restaurantsim.model.TavoloOccupatoException;
 import restaurantsim.view.PannelloTavolo;
@@ -16,7 +17,7 @@ import restaurantsim.view.PannelloSala;
 /**
  * Worker che gestisce l'arrivo dei clienti ai tavoli.
  */
-public class ArrivoClientiWorker extends SwingWorker<Void, Integer> {
+public class ArrivoClientiWorker extends SwingWorker<Void, StatoTavolo> {
 	/**
 	 * Tempo minimo in millisecondi tra l'arrivo di un cliente e l'altro.
 	 */
@@ -77,36 +78,26 @@ public class ArrivoClientiWorker extends SwingWorker<Void, Integer> {
 				int attesa = random.nextInt(TEMPO_MINIMO_ARRIVO, TEMPO_MASSIMO_ARRIVO + 1);
 				Thread.sleep(attesa);
 
-				// Trova il primo tavolo non occupato
-				Tavolo tavoloLibero = null;
+				boolean tavoloLiberoTrovato = false;
 
 				int i = 0;
-				while (i < Gioco.NUM_TAVOLI && tavoloLibero == null) {
-					Tavolo t = gioco.getSala().getTavolo(i + 1);
-					if (!t.isOccupato()) {
-						tavoloLibero = t;
-					}
-					i++;
-				}
+				while (i < Gioco.NUM_TAVOLI && !tavoloLiberoTrovato) {
+					Tavolo tavolo = gioco.getSala().getTavolo(i + 1);
 
-				// Se c'è un tavolo libero, fai arrivare i clienti
-				if (tavoloLibero != null) {
 					try {
-						Timer timer = controllerPartita.getTimerTavolo(tavoloLibero.getNumeroTavolo());
+						StatoTavolo statoTavolo = tavolo.prenotaTavoloSeLibero();
 
-						tavoloLibero.faiArrivareClienti();
+						tavoloLiberoTrovato = true;
+
+						Timer timer = controllerPartita.getTimerTavolo(tavolo.getNumeroTavolo());
 						timer.start();
 
-						// Publish chiamerà il metodo process() appena l'EDT sarà pronto a processare gli aggiornamenti
-						publish(tavoloLibero.getNumeroTavolo());
-					} catch (TavoloOccupatoException toe) {
-						// Lascia che il timer riprovi il prossimo ciclo.
-						// Questo non dovrebbe mai accadere per via dei controlli.
-					} catch (Exception e) {
-						System.out.println("Errore nell'arrivo dei clienti al tavolo " + tavoloLibero.getNumeroTavolo() + ": " + e.getMessage());
-
-						// Se c'è un errore, passa al prossimo ciclo
+						publish(statoTavolo);
+					} catch (TavoloOccupatoException e) {
+						// Il tavolo è occupato, proviamo con il prossimo
 					}
+
+					i++;
 				}
 			}
 		} catch (InterruptedException e) {
@@ -119,23 +110,19 @@ public class ArrivoClientiWorker extends SwingWorker<Void, Integer> {
 	/**
 	 * Processa gli aggiornamenti pubblicati da doInBackground, aggiornando l'interfaccia e mostrando le notifiche.
 	 *
-	 * @param tavoliArrivati La lista dei numeri dei tavoli a cui sono arrivati i clienti
+	 * @param tavoliArrivati La lista degli stati dei tavoli a cui sono arrivati i clienti
 	 */
 	@Override
-	protected void process(List<Integer> tavoliArrivati) {
-		try {
-			for (Integer numeroTavolo : tavoliArrivati) {
-				Notifica notifica = new Notifica("Tavolo " + numeroTavolo + " ha un nuovo cliente!", ControllerNotifiche.ORIGINE_SALA);
+	protected void process(List<StatoTavolo> tavoliArrivati) {
+		for (StatoTavolo tavolo : tavoliArrivati) {
+			Notifica notifica = new Notifica("Tavolo " + tavolo.getNumeroTavolo() + " ha un nuovo cliente!", ControllerNotifiche.ORIGINE_SALA);
 
-				gioco.registraNotifica(notifica);
-				controllerNotifiche.mostraNotifica(notifica);
+			gioco.registraNotifica(notifica);
+			controllerNotifiche.mostraNotifica(notifica);
 
-				PannelloTavolo pannelloTavolo = pannelloSala.getPannelloTavolo(tavoliArrivati.get(tavoliArrivati.size() - 1));
+			PannelloTavolo pannelloTavolo = pannelloSala.getPannelloTavolo(tavolo.getNumeroTavolo());
 
-				pannelloTavolo.aggiornaTavolo(gioco.getSala().getTavolo(numeroTavolo));
-			}
-		} catch (InterruptedException ie) {
-			ie.printStackTrace();
+			pannelloTavolo.aggiornaTavolo(tavolo);
 		}
 	}
 }

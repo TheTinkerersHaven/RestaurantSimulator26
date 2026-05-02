@@ -1,5 +1,6 @@
 package restaurantsim.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,25 +30,30 @@ public class Salvataggio {
     /**
      * Lo stato dei tavoli nel ristorante.
      */
-    private List<Tavolo> tavoli;
+    private List<StatoTavolo> tavoli;
 
     /**
      * Costruttore vuoto necessario per la deserializzazione Jackson.
      */
-    public Salvataggio() {}
+    public Salvataggio() {
+    }
 
     /**
      * Crea un nuovo oggetto Salvataggio estraendo lo stato corrente da un oggetto Gioco.
      * 
      * @param gioco L'istanza del gioco da cui salvare i dati.
+     * @throws InterruptedException se il thread viene interrotto mentre acquisisce i lock sui tavoli per ottenere il loro stato, poiché l'operazione di salvataggio è stata interrotta.
      */
-    public Salvataggio(Gioco gioco) {
+    public Salvataggio(Gioco gioco) throws InterruptedException {
         this.punteggio = gioco.getPunteggio();
         this.clientiArrabbiati = gioco.getClientiArrabbiati();
         this.notifiche = gioco.getNotifiche();
         this.cuochi = gioco.getCuochi();
         this.piattiPronti = gioco.getSala().getPiattiPronti();
-        this.tavoli = gioco.getSala().getTavoli();
+        this.tavoli = new ArrayList<>(gioco.getSala().getTavoli().size());
+        for (Tavolo tavolo : gioco.getSala().getTavoli()) {
+            this.tavoli.add(tavolo.getStatoTavolo());
+        }
     }
 
     /**
@@ -145,7 +151,7 @@ public class Salvataggio {
      * 
      * @return la lista dei tavoli.
      */
-    public List<Tavolo> getTavoli() {
+    public List<StatoTavolo> getTavoli() {
         return tavoli;
     }
 
@@ -154,7 +160,7 @@ public class Salvataggio {
      * 
      * @param tavoli i tavoli da impostare.
      */
-    public void setTavoli(List<Tavolo> tavoli) {
+    public void setTavoli(List<StatoTavolo> tavoli) {
         this.tavoli = tavoli;
     }
 }

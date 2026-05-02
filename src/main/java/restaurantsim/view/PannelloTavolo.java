@@ -12,7 +12,7 @@ import javax.swing.JProgressBar;
 import javax.swing.border.LineBorder;
 import javax.swing.border.TitledBorder;
 
-import restaurantsim.model.Tavolo;
+import restaurantsim.model.StatoTavolo;
 
 /**
  * Pannello che mostra un tavolo, con il piatto ordinato e la pazienza del cliente se il tavolo è occupato
@@ -102,11 +102,12 @@ public class PannelloTavolo extends JPanel {
 	}
 
 	/**
-	 * Aggiorna il pannello del tavolo con i dati del tavolo dato, mostrando o nascondendo il piatto ordinato e la pazienza a seconda che il tavolo sia occupato o meno, e aggiornando i valori mostrati con quelli del tavolo dato
+	 * Aggiorna il pannello del tavolo con i dati dello stato fornito.
+	 * Mostra o nasconde il piatto ordinato e la pazienza a seconda che il tavolo sia occupato o meno.
 	 * 
-	 * @param tavolo il tavolo con i dati da mostrare in questo pannello
+	 * @param tavolo l'oggetto {@link StatoTavolo} contenente le informazioni aggiornate del tavolo.
 	 */
-	public void aggiornaTavolo(Tavolo tavolo) {
+	public void aggiornaTavolo(StatoTavolo tavolo) {
 		if (!tavolo.isOccupato()) {
 			panelPiatto.setVisible(false);
 			panelPazienza.setVisible(false);

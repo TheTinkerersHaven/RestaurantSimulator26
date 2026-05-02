@@ -7,9 +7,11 @@ import javax.swing.Timer;
 
 import restaurantsim.model.Gioco;
 import restaurantsim.model.Notifica;
+import restaurantsim.model.StatoTavolo;
 import restaurantsim.model.Tavolo;
 import restaurantsim.model.TavoloNonOccupatoException;
 import restaurantsim.view.PannelloTavolo;
+import restaurantsim.view.PannelloPrincipale;
 import restaurantsim.view.PannelloSala;
 
 /**
@@ -88,14 +90,11 @@ public class TimerTavolo implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		if (!tavolo.isOccupato()) {
-			return;
-		}
-
 		try {
-			boolean arrabbiato = tavolo.decrementaPazienza();
+			StatoTavolo statoTavolo = tavolo.decrementaPazienzaSeOccupato();
 
-			if (arrabbiato) {
+			// Controlla se il cliente si è arrabbiato
+			if (statoTavolo.getPazienza() == 0) {
 				timer.stop();
 
 				gioco.aggiungiPunteggio(Gioco.PUNTEGGIO_PER_CLIENTE_ARRABBIATO);
@@ -103,7 +102,7 @@ public class TimerTavolo implements ActionListener {
 
 				if (gioco.getClientiArrabbiati() == Gioco.MAX_CLIENTI_ARRABBIATI) {
 					controllerPartita.finisciPartita(ControllerPartita.ESCI_NOME_E_SCONFITTA);
-					controllerNavigazione.cambiaMenu("menu");
+					controllerNavigazione.cambiaMenu(PannelloPrincipale.NOME_PANNELLO_MENU);
 					return;
 				}
 
@@ -114,12 +113,11 @@ public class TimerTavolo implements ActionListener {
 				controllerNotifiche.mostraNotifica(notifica);
 			}
 
-			pannelloTavolo.aggiornaTavolo(tavolo);
-		} catch (InterruptedException ie) {
-			// Ignora
+			pannelloTavolo.aggiornaTavolo(statoTavolo);
 		} catch (TavoloNonOccupatoException tnoe) {
-			// Ignora, il tavolo è vuoto, quindi non c'è pazienza da decrementare
-			// Non dovrebbe mai accadere per via della check iniziale 
+			// Il tavolo è vuoto, non dobbiamo fare nulla
+		} catch (InterruptedException iex) {
+			// Il thread è stato interrotto, non dobbiamo fare nulla
 		}
 	}
 }

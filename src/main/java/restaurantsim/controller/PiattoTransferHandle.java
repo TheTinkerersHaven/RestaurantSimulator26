@@ -13,6 +13,7 @@ import restaurantsim.model.Gioco;
 import restaurantsim.model.Notifica;
 import restaurantsim.model.Piatto;
 import restaurantsim.model.PiattoErratoException;
+import restaurantsim.model.StatoTavolo;
 import restaurantsim.model.Tavolo;
 import restaurantsim.model.TavoloNonOccupatoException;
 import restaurantsim.model.TransferPiatto;
@@ -204,35 +205,33 @@ public class PiattoTransferHandle extends TransferHandler {
 		int numTavolo = tavolo.getNumeroTavolo();
 
 		try {
-			tavolo.serviTavolo(piatto);
+			StatoTavolo statoTavolo = tavolo.serviTavolo(piatto);
+
+			// Interrompi il timer del tavolo in quanto non più necessario.
+			controllerPartita.getTimerTavolo(numTavolo).stop();
+
+			gioco.getSala().rimuoviPiatto(indexPiatto);
+			gioco.aggiungiPunteggio(Gioco.PUNTEGGIO_PER_PIATTO);
+
+			pannelloSala.aggiornaPunteggio(gioco.getPunteggio());
+			pannelloSala.aggiornaBancone(gioco.getSala().getPiattiPronti());
+
+			Notifica notifica = new Notifica("Tavolo " + numTavolo + " ha ricevuto " + piatto.toString(), ControllerNotifiche.ORIGINE_SALA);
+			gioco.registraNotifica(notifica);
+			controllerNotifiche.mostraNotifica(notifica);
+
+			pannelloTavolo.aggiornaTavolo(statoTavolo);
+
+			// Disolito i revalidate li fa Swing dopo un evento, ma qua non lo fa, quindi dobbiamo farlo a mano per aggiornare la UI dopo averla modificata
+			pannelloSala.revalidate();
+			pannelloSala.repaint();
+
+			pannelloTavolo.revalidate();
+			pannelloTavolo.repaint();
 		} catch (TavoloNonOccupatoException tnoe) {
 			JOptionPane.showMessageDialog(pannelloSala, "Non c'è nessuno a questo tavolo!", "Tavolo vuoto.", JOptionPane.ERROR_MESSAGE);
-			return;
 		} catch (PiattoErratoException pee) {
 			JOptionPane.showMessageDialog(pannelloSala, pee.getMessage(), "Piatto errato.", JOptionPane.ERROR_MESSAGE);
-			return;
 		}
-
-		// Interrompi il timer del tavolo in quanto non più necessario.
-		controllerPartita.getTimerTavolo(numTavolo).stop();
-
-		gioco.getSala().rimuoviPiatto(indexPiatto);
-		gioco.aggiungiPunteggio(Gioco.PUNTEGGIO_PER_PIATTO);
-
-		pannelloSala.aggiornaPunteggio(gioco.getPunteggio());
-		pannelloSala.aggiornaBancone(gioco.getSala().getPiattiPronti());
-
-		pannelloTavolo.aggiornaTavolo(tavolo);
-
-		Notifica notifica = new Notifica("Tavolo " + numTavolo + " ha ricevuto " + piatto.toString(), ControllerNotifiche.ORIGINE_SALA);
-		gioco.registraNotifica(notifica);
-		controllerNotifiche.mostraNotifica(notifica);
-
-		// Disolito i revalidate li fa Swing dopo un evento, ma qua non lo fa, quindi dobbiamo farlo a mano per aggiornare la UI dopo averla modificata
-		pannelloSala.revalidate();
-		pannelloSala.repaint();
-
-		pannelloTavolo.revalidate();
-		pannelloTavolo.repaint();
 	}
 }

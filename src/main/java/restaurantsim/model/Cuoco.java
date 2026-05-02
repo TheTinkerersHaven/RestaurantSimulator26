@@ -2,6 +2,8 @@ package restaurantsim.model;
 
 /**
  * Oggetto che rappresenta un cuoco, con il piatto che sta preparando e il tempo rimanente per completarlo.
+ * 
+ * I dati qui salvati non sono thread-safe! Devono essere usati solo sull'EDT
  */
 public class Cuoco {
 	/**

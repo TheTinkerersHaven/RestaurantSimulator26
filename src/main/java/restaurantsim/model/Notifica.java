@@ -2,6 +2,8 @@ package restaurantsim.model;
 
 /**
  * Oggetto che rappresenta una notifica da mostrare al giocatore
+ * 
+ * I dati qui salvati non sono thread-safe! Devono essere usati solo sull'EDT
  */
 public class Notifica {
 	/**
@@ -16,7 +18,8 @@ public class Notifica {
 	/**
 	 * Inizializza una notifica vuota. Necessario per Jackson.
 	 */
-	public Notifica() {}
+	public Notifica() {
+	}
 
 	/**
 	 * Inizializza una notifica con il testo e l'origine specificati.

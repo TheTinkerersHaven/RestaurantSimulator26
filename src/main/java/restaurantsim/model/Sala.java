@@ -2,24 +2,21 @@ package restaurantsim.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Semaphore;
 
 /**
  * Oggetto che rappresenta la sala del ristorante, che contiene i tavoli e i piatti pronti.
  */
 public class Sala {
 	/**
-	 * Il semaforo per sincronizzare l'accesso alla lista dei piatti pronti, che contiene i piatti che sono stati preparati.
-	 */
-	private Semaphore mutexPiatti;
-	/**
 	 * La lista dei piatti pronti, che contiene i piatti che sono stati preparati e sono pronti per essere serviti ai clienti.
 	 * 
-	 * L'accesso a questa lista è sincronizzato tramite il semaforo {@link #mutexPiatti}.
+	 * L'accesso a questa lista non è thread-safe! Deve essere usato solo sull'EDT
 	 */
 	private ArrayList<Piatto> piattiPronti;
 	/**
 	 * La lista dei tavoli, che contiene lo stato di ogni tavolo.
+	 * 
+	 * L'accesso a questa lista è read-only, poiché i tavoli non vengono aggiunti o rimossi durante la partita. Lo stato di ogni tavolo viene modificato direttamente tramite i metodi del tavolo stesso, quindi non è necessario sincronizzare l'accesso alla lista dei tavoli.
 	 */
 	private ArrayList<Tavolo> tavoli;
 
@@ -27,7 +24,6 @@ public class Sala {
 	 * Inizializza la sala del ristorante, creando i tavoli e la lista dei piatti pronti.
 	 */
 	public Sala() {
-		mutexPiatti = new Semaphore(1);
 		piattiPronti = new ArrayList<>();
 
 		tavoli = new ArrayList<>(Gioco.NUM_TAVOLI);
@@ -68,44 +64,31 @@ public class Sala {
 	 * Aggiunge un piatto alla lista dei piatti pronti.
 	 * 
 	 * @param piatto il piatto da aggiungere alla lista dei piatti pronti
-	 * @throws InterruptedException se il thread viene interrotto mentre si aggiunge il piatto.
 	 */
-	public void aggiungiPiatto(Piatto piatto) throws InterruptedException {
-		mutexPiatti.acquire();
-
+	public void aggiungiPiatto(Piatto piatto) {
 		piattiPronti.add(piatto);
-
-		mutexPiatti.release();
 	}
 
 	/**
 	 * Rimuove un piatto dalla lista dei piatti pronti.
 	 * 
 	 * @param index l'indice del piatto da rimuovere dalla lista dei piatti pronti
-	 * @throws InterruptedException se il thread viene interrotto mentre si rimuove il piatto.
 	 */
-	public void rimuoviPiatto(int index) throws InterruptedException {
-		mutexPiatti.acquire();
-
+	public void rimuoviPiatto(int index) {
 		piattiPronti.remove(index);
-
-		mutexPiatti.release();
 	}
 
 	/**
 	 * Resetta lo stato della sala, svuotando la lista dei piatti pronti e resettando lo stato di ogni tavolo.
+	 * 
+	 * @throws InterruptedException se il thread viene interrotto durante il reset dei tavoli.
 	 */
-	public void reset() {
-		// Aspettiamo eventuali operazioni
-		mutexPiatti.acquireUninterruptibly();
-
+	public void reset() throws InterruptedException {
 		for (Tavolo tavolo : tavoli) {
 			tavolo.reset();
 		}
 
 		piattiPronti.clear();
-
-		mutexPiatti.release();
 	}
 
 	/**
@@ -121,8 +104,9 @@ public class Sala {
 	 * Carica lo stato dei tavoli da una lista di tavoli salvati.
 	 * 
 	 * @param tavoli la lista dei tavoli da cui caricare lo stato
+	 * @throws InterruptedException se il thread viene interrotto durante il caricamento dello stato dei tavoli.
 	 */
-	public void caricaTavoli(ArrayList<Tavolo> tavoli) {
+	public void caricaTavoli(ArrayList<StatoTavolo> tavoli) throws InterruptedException {
 		for (int i = 0; i < this.tavoli.size(); i++) {
 			this.tavoli.get(i).caricaTavolo(tavoli.get(i));
 		}

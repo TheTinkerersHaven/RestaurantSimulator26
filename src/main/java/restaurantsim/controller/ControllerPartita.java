@@ -19,6 +19,7 @@ import restaurantsim.model.Cuoco;
 import restaurantsim.model.Gioco;
 import restaurantsim.model.Piatto;
 import restaurantsim.model.Salvataggio;
+import restaurantsim.model.StatoTavolo;
 import restaurantsim.model.Tavolo;
 import restaurantsim.view.ClassificaPanel;
 import restaurantsim.view.PannelloCucina;
@@ -98,8 +99,9 @@ public class ControllerPartita {
      * Finisce la partita.
      * 
      * @param status il tipo di fine partita, che determina se mostrare un messaggio di sconfitta e se chiedere il nome dell'utente per aggiornare la classifica, deve essere uno dei valori delle costanti {@link #ESCI_SENZA_MESSAGGIO}, {@link #ESCI_SOLO_NOME} o {@link #ESCI_NOME_E_SCONFITTA}
+     * @throws InterruptedException se il thread viene interrotto durante il reset della partita.
      */
-    public void finisciPartita(int status) {
+    public void finisciPartita(int status) throws InterruptedException {
         interrompiPartita();
 
         if (status == ESCI_SOLO_NOME || status == ESCI_NOME_E_SCONFITTA) {
@@ -114,7 +116,7 @@ public class ControllerPartita {
             } while (nomeGiocatore == null || nomeGiocatore.isBlank());
             classifica.inserisciPartita(nomeGiocatore, gioco.getPunteggio());
             classificaPanel.aggiornaClassifica(classifica.getClassifica());
-            
+
             ObjectMapper mapper = new ObjectMapper();
             File file = new File("classifica.json");
 
@@ -135,8 +137,10 @@ public class ControllerPartita {
 
     /**
      * Aggiorna tutti i pannelli della view basandosi sullo stato attuale del modello Gioco.
+     * 
+     * @throws InterruptedException se il thread viene interrotto durante il recupero dello stato dei tavoli.
      */
-    private void aggiornaView() {
+    private void aggiornaView() throws InterruptedException {
         // Notifiche
         mainPanel.aggiornaMenuNotifiche(gioco.getNotifiche(), controllerNotifiche);
 
@@ -145,7 +149,10 @@ public class ControllerPartita {
         salaPanel.aggiornaPunteggio(gioco.getPunteggio());
         salaPanel.aggiornaBancone(gioco.getSala().getPiattiPronti());
         for (int i = 1; i <= Gioco.NUM_TAVOLI; i++) {
-            salaPanel.getPannelloTavolo(i).aggiornaTavolo(gioco.getSala().getTavolo(i));
+            Tavolo tavolo = gioco.getSala().getTavolo(i);
+            StatoTavolo statoTavolo = tavolo.getStatoTavolo();
+
+            salaPanel.getPannelloTavolo(i).aggiornaTavolo(statoTavolo);
         }
 
         // Cucina
@@ -153,6 +160,7 @@ public class ControllerPartita {
         for (int i = 1; i <= Gioco.NUM_CUOCHI; i++) {
             PannelloCuoco pannelloCuoco = cucinaPanel.getPannelloCuoco(i);
             Cuoco cuoco = this.gioco.getCuoco(i);
+
             if (cuoco.getPiattoInPreparazione().equals(Piatto.NESSUNO)) {
                 pannelloCuoco.aggiornaProgresso(0);
                 pannelloCuoco.rimuoviImmagine();
@@ -167,7 +175,7 @@ public class ControllerPartita {
     /**
      * Interrompe la partita, fermando i timer dei tavoli e dei cuochi e cancellando il worker che fa arrivare i clienti
      */
-    public void interrompiPartita() {
+    private void interrompiPartita() {
         arrivoClientiWorker.cancel(true);
 
         for (Timer timer : timerTavoli) {
@@ -243,10 +251,11 @@ public class ControllerPartita {
      * Salva lo stato attuale della partita su un file JSON.
      * 
      * @throws StreamWriteException se si verifica un errore durante la scrittura dello stream
-     * @throws DatabindException     se si verifica un errore durante il binding dei dati
-     * @throws IOException           se si verifica un errore di I/O
+     * @throws DatabindException    se si verifica un errore durante il binding dei dati
+     * @throws IOException          se si verifica un errore di I/O
+     * @throws InterruptedException se il thread viene interrotto durante il recupero dello stato dei tavoli nel modello Salvataggio.
      */
-    public void salvaPartita() throws StreamWriteException, DatabindException, IOException {
+    public void salvaPartita() throws StreamWriteException, DatabindException, IOException, InterruptedException {
         ObjectMapper mapper = new ObjectMapper();
         Salvataggio salvataggio = new Salvataggio(gioco);
         File file = new File("salvataggio.json");
@@ -257,11 +266,12 @@ public class ControllerPartita {
     /**
      * Carica lo stato della partita da un file JSON e riavvia i timer necessari.
      * 
-     * @throws StreamReadException se si verifica un errore durante la lettura dello stream
+     * @throws StreamReadException  se si verifica un errore durante la lettura dello stream
      * @throws DatabindException    se si verifica un errore durante il binding dei dati
      * @throws IOException          se si verifica un errore di I/O
+     * @throws InterruptedException se il thread viene interrotto durante l'aggiornamento della view o il caricamento dei dati nel modello.
      */
-    public void caricaPartita() throws StreamReadException, DatabindException, IOException {
+    public void caricaPartita() throws StreamReadException, DatabindException, IOException, InterruptedException {
         ObjectMapper mapper = new ObjectMapper();
         File file = new File("salvataggio.json");
 
@@ -296,9 +306,10 @@ public class ControllerPartita {
         }
 
         try {
-            ArrayList<String> classificaList = mapper.readValue(file, new TypeReference<ArrayList<String>>() {});
-            classifica.getClassifica().clear();
-            classifica.getClassifica().addAll(classificaList);
+            ArrayList<String> classificaList = mapper.readValue(file, new TypeReference<ArrayList<String>>() {
+            });
+            classifica.pulisciClassifica();
+            classifica.aggiungiTutto(classificaList);
             mainPanel.getClassificaPanel().aggiornaClassifica(classifica.getClassifica());
         } catch (IOException e) {
             System.err.println("Errore nel caricamento della classifica");
@@ -312,7 +323,7 @@ public class ControllerPartita {
     public void pulisciClassifica() {
         File file = new File("classifica.json");
         file.delete();
-        classifica.getClassifica().clear();
+        classifica.pulisciClassifica();
         mainPanel.getClassificaPanel().aggiornaClassifica(classifica.getClassifica());
     }
 }

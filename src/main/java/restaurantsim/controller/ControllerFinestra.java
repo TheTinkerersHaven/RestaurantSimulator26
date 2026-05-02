@@ -45,7 +45,7 @@ public class ControllerFinestra implements WindowListener {
      */
     @Override
     public void windowClosing(WindowEvent e) {
-        if(chiediConfermaChiusura("Sei sicuro di voler uscire? Se sei in partita, i dati non verranno salvati.")) {
+        if (chiediConfermaChiusura("Sei sicuro di voler uscire? Se sei in partita, i dati non verranno salvati.")) {
             chiudiFinestra();
         }
     }
@@ -95,7 +95,12 @@ public class ControllerFinestra implements WindowListener {
      * Chiude la finestra.
      */
     public void chiudiFinestra() {
-        controllerPartita.finisciPartita(ControllerPartita.ESCI_SENZA_MESSAGGIO);
+        try {
+            controllerPartita.finisciPartita(ControllerPartita.ESCI_SENZA_MESSAGGIO);
+        } catch (InterruptedException e) {
+            // Non fare nulla, la partita è stata interrotta, stiamo chiudendo la finestra, non dobbiamo fare nulla
+        }
+
         // Permetti a Swing/AWT di terminare l'applicazione, dato che non rimaranno thread attivi la JVM terminerà da sola.
         // https://docs.oracle.com/en/java/javase/17/docs/api/java.desktop/java/awt/doc-files/AWTThreadIssues.html
         finestra.dispose();
