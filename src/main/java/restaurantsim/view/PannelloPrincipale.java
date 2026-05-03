@@ -209,4 +209,13 @@ public class PannelloPrincipale extends JPanel {
 		overlayUI.revalidate();
 		overlayUI.repaint();
 	}
+
+	/**
+	 * Rimuove tutte le notifiche presenti nell'overlay
+	 */
+	public void pulisciNotificheOverlay() {
+		overlayUI.removeAll();
+		overlayUI.revalidate();
+		overlayUI.repaint();
+	}
 }

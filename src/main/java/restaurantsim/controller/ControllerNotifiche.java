@@ -139,6 +139,17 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 	}
 
 	/**
+	 * Pulisce tutte le notifiche sia dal gioco che dalla visualizzazione.
+	 */
+	public void pulisciTutto() {
+		gioco.cancellaNotifiche();
+		pannelloPrincipale.pulisciNotificheOverlay();
+		aggiornaNotifiche();
+		timerPannelli.forEach((panel, timer) -> timer.stop());
+		timerPannelli.clear();
+	}
+
+	/**
 	 * Mostra una nuova notifica, aggiungendola all'overlay del pannello principale e aggiornando il menu delle notifiche.
 	 * 
 	 * @param notifica La notifica da mostrare
@@ -203,4 +214,6 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 
 		panel.setBackground(Color.YELLOW);
 	}
+
+	
 }

@@ -140,6 +140,7 @@ public class ControllerPartita {
 
         /// Model reset
         gioco.reset();
+        controllerNotifiche.pulisciTutto();
 
         /// View reset
         aggiornaView();
@@ -348,5 +349,13 @@ public class ControllerPartita {
     public void eliminaSalvataggio() {
         File file = new File("salvataggio.json");
         file.delete();
+    }
+
+    public ControllerSuoni getControllerSuoni() {
+        return this.controllerSuoni;
+    }
+
+    public ControllerNotifiche getControllerNotifiche() {
+        return this.controllerNotifiche;
     }
 }

@@ -13,6 +13,9 @@ import javax.swing.JButton;
 import javax.swing.Box;
 import java.awt.BorderLayout;
 import javax.swing.SwingConstants;
+import javax.swing.JToggleButton;
+import javax.swing.JCheckBox;
+import javax.swing.JSeparator;
 
 /**
  * Pannello che mostra le impostazioni del gioco, permettendo di gestire la classifica e i salvataggi.
@@ -37,6 +40,8 @@ public class PannelloImpostazioni extends JPanel {
 	private JPanel panelNavButtonsImpostazioni;
 	/** Pulsante per tornare indietro */
 	private JButton btnIndietro;
+	private JCheckBox chckbxEffettiSonori;
+	private Component verticalStrut_1;
 
 	/**
 	 * Inizializza i componenti del pannello impostazioni.
@@ -58,6 +63,14 @@ public class PannelloImpostazioni extends JPanel {
 		
 		verticalGlue = Box.createVerticalGlue();
 		panelInternoImpostazioni.add(verticalGlue);
+		
+		chckbxEffettiSonori = new JCheckBox("Effetti sonori");
+		chckbxEffettiSonori.setSelected(true);
+		chckbxEffettiSonori.setAlignmentX(Component.CENTER_ALIGNMENT);
+		panelInternoImpostazioni.add(chckbxEffettiSonori);
+		
+		verticalStrut_1 = Box.createVerticalStrut(20);
+		panelInternoImpostazioni.add(verticalStrut_1);
 		
 		btnSvuotaClassifica = new JButton("Elimina i dati salvati in classifica");
 		panelInternoImpostazioni.add(btnSvuotaClassifica);
@@ -90,6 +103,7 @@ public class PannelloImpostazioni extends JPanel {
 	 * @param controllerNavigazione il controller che gestisce la navigazione
 	 */
 	public void registraAscoltatori(ControllerNavigazione controllerNavigazione) {
+		chckbxEffettiSonori.addItemListener(controllerNavigazione);
 		btnSvuotaClassifica.addActionListener(controllerNavigazione);
 		btnEliminaDatiSalvati.addActionListener(controllerNavigazione);
 		btnIndietro.addActionListener(controllerNavigazione);

@@ -2,6 +2,8 @@ package restaurantsim.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.io.IOException;
 
@@ -14,7 +16,7 @@ import restaurantsim.view.Finestra;
 /**
  * Controller che si occupa di gestire la navigazione tra i vari pannelli della finestra.
  */
-public class ControllerNavigazione implements ActionListener {
+public class ControllerNavigazione implements ActionListener, ItemListener {
 	/** Naviga alla classifica */
 	public static final String NAVIGA_CLASSIFICA = "classifica";
 	/** Naviga alla sala e fai una nuova partita */
@@ -192,6 +194,20 @@ public class ControllerNavigazione implements ActionListener {
 	}
 
 	/**
+	 * Viene chiamato quando cambia lo stato di selezione dell'elemento per i suoni nelle impostazioni.
+	 * 
+	 * @param e L'evento che ha scatenato il cambiamento di stato.
+	 */
+	@Override
+	public void itemStateChanged(ItemEvent e) {
+		if(e.getStateChange() == ItemEvent.SELECTED) {
+			controllerPartita.getControllerSuoni().setEnabled(true);
+		} else {
+			controllerPartita.getControllerSuoni().setEnabled(false);
+		}
+	}
+
+	/**
 	 * Cambia il pannello visualizzato in base al nome del pannello.
 	 *
 	 * Ridimensiona la finestra in base alla dimensione del pannello visualizzato.
@@ -201,4 +217,6 @@ public class ControllerNavigazione implements ActionListener {
 	public void cambiaMenu(String nome) {
 		finestra.setSize(pannelloPrincipale.cambiaPannello(nome));
 	}
+
+	
 }
