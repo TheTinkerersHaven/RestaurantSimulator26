@@ -2,6 +2,7 @@ package restaurantsim.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JOptionPane;
@@ -80,7 +81,7 @@ public class ControllerNavigazione implements ActionListener {
 	 * Controlla se esiste il file di salvataggio e abilita o disabilita il pulsante nel menu.
 	 */
 	public void aggiornaStatoPulsanteCaricamento() {
-		java.io.File file = new java.io.File("salvataggio.json");
+		File file = new File("salvataggio.json");
 		pannelloPrincipale.getMenuPanel().statoPulsanteCaricaPartita(file.exists());
 	}
 
@@ -145,11 +146,8 @@ public class ControllerNavigazione implements ActionListener {
 				try {
 					controllerPartita.salvaPartita();
 					aggiornaStatoPulsanteCaricamento();
-				} catch (InterruptedException itex) {
-					itex.printStackTrace();
-					JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Riprova più tardi.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
-				} catch (IOException ioex) {
-					ioex.printStackTrace();
+				} catch (IOException | InterruptedException ex) {
+					ex.printStackTrace();
 					JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Riprova più tardi.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
 				}
 				break;
