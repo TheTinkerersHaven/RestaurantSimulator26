@@ -139,7 +139,8 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 	}
 
 	/**
-	 * Pulisce tutte le notifiche sia dal gioco che dalla visualizzazione.
+	 * Pulisce tutte le notifiche del gioco, rimuove quelle visualizzate nell'overlay
+	 * e interrompe tutti i timer di rimozione automatica attivi.
 	 */
 	public void pulisciTutto() {
 		gioco.cancellaNotifiche();

@@ -211,7 +211,7 @@ public class PannelloPrincipale extends JPanel {
 	}
 
 	/**
-	 * Rimuove tutte le notifiche presenti nell'overlay
+	 * Rimuove tutte le notifiche attualmente visualizzate nell'overlay grafico.
 	 */
 	public void pulisciNotificheOverlay() {
 		overlayUI.removeAll();

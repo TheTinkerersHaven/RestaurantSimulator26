@@ -40,7 +40,9 @@ public class PannelloImpostazioni extends JPanel {
 	private JPanel panelNavButtonsImpostazioni;
 	/** Pulsante per tornare indietro */
 	private JButton btnIndietro;
+	/** Checkbox per abilitare o disabilitare gli effetti sonori */
 	private JCheckBox chckbxEffettiSonori;
+	/** Distanziatore verticale per il layout */
 	private Component verticalStrut_1;
 
 	/**

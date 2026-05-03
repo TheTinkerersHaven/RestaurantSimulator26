@@ -351,10 +351,20 @@ public class ControllerPartita {
         file.delete();
     }
 
+    /**
+     * Restituisce il controller dei suoni.
+     * 
+     * @return il controller dei suoni
+     */
     public ControllerSuoni getControllerSuoni() {
         return this.controllerSuoni;
     }
 
+    /**
+     * Restituisce il controller delle notifiche.
+     * 
+     * @return il controller delle notifiche
+     */
     public ControllerNotifiche getControllerNotifiche() {
         return this.controllerNotifiche;
     }
