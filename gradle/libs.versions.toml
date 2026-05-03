@@ -3,6 +3,8 @@
 
 [versions]
 jackson = "2.18.2" # Latest stable as of 2026
+jlayer = "1.0.1"
 
 [libraries]
 jackson-databind = { group = "com.fasterxml.jackson.core", name = "jackson-databind", version.ref = "jackson" }
+jlayer = { group = "javazoom", name = "jlayer", version.ref = "jlayer" }

@@ -48,6 +48,8 @@ public class ControllerPartita {
      * Riferimento al controller notifiche per poter aggiornare le notifiche quando necessario
      */
     private ControllerNotifiche controllerNotifiche;
+    
+    private ControllerSuoni controllerSuoni;
     /**
      * Timer per i tavoli
      */
@@ -76,22 +78,28 @@ public class ControllerPartita {
      * @param gioco               il gioco, necessario per aggiornare il model quando necessario
      * @param classifica          la classifica, necessaria per aggiornare la classifica quando necessario
      * @param controllerNotifiche il controller notifiche, necessario per aggiornare le notifiche quando necessario
+     * @param controllerSuoni     il controller dei suoni, necessario per riprodurre gli effetti sonori
      */
-    public ControllerPartita(PannelloPrincipale panel, Gioco gioco, Classifica classifica, ControllerNotifiche controllerNotifiche) {
+    public ControllerPartita(PannelloPrincipale panel, Gioco gioco, Classifica classifica, ControllerNotifiche controllerNotifiche, ControllerSuoni controllerSuoni) {
         this.mainPanel = panel;
         this.gioco = gioco;
         this.classifica = classifica;
         this.controllerNotifiche = controllerNotifiche;
+        this.controllerSuoni = controllerSuoni;
 
         this.timerTavoli = new ArrayList<>(Gioco.NUM_TAVOLI);
         this.timerCuochi = new ArrayList<>(Gioco.NUM_CUOCHI);
-        this.arrivoClientiWorker = new ArrivoClientiWorker(gioco, panel.getSalaPanel(), controllerNotifiche, this);
+        this.arrivoClientiWorker = new ArrivoClientiWorker(gioco, panel.getSalaPanel(), controllerNotifiche, this, controllerSuoni);
     }
 
     /**
      * Inizia una nuova partita, facendo partire il worker che fa arrivare i clienti
      */
     public void nuovaParita() {
+        if (arrivoClientiWorker != null && !arrivoClientiWorker.isDone()) {
+            arrivoClientiWorker.cancel(true);
+        }
+        this.arrivoClientiWorker = new ArrivoClientiWorker(gioco, mainPanel.getSalaPanel(), controllerNotifiche, this, controllerSuoni);
         arrivoClientiWorker.execute();
     }
 
@@ -219,7 +227,7 @@ public class ControllerPartita {
             Cuoco cuoco = gioco.getCuoco(i);
 
             Timer timer = new Timer(TimerCuoco.INTERVALLO, null);
-            TimerCuoco timerCuoco = new TimerCuoco(gioco, cuoco, pannelloCuoco, salaPanel, controllerNotifiche, timer);
+            TimerCuoco timerCuoco = new TimerCuoco(gioco, cuoco, pannelloCuoco, salaPanel, controllerNotifiche, controllerSuoni, timer);
 
             timer.addActionListener(timerCuoco);
 
@@ -281,7 +289,12 @@ public class ControllerPartita {
 
         aggiornaView();
 
+        if (arrivoClientiWorker != null && !arrivoClientiWorker.isDone()) {
+            arrivoClientiWorker.cancel(true);
+        }
+        this.arrivoClientiWorker = new ArrivoClientiWorker(gioco, mainPanel.getSalaPanel(), controllerNotifiche, this, controllerSuoni);
         this.arrivoClientiWorker.execute();
+
         for (int i = 0; i < Gioco.NUM_CUOCHI; i++) {
             if (!this.gioco.getCuoco(i + 1).getPiattoInPreparazione().equals(Piatto.NESSUNO)) {
                 this.timerCuochi.get(i).start();

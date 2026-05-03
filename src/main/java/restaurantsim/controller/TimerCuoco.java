@@ -42,6 +42,8 @@ public class TimerCuoco implements ActionListener {
 	 * Controller per mostrare le notifiche quando il piatto è pronto.
 	 */
 	private ControllerNotifiche controllerNotifiche;
+
+	private ControllerSuoni controllerSuoni;
 	/**
 	 * Timer che esegue questo ActionListener ogni {@link #INTERVALLO} ms.
 	 *
@@ -57,14 +59,16 @@ public class TimerCuoco implements ActionListener {
 	 * @param pannelloCuoco       Il pannello del cuoco per aggiornare la UI durante la preparazione del piatto
 	 * @param pannelloSala        Il pannello della sala per aggiornare la UI quando il piatto è pronto
 	 * @param controllerNotifiche Il controller delle notifiche per mostrare una notifica quando il piatto è pronto
+	 * @param controllerSuoni     Il controller dei suoni da usare quando il piatto è pronto
 	 * @param timer               Il timer che esegue questo TimerCuoco
 	 */
-	public TimerCuoco(Gioco gioco, Cuoco cuoco, PannelloCuoco pannelloCuoco, PannelloSala pannelloSala, ControllerNotifiche controllerNotifiche, Timer timer) {
+	public TimerCuoco(Gioco gioco, Cuoco cuoco, PannelloCuoco pannelloCuoco, PannelloSala pannelloSala, ControllerNotifiche controllerNotifiche, ControllerSuoni controllerSuoni, Timer timer) {
 		this.gioco = gioco;
 		this.cuoco = cuoco;
 		this.pannelloCuoco = pannelloCuoco;
 		this.pannelloSala = pannelloSala;
 		this.controllerNotifiche = controllerNotifiche;
+		this.controllerSuoni = controllerSuoni;
 		this.timer = timer;
 	}
 
@@ -93,6 +97,8 @@ public class TimerCuoco implements ActionListener {
 
 			pannelloSala.aggiornaBancone(sala.getPiattiPronti());
 			timer.stop();
+
+			controllerSuoni.playCuocoPronto();
 
 			return;
 		}

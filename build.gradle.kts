@@ -9,6 +9,7 @@ repositories {
 
 dependencies {
     implementation(libs.jackson.databind)
+    implementation(libs.jlayer)
 }
 
 java {

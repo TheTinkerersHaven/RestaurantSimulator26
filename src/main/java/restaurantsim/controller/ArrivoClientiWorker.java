@@ -43,6 +43,8 @@ public class ArrivoClientiWorker extends SwingWorker<Void, StatoTavolo> {
 	 * Controller della partita per gestire i timer dei tavoli quando arrivano i clienti.
 	 */
 	private ControllerPartita controllerPartita;
+
+	private ControllerSuoni controllerSuoni;
 	/**
 	 * Generatore di numeri casuali per determinare i tempi di arrivo dei clienti.
 	 */
@@ -55,12 +57,14 @@ public class ArrivoClientiWorker extends SwingWorker<Void, StatoTavolo> {
 	 * @param pannelloSala        L'interfaccia grafica della sala
 	 * @param controllerNotifiche Il controller delle notifiche
 	 * @param controllerPartita   Il controller della partita
+	 * @param controllerSuoni     Il controller dei suoni
 	 */
-	public ArrivoClientiWorker(Gioco gioco, PannelloSala pannelloSala, ControllerNotifiche controllerNotifiche, ControllerPartita controllerPartita) {
+	public ArrivoClientiWorker(Gioco gioco, PannelloSala pannelloSala, ControllerNotifiche controllerNotifiche, ControllerPartita controllerPartita, ControllerSuoni controllerSuoni) {
 		this.gioco = gioco;
 		this.pannelloSala = pannelloSala;
 		this.controllerNotifiche = controllerNotifiche;
 		this.controllerPartita = controllerPartita;
+		this.controllerSuoni = controllerSuoni;
 		this.random = new Random();
 	}
 
@@ -93,6 +97,7 @@ public class ArrivoClientiWorker extends SwingWorker<Void, StatoTavolo> {
 						timer.start();
 
 						publish(statoTavolo);
+						controllerSuoni.playClienteArrivato();
 					} catch (TavoloOccupatoException e) {
 						// Il tavolo è occupato, proviamo con il prossimo
 					}

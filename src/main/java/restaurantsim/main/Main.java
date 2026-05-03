@@ -7,6 +7,7 @@ import restaurantsim.controller.ControllerFinestra;
 import restaurantsim.controller.ControllerNavigazione;
 import restaurantsim.controller.ControllerNotifiche;
 import restaurantsim.controller.ControllerPartita;
+import restaurantsim.controller.ControllerSuoni;
 import restaurantsim.controller.PiattoTransferHandle;
 import restaurantsim.model.Classifica;
 import restaurantsim.model.Gioco;
@@ -34,8 +35,10 @@ public class Main {
 		PannelloCucina cucinaPanel = mainPanel.getCucinaPanel();
 
 		/// Controller setup
+		ControllerSuoni controllerSuoni = new ControllerSuoni();
+
 		ControllerNotifiche controllerNotifiche = new ControllerNotifiche(gioco, mainPanel);
-		ControllerPartita controllerPartita = new ControllerPartita(mainPanel, gioco, classifica, controllerNotifiche);
+		ControllerPartita controllerPartita = new ControllerPartita(mainPanel, gioco, classifica, controllerNotifiche, controllerSuoni);
 
 		ControllerFinestra controllerFinestra = new ControllerFinestra(window, controllerPartita);
 		ControllerNavigazione controllerNavigazione = new ControllerNavigazione(gioco, window, controllerPartita, controllerFinestra);
@@ -47,6 +50,7 @@ public class Main {
 
 		ControllerCuoco.registraAscoltatori(gioco, cucinaPanel, controllerPartita);
 		PiattoTransferHandle.registraTransferHandles(gioco, salaPanel, controllerNotifiche, controllerPartita);
+		
 	}
 
 	/**
