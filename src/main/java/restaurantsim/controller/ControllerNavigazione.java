@@ -20,8 +20,14 @@ public class ControllerNavigazione implements ActionListener {
 	public static final String NAVIGA_NUOVA_PARTITA = "nuova_partita";
 	/** Carica la partita salvata e naviga alla sala */
 	public static final String NAVIGA_CARICA_PARTITA = "carica_partita";
+	/** Vai alle impostazioni dal menu */
+    public static final String NAVIGA_A_IMPOSTAZIONI = "vai_a_impostazioni";
+	/** Vai al menu dalle impostazioni */
+	public static final String NAVIGA_DA_IMPOSTAZIONI = "vai_menu_da_impostazioni";
 	/** Pulisci la classifica */
 	public static final String PULISCI_CLASSIFICA = "pulisci_classifica";
+	/** Elimina il salvataggio della partita */
+	public static final String ELIMINA_SALVATAGGIO = "elimina_salvataggio";
 	/** Naviga al menu */
 	public static final String NAVIGA_INDIETRO_CLASSIFICA = "indietro_classifica";
 	/** Naviga alla cucina */
@@ -34,7 +40,7 @@ public class ControllerNavigazione implements ActionListener {
 	public static final String NAVIGA_MENU_TORNA_A_MENU = "menu_torna_a_menu";
 	/** Esci dall'applicazione */
 	public static final String NAVIGA_MENU_ESCI = "menu_esci";
-
+	
 	/**
 	 * La finestra da gestire. Ogni pannello può richiedere una dimensione diversa, quindi è necessario avere un riferimento alla finestra per poterla ridimensionare.
 	 */
@@ -67,6 +73,15 @@ public class ControllerNavigazione implements ActionListener {
 		this.controllerFinestra = controllerFinestra;
 
 		pannelloPrincipale.registraAscoltatoriNavigazioneMain(this);
+		aggiornaStatoPulsanteCaricamento();
+	}
+
+	/**
+	 * Controlla se esiste il file di salvataggio e abilita o disabilita il pulsante nel menu.
+	 */
+	public void aggiornaStatoPulsanteCaricamento() {
+		java.io.File file = new java.io.File("salvataggio.json");
+		pannelloPrincipale.getMenuPanel().statoPulsanteCaricaPartita(file.exists());
 	}
 
 	/**
@@ -76,6 +91,7 @@ public class ControllerNavigazione implements ActionListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
+		int esito;
 		switch (e.getActionCommand()) {
 			case NAVIGA_CLASSIFICA:
 				controllerPartita.caricaClassifica();
@@ -96,13 +112,28 @@ public class ControllerNavigazione implements ActionListener {
 				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_SALA);
 				break;
 			case PULISCI_CLASSIFICA:
-				int esito = JOptionPane.showConfirmDialog(finestra, "Sei sicuro di voler pulire la classifica?", "Conferma pulizia", JOptionPane.YES_NO_OPTION);
+				esito = JOptionPane.showConfirmDialog(finestra, "Sei sicuro di voler pulire la classifica? Questa è un'azione irreversibile!", "Conferma pulizia", JOptionPane.YES_NO_OPTION);
+				if(esito == JOptionPane.YES_OPTION) controllerPartita.pulisciClassifica();
+				esito = -1;
+				break;
+			case ELIMINA_SALVATAGGIO:
+				esito = JOptionPane.showConfirmDialog(finestra, "Sei sicuro di voler eliminare i dati salvati della partita? Questa è un'azione irreversibile!", "Conferma eliminazione", JOptionPane.YES_NO_OPTION);
 				if (esito == JOptionPane.YES_OPTION) {
-					controllerPartita.pulisciClassifica();
+					controllerPartita.eliminaSalvataggio();
+					aggiornaStatoPulsanteCaricamento();
 				}
+				esito = -1;
 				break;
 			case NAVIGA_INDIETRO_CLASSIFICA:
 				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_MENU);
+				aggiornaStatoPulsanteCaricamento();
+				break;
+			case NAVIGA_A_IMPOSTAZIONI:
+				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_IMPOSTAZIONI);
+				break;
+			case NAVIGA_DA_IMPOSTAZIONI:
+				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_MENU);
+				aggiornaStatoPulsanteCaricamento();
 				break;
 			case NAVIGA_VAI_CUCINA_DA_SALA:
 				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_CUCINA);
@@ -113,8 +144,12 @@ public class ControllerNavigazione implements ActionListener {
 			case NAVIGA_SALVA_PARTITA:
 				try {
 					controllerPartita.salvaPartita();
-				} catch (IOException | InterruptedException ex) {
-					ex.printStackTrace();
+					aggiornaStatoPulsanteCaricamento();
+				} catch (InterruptedException itex) {
+					itex.printStackTrace();
+					JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Riprova più tardi.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
+				} catch (IOException ioex) {
+					ioex.printStackTrace();
 					JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Riprova più tardi.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
 				}
 				break;
@@ -133,6 +168,7 @@ public class ControllerNavigazione implements ActionListener {
 					JOptionPane.showMessageDialog(finestra, "Impossibile terminare la partita. Verrai portato al menu ma potrebbero verificarsi degli imprevisti.", "Errore terminazione", JOptionPane.WARNING_MESSAGE);
 				}
 				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_MENU);
+				aggiornaStatoPulsanteCaricamento();
 				break;
 			case NAVIGA_MENU_ESCI:
 				boolean conferma = controllerFinestra.chiediConfermaChiusura("Sei sicuro di voler uscire? I tuoi dati saranno salvati.");

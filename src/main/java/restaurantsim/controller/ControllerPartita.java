@@ -326,4 +326,12 @@ public class ControllerPartita {
         classifica.pulisciClassifica();
         mainPanel.getClassificaPanel().aggiornaClassifica(classifica.getClassifica());
     }
+
+    /**
+     * Elimina il file di salvataggio della partita.
+     */
+    public void eliminaSalvataggio() {
+        File file = new File("salvataggio.json");
+        file.delete();
+    }
 }

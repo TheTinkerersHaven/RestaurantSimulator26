@@ -10,6 +10,9 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import restaurantsim.controller.ControllerNavigazione;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
+import java.awt.Font;
 
 /**
  * Pannello che mostra la classifica dei giocatori
@@ -24,13 +27,19 @@ public class ClassificaPanel extends JPanel {
 	private JPanel panelPulsantiClassifica;
 	/** Bottone per tornare indietro */
 	private JButton btnIndietro;
-	/** Bottone per svuotare la classifica */
-	private JButton btnPulisciClassifica;
+	/** Etichetta del titolo della classifica */
+	private JLabel lblClassifica;
 
 	/** Inizializza i componenti */
 	public ClassificaPanel() {
 		setBorder(new EmptyBorder(10, 10, 0, 10));
 		setLayout(new BorderLayout(0, 0));
+		
+		lblClassifica = new JLabel("Classifica");
+		lblClassifica.setBorder(new EmptyBorder(0, 0, 5, 0));
+		lblClassifica.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblClassifica.setHorizontalAlignment(SwingConstants.CENTER);
+		add(lblClassifica, BorderLayout.NORTH);
 
 		listClassifica = new JList<String>();
 		add(listClassifica, BorderLayout.CENTER);
@@ -40,10 +49,6 @@ public class ClassificaPanel extends JPanel {
 
 		panelPulsantiClassifica = new JPanel();
 		add(panelPulsantiClassifica, BorderLayout.SOUTH);
-		
-		btnPulisciClassifica = new JButton("Pulisci classifica");
-		btnPulisciClassifica.setActionCommand(ControllerNavigazione.PULISCI_CLASSIFICA);
-		panelPulsantiClassifica.add(btnPulisciClassifica);
 
 		btnIndietro = new JButton("Indietro");
 		btnIndietro.setActionCommand(ControllerNavigazione.NAVIGA_INDIETRO_CLASSIFICA);
@@ -66,7 +71,6 @@ public class ClassificaPanel extends JPanel {
 	 * @param controllerNavigazione il controller navigazione da registrare come ascoltatore per il pulsante indietro
 	 */
 	public void registraAscoltatoriNavigaione(ControllerNavigazione controllerNavigazione) {
-		btnPulisciClassifica.addActionListener(controllerNavigazione);
 		btnIndietro.addActionListener(controllerNavigazione);
 	}
 }

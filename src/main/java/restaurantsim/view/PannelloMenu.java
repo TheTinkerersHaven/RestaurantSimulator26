@@ -25,6 +25,8 @@ public class PannelloMenu extends JPanel {
 	private JButton btnNuovaPartita;
 	/** Bottone per caricare una partita salvata */
 	private JButton btnCaricaPartita;
+	/** Bottone per andare alle impostazioni */
+	private JButton btnImpostazioni;
 
 	/** Inizializza i componenti */
 	public PannelloMenu() {
@@ -39,6 +41,10 @@ public class PannelloMenu extends JPanel {
 
 		panelPulsantiMenu = new JPanel();
 		add(panelPulsantiMenu, BorderLayout.SOUTH);
+		
+		btnImpostazioni = new JButton("Impostazioni");
+		btnImpostazioni.setActionCommand(ControllerNavigazione.NAVIGA_A_IMPOSTAZIONI);
+		panelPulsantiMenu.add(btnImpostazioni);
 
 		btnClassifica = new JButton("Classifica");
 		btnClassifica.setActionCommand(ControllerNavigazione.NAVIGA_CLASSIFICA);
@@ -54,11 +60,21 @@ public class PannelloMenu extends JPanel {
 	}
 
 	/**
+	 * Abilita o disabilita il pulsante per caricare la partita.
+	 * 
+	 * @param active true per abilitare il pulsante, false altrimenti
+	 */
+	public void statoPulsanteCaricaPartita(boolean active) {
+		btnCaricaPartita.setEnabled(active);
+	}
+
+	/**
 	 * Registra gli ascoltatori per la navigazione per i componenti di questo pannello
 	 * 
 	 * @param controllerNavigazione il controller navigazione da registrare come ascoltatore per i pulsanti del menu
 	 */
 	public void registraAscoltatoriNavigazione(ControllerNavigazione controllerNavigazione) {
+		btnImpostazioni.addActionListener(controllerNavigazione);
 		btnClassifica.addActionListener(controllerNavigazione);
 		btnNuovaPartita.addActionListener(controllerNavigazione);
 		btnCaricaPartita.addActionListener(controllerNavigazione);

@@ -29,6 +29,8 @@ public class PannelloPrincipale extends JPanel {
 	public static final String NOME_PANNELLO_SALA = "sala";
 	/** Nome pannello della classifica */
 	public static final String NOME_PANNELLO_CLASSIFICA = "classifica";
+	/** Nome pannello delle impostazioni */
+	public static final String NOME_PANNELLO_IMPOSTAZIONI = "impostazioni";
 
 	/** Layout a schede per il mainUI, che contiene i pannelli menu, sala, cucina e classifica */
 	private CardLayout cardLayoutMainUI;
@@ -38,6 +40,8 @@ public class PannelloPrincipale extends JPanel {
 	private PannelloSala salaPanel;
 	/** Pannello della classifica */
 	private ClassificaPanel classificaPanel;
+	/** Pannello delle impostazioni */
+	private PannelloImpostazioni impostazioniPanel;
 	/** Pannello della cucina */
 	private PannelloCucina cucinaPanel;
 	/** LayeredPane per mostrare le notifiche sopra a tutto il resto */
@@ -90,6 +94,9 @@ public class PannelloPrincipale extends JPanel {
 
 		classificaPanel = new ClassificaPanel();
 		mainUI.add(classificaPanel, NOME_PANNELLO_CLASSIFICA);
+		
+		impostazioniPanel = new PannelloImpostazioni();
+		mainUI.add(impostazioniPanel, NOME_PANNELLO_IMPOSTAZIONI);
 	}
 
 	/**
@@ -99,6 +106,7 @@ public class PannelloPrincipale extends JPanel {
 	 */
 	public void registraAscoltatoriNavigazioneMain(ControllerNavigazione controllerNavigazione) {
 		menuPanel.registraAscoltatoriNavigazione(controllerNavigazione);
+		impostazioniPanel.registraAscoltatori(controllerNavigazione);
 		classificaPanel.registraAscoltatoriNavigaione(controllerNavigazione);
 		salaPanel.registraAscoltatoriNavigazione(controllerNavigazione);
 		cucinaPanel.aggiungiAscoltatoriNavigazione(controllerNavigazione);
@@ -114,10 +122,19 @@ public class PannelloPrincipale extends JPanel {
 	 */
 	public Dimension cambiaPannello(String pannello) {
 		cardLayoutMainUI.show(mainUI, pannello);
-		if (pannello.equals(NOME_PANNELLO_MENU))
+		if (pannello.equals(NOME_PANNELLO_MENU) || pannello.equals(NOME_PANNELLO_IMPOSTAZIONI))
 			return new Dimension(600, 450);
 		else
 			return new Dimension(700, 600);
+	}
+
+	/**
+	 * Restituisce il pannello del menù principale
+	 * 
+	 * @return il pannello del menù principale
+	 */
+	public PannelloMenu getMenuPanel() {
+		return menuPanel;
 	}
 
 	/**
