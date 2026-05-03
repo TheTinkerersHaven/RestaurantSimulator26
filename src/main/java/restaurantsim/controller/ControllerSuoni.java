@@ -54,7 +54,7 @@ public class ControllerSuoni {
     /**
      * Restituisce lo stato dell'attivazione dei suoni.
      * 
-     * @returns lo stato dell'attivazione dei suoni.
+     * @return true se i suoni sono abilitati, false altrimenti.
      */
     public boolean getEnabled() {
         return this.enabled;

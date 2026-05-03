@@ -42,7 +42,9 @@ public class TimerCuoco implements ActionListener {
 	 * Controller per mostrare le notifiche quando il piatto è pronto.
 	 */
 	private ControllerNotifiche controllerNotifiche;
-
+	/**
+	 * Controller per gestire i suoni.
+	 */
 	private ControllerSuoni controllerSuoni;
 	/**
 	 * Timer che esegue questo ActionListener ogni {@link #INTERVALLO} ms.

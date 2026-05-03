@@ -64,7 +64,7 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 	 * Il controller una volta inizializato non è ancora completamente funzionante, è necessario chiamare il metodo {@link #setControllerNavigazione(ControllerNavigazione)} per settare il controller di navigazione prima di poter gestire i click sulle notifiche.
 	 * 
 	 * @param gioco              Il gioco, necessario per accedere alla lista delle notifiche e per rimuovere le notifiche quando vengono cliccate.
-	 * @param pannelloPrincipale Il pannello principale, necessario per aggiornare il
+	 * @param pannelloPrincipale Il pannello principale, necessario per aggiornare il menu delle notifiche e per mostrare le notifiche.
 	 */
 	public ControllerNotifiche(Gioco gioco, PannelloPrincipale pannelloPrincipale) {
 		this.gioco = gioco;

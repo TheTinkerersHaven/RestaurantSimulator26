@@ -43,7 +43,9 @@ public class ArrivoClientiWorker extends SwingWorker<Void, StatoTavolo> {
 	 * Controller della partita per gestire i timer dei tavoli quando arrivano i clienti.
 	 */
 	private ControllerPartita controllerPartita;
-
+	/**
+	 * Controller per gestire i suoni.
+	 */
 	private ControllerSuoni controllerSuoni;
 	/**
 	 * Generatore di numeri casuali per determinare i tempi di arrivo dei clienti.

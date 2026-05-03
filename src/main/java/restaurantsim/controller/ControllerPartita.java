@@ -48,7 +48,9 @@ public class ControllerPartita {
      * Riferimento al controller notifiche per poter aggiornare le notifiche quando necessario
      */
     private ControllerNotifiche controllerNotifiche;
-    
+    /**
+	 * Controller per gestire i suoni.
+	 */
     private ControllerSuoni controllerSuoni;
     /**
      * Timer per i tavoli
