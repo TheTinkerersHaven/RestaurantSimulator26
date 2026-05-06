@@ -2,11 +2,11 @@
 
 ' Layout configuration
 skinparam linetype ortho
-skinparam nodesep 60
-skinparam ranksep 60
-skinparam groupInheritance 2
-skinparam packageStyle frame
-skinparam pageMargin 100
+skinparam nodesep 40
+skinparam ranksep 160
+skinparam padding 5
+' skinparam groupInheritance 1
+skinparam packageStyle fram
 hide empty members
 
 ' Forza il posizionamento relativo in alto (non usare package dentro together se già definiti sotto)
@@ -184,15 +184,12 @@ package restaurantsim.model <<Model>> {
     +toString(): String
   }
 
-  Piatto "1" --* "1" StatoTavolo : "piattoOrdinato"
-  Piatto "1" --* "1" Cuoco : "piattoInPreparazione"
-  Piatto "1" --* "1" TransferPiatto : "piatto"
-  Piatto "*" --* "1" Sala : "piattiPronti"
-
-  exception TavoloNonOccupatoException {}
-  exception TavoloOccupatoException {}
-  exception PiattoErratoException {
-    +PiattoErratoException(String)
+  together {
+    exception TavoloNonOccupatoException {}
+    exception TavoloOccupatoException {}
+    exception PiattoErratoException {
+      +PiattoErratoException(String)
+    }
   }
 }
 
@@ -621,97 +618,99 @@ package restaurantsim.controller <<Controller>> {
   }
 }
 
-Gioco "1" *-- "1" Sala : "sala"
-Gioco "1" o-- "*" Notifica : "notifiche"
-Gioco "1" o-- "3" Cuoco : "cuochi"
+Gioco *-- Sala
+Gioco "1" o-- "*" Notifica
+Gioco "1" o-- "3" Cuoco
 Gioco ..> Salvataggio : "carica/salva"
-Cuoco ..> Cuoco : "copia"
-Sala "1" o-- "4" Tavolo : "tavoli"
-Tavolo ..> StatoTavolo : "genera"
-Salvataggio "1" o-- "*" Notifica : "notifiche"
-Salvataggio "1" o-- "3" Cuoco : "cuochi"
-Salvataggio "1" o-- "4" StatoTavolo : "tavoli"
-Salvataggio ..> Gioco : "stato"
-PannelloSala "1" *-- "4" PannelloTavolo : "tavoli"
-PannelloSala "1" *-- "1" BarraSuperiore : "barra"
-PannelloSala ..> PiattoTransferHandle : "gestisce"
-PannelloSala ..> ControllerNavigazione : "naviga"
+Sala "1" o-- "4" Tavolo
+Tavolo ..> StatoTavolo
+Salvataggio "1" o-- "*" Notifica
+Salvataggio "1" o-- "3" Cuoco
+Salvataggio "1" o-- "4" StatoTavolo
+Salvataggio ..> Gioco
+PannelloSala "1" *-- "4" PannelloTavolo
+PannelloSala *-- BarraSuperiore
+PannelloSala ..> PiattoTransferHandle
+PannelloSala ..> ControllerNavigazione
 PannelloSala ..> ControllerNotifiche : "notifica"
-Finestra "1" *-- "1" PannelloPrincipale : "principale"
+Finestra *-- PannelloPrincipale
 PannelloTavolo ..> StatoTavolo : "visualizza"
-ClassificaPanel ..> ControllerNavigazione : "naviga"
-NotificaPanel ..> ControllerNotifiche : "chiude"
+ClassificaPanel ..> ControllerNavigazione
+ControllerNotifiche ..> NotificaPanel : "gestisce" 
 NotificaPanel ..> Notifica : "mostra"
-PannelloMenu ..> ControllerNavigazione : "naviga"
-BarraSuperiore ..> ControllerNavigazione : "naviga"
+PannelloMenu ..> ControllerNavigazione
+BarraSuperiore ..> ControllerNavigazione
 BarraSuperiore ..> ControllerNotifiche : "notifiche"
-PannelloCucina "1" *-- "1" BarraSuperiore : "barra"
+PannelloCucina *-- BarraSuperiore
 PannelloCucina "1" *-- "3" PannelloCuoco : "cuochi"
-PannelloCucina ..> ControllerNavigazione : "naviga"
-PannelloCucina ..> ControllerNotifiche : "notifica"
-PannelloPrincipale "1" *-- "1" PannelloMenu : "menu"
-PannelloPrincipale "1" *-- "1" PannelloSala : "sala"
-PannelloPrincipale "1" *-- "1" ClassificaPanel : "classifica"
-PannelloPrincipale "1" *-- "1" PannelloImpostazioni : "impostazioni"
-PannelloPrincipale "1" *-- "1" PannelloCucina : "cucina"
-PannelloPrincipale ..> ControllerNavigazione : "naviga"
-PannelloPrincipale ..> Notifica : "visualizza"
-PannelloPrincipale ..> ControllerNotifiche : "notifica"
-PannelloPrincipale ..> NotificaPanel : "gestisce"
+PannelloCucina ..> ControllerNavigazione
+PannelloCucina ..> ControllerNotifiche
+PannelloPrincipale *-- PannelloMenu
+PannelloPrincipale *-- PannelloSala
+PannelloPrincipale *-- ClassificaPanel
+PannelloPrincipale *-- PannelloImpostazioni
+PannelloPrincipale *-- PannelloCucina
+PannelloPrincipale ..> ControllerNavigazione
+PannelloPrincipale ..> Notifica : "registra/mostra"
+PannelloPrincipale ..> ControllerNotifiche
+PannelloPrincipale ..> NotificaPanel
 PannelloCuoco ..> ControllerCuoco : "azione"
-PannelloImpostazioni ..> ControllerNavigazione : "naviga"
-ControllerNotifiche "1" *-- "1" Gioco : "gioco"
-ControllerNotifiche "1" *-- "1" PannelloPrincipale : "pannello"
-ControllerNotifiche "1" *-- "1" ControllerNavigazione : "navigazione"
-ControllerNotifiche "1" o-- "*" NotificaPanel : "pannelli"
+PannelloImpostazioni ..> ControllerNavigazione
+ControllerNotifiche *-- Gioco
+ControllerNotifiche *-- PannelloPrincipale
+ControllerNotifiche *-- ControllerNavigazione
+ControllerNotifiche "1" o-- "*" NotificaPanel : "notifiche"
 ControllerNotifiche ..> Notifica : "processa"
-PiattoTransferable "1" *-- "1" TransferPiatto : "dati"
-PiattoTransferHandle "1" *-- "1" TransferPiatto : "dati"
-PiattoTransferHandle "1" *-- "1" Gioco : "gioco"
-PiattoTransferHandle "1" *-- "1" Tavolo : "tavolo"
-PiattoTransferHandle "1" *-- "1" PannelloSala : "sala"
-PiattoTransferHandle "1" *-- "1" PannelloTavolo : "tavoloUI"
-PiattoTransferHandle "1" *-- "1" ControllerNotifiche : "notifiche"
-PiattoTransferHandle "1" *-- "1" ControllerPartita : "partita"
-TimerCuoco "1" *-- "1" Gioco : "gioco"
-TimerCuoco "1" *-- "1" Cuoco : "cuoco"
-TimerCuoco "1" *-- "1" PannelloSala : "sala"
-TimerCuoco "1" *-- "1" PannelloCuoco : "cuocoUI"
-TimerCuoco "1" *-- "1" ControllerNotifiche : "notifiche"
-TimerCuoco "1" *-- "1" ControllerSuoni : "suoni"
-ControllerPartita "1" *-- "1" Gioco : "gioco"
-ControllerPartita "1" *-- "1" Classifica : "classifica"
-ControllerPartita "1" *-- "1" PannelloPrincipale : "pannello"
-ControllerPartita "1" *-- "1" ControllerNotifiche : "notifiche"
-ControllerPartita "1" *-- "1" ControllerSuoni : "suoni"
-ControllerPartita "1" *-- "1" ArrivoClientiWorker : "worker"
-ControllerPartita ..> PannelloSala : "sala"
-ControllerPartita ..> ControllerNavigazione : "naviga"
-ControllerPartita ..> PannelloCucina : "cucina"
-TimerTavolo "1" *-- "1" Gioco : "gioco"
-TimerTavolo "1" *-- "1" Tavolo : "tavolo"
-TimerTavolo "1" *-- "1" PannelloSala : "sala"
-TimerTavolo "1" *-- "1" PannelloTavolo : "tavoloUI"
-TimerTavolo "1" *-- "1" ControllerNotifiche : "notifiche"
-TimerTavolo "1" *-- "1" ControllerNavigazione : "navigazione"
-TimerTavolo "1" *-- "1" ControllerPartita : "partita"
-ControllerNavigazione "1" *-- "1" Finestra : "finestra"
-ControllerNavigazione "1" *-- "1" PannelloPrincipale : "pannello"
-ControllerNavigazione "1" *-- "1" ControllerPartita : "partita"
-ControllerNavigazione "1" *-- "1" ControllerFinestra : "finestraCtrl"
-ControllerNavigazione ..> Gioco : "gioco"
-ArrivoClientiWorker "1" *-- "1" Gioco : "gioco"
-ArrivoClientiWorker "1" *-- "1" PannelloSala : "sala"
-ArrivoClientiWorker "1" *-- "1" ControllerNotifiche : "notifiche"
-ArrivoClientiWorker "1" *-- "1" ControllerPartita : "partita"
-ArrivoClientiWorker "1" *-- "1" ControllerSuoni : "suoni"
-ControllerFinestra "1" *-- "1" Finestra : "finestra"
-ControllerFinestra "1" *-- "1" ControllerPartita : "partita"
-ControllerCuoco "1" *-- "1" Cuoco : "cuoco"
-ControllerCuoco "1" *-- "1" PannelloCuoco : "cuocoUI"
-ControllerCuoco ..> Gioco : "gioco"
-ControllerCuoco ..> PannelloCucina : "cucina"
-ControllerCuoco ..> ControllerPartita : "partita"
-
+PiattoTransferable *-- TransferPiatto : "Drag and Drop"
+PiattoTransferHandle *-- TransferPiatto : "Drag and Drop"
+PiattoTransferHandle *-- Gioco
+PiattoTransferHandle *-- Tavolo
+PiattoTransferHandle *-- PannelloSala
+PiattoTransferHandle *-- PannelloTavolo
+PiattoTransferHandle *-- ControllerNotifiche
+PiattoTransferHandle *-- ControllerPartita
+TimerCuoco *-- Gioco
+TimerCuoco *-- Cuoco
+TimerCuoco *-- PannelloSala
+TimerCuoco *-- PannelloCuoco
+TimerCuoco *-- ControllerNotifiche
+TimerCuoco *-- ControllerSuoni
+ControllerPartita *-- Gioco
+ControllerPartita *-- Classifica
+ControllerPartita *-- PannelloPrincipale
+ControllerPartita *-- ControllerNotifiche
+ControllerPartita *-- ControllerSuoni
+ControllerPartita *-- ArrivoClientiWorker
+ControllerPartita ..> PannelloSala
+ControllerPartita ..> ControllerNavigazione
+ControllerPartita ..> PannelloCucina
+TimerTavolo *-- Gioco
+TimerTavolo *-- Tavolo
+TimerTavolo *-- PannelloSala
+TimerTavolo *-- PannelloTavolo
+TimerTavolo *-- ControllerNotifiche
+TimerTavolo *-- ControllerNavigazione
+TimerTavolo *-- ControllerPartita
+ControllerNavigazione *-- Finestra
+ControllerNavigazione *-- PannelloPrincipale
+ControllerNavigazione *-- ControllerPartita
+ControllerNavigazione *-- ControllerFinestra
+ControllerNavigazione ..> Gioco
+ArrivoClientiWorker *-- Gioco
+ArrivoClientiWorker *-- PannelloSala
+ArrivoClientiWorker *-- ControllerNotifiche
+ArrivoClientiWorker *-- ControllerPartita
+ArrivoClientiWorker *-- ControllerSuoni
+ControllerFinestra *-- Finestra
+ControllerFinestra *-- ControllerPartita
+ControllerCuoco *-- Cuoco
+ControllerCuoco *-- PannelloCuoco
+ControllerCuoco ..> Gioco
+ControllerCuoco ..> PannelloCucina
+ControllerCuoco ..> ControllerPartita
+Piatto "1" --* "1" StatoTavolo
+Piatto "1" --* "1" Cuoco
+Piatto "1" --* "1" TransferPiatto
+Piatto "*" --* "1" Sala
 
 @enduml
