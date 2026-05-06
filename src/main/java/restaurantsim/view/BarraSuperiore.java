@@ -19,8 +19,9 @@ import restaurantsim.model.Notifica;
 /**
  * Barra superiore nella sala e nella cucina
  */
-@SuppressWarnings("serial")
 public class BarraSuperiore extends JMenuBar {
+	/** Serial Version UID */
+	private static final long serialVersionUID = 1L;
 	/** Menu per "File" */
 	private JMenu menuFile;
 	/** Menu per "Notifiche" */

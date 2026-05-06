@@ -16,8 +16,9 @@ import restaurantsim.model.Notifica;
 /**
  * Pannello che mostra una singola notifica
  */
-@SuppressWarnings("serial")
 public class NotificaPanel extends JPanel {
+	/** Serial Version UID */
+	private static final long serialVersionUID = 1L;
 	/** Area di testo per mostrare il testo della notifica */
 	private JTextArea textAreaNotif;
 	/** Etichetta per il simbolo di chiusura della notifica */

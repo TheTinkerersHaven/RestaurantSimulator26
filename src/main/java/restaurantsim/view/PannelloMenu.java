@@ -11,8 +11,9 @@ import restaurantsim.controller.ControllerNavigazione;
 /**
  * Pannello che mostra il menu principale del gioco, con un'immagine e i pulsanti per accedere alla classifica o iniziare una nuova partita
  */
-@SuppressWarnings("serial")
 public class PannelloMenu extends JPanel {
+	/** Serial Version UID */
+	private static final long serialVersionUID = 1L;
 	/** Pannello che contiene l'immagine del menu */
 	private JPanel panelMenu;
 	/** Pannello che contiene i pulsanti del menu */

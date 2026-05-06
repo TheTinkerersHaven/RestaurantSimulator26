@@ -19,8 +19,9 @@ import restaurantsim.model.Notifica;
 /**
  * Pannello principale che contiene tutti gli altri pannelli, con un CardLayout per mostrare solo uno alla volta, e un JLayeredPane per mostrare le notifiche sopra a tutto il resto
  */
-@SuppressWarnings("serial")
 public class PannelloPrincipale extends JPanel {
+	/** Serial Version UID */
+	private static final long serialVersionUID = 1L;
 	/** Nome pannello del menu principale */
 	public static final String NOME_PANNELLO_MENU = "menu";
 	/** Nome pannello della cucina */

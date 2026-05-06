@@ -5,8 +5,9 @@ import javax.swing.JFrame;
 /**
  * La finestra del gioco.
  */
-@SuppressWarnings("serial")
 public class Finestra extends JFrame {
+	/** Serial Version UID */
+	private static final long serialVersionUID = 1L;
 	/** Il pannello principale della finestra, che contiene tutti gli altri pannelli */
 	private PannelloPrincipale pannelloPrincipale;
 

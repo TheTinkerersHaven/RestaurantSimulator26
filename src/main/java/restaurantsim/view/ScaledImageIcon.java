@@ -11,8 +11,9 @@ import javax.swing.ImageIcon;
 /**
  * ImageIcon that scaled the image to fill the entire component it is painted on.
  */
-@SuppressWarnings("serial")
 public class ScaledImageIcon extends ImageIcon {
+	/** Serial Version UID */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Original image loaded from the toolkit.
 	 * 

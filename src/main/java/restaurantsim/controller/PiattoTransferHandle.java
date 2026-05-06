@@ -23,8 +23,9 @@ import restaurantsim.view.PannelloSala;
 /**
  * Handle che gestisce la logica del drag and drop (DnD) dei piatti dalla sala ai tavoli. Viene usato sia per esportare un piatto (drag) che per importare un piatto (rilascio).
  */
-@SuppressWarnings("serial")
 public class PiattoTransferHandle extends TransferHandler {
+	/** Serial Version UID */
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Il DataFlavor usato per identificare il trasferimento di un piatto. Il tipo di dato trasferito è un oggetto TransferPiatto.
 	 */

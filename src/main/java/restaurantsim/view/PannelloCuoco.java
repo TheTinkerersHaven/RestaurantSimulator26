@@ -19,8 +19,9 @@ import restaurantsim.controller.PopupController;
 /**
  * Pannello che mostra un cuoco, con la sua immagine, il suo progresso e un menu popup per scegliere quale piatto preparare
  */
-@SuppressWarnings("serial")
 public class PannelloCuoco extends JPanel {
+	/** Serial Version UID */
+	private static final long serialVersionUID = 1L;
 	/** Label per mostrare l'immagine del piatto che il cuoco sta preparando */
 	private JLabel lblCuoco;
 	/** Barra di progresso per mostrare il progresso del cuoco nella preparazione del piatto */

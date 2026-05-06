@@ -25,8 +25,9 @@ import javax.swing.BoxLayout;
 /**
  * Pannello che mostra la sala, con i suoi tavoli, il bancone con i piatti pronti, una barra superiore e le notifiche
  */
-@SuppressWarnings("serial")
 public class PannelloSala extends JPanel {
+	/** Serial Version UID */
+	private static final long serialVersionUID = 1L;
 	/** Pannello del tavolo 1 */
 	private PannelloTavolo tavolo1;
 	/** Pannello del tavolo 2 */

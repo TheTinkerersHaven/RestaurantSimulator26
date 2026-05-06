@@ -13,15 +13,14 @@ import javax.swing.JButton;
 import javax.swing.Box;
 import java.awt.BorderLayout;
 import javax.swing.SwingConstants;
-import javax.swing.JToggleButton;
 import javax.swing.JCheckBox;
-import javax.swing.JSeparator;
 
 /**
  * Pannello che mostra le impostazioni del gioco, permettendo di gestire la classifica e i salvataggi.
  */
-@SuppressWarnings("serial")
 public class PannelloImpostazioni extends JPanel {
+	/** Serial Version UID */
+	private static final long serialVersionUID = 1L;
 	/** Etichetta del titolo del pannello */
 	private JLabel lblImpostazioniGioco;
 	/** Pulsante per svuotare la classifica */

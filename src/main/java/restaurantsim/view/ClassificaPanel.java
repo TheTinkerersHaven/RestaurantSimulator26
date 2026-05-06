@@ -17,8 +17,9 @@ import java.awt.Font;
 /**
  * Pannello che mostra la classifica dei giocatori
  */
-@SuppressWarnings("serial")
 public class ClassificaPanel extends JPanel {
+	/** Serial Version UID */
+	private static final long serialVersionUID = 1L;
 	/** Lista per mostrare la classifica */
 	private JList<String> listClassifica;
 	/** Modello della lista per la classifica */

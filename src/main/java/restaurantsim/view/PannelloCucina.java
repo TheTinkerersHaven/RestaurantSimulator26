@@ -16,8 +16,9 @@ import restaurantsim.model.Notifica;
 /**
  * Pannello che mostra la cucina, con i suoi cuochi, una barra superiore e le notifiche
  */
-@SuppressWarnings("serial")
 public class PannelloCucina extends JPanel {
+	/** Serial Version UID */
+	private static final long serialVersionUID = 1L;
 	/** Barra superiore del pannello cucina */
 	private BarraSuperiore barraSuperiore;
 	/** Pannello che contiene i pannelli dei cuochi */

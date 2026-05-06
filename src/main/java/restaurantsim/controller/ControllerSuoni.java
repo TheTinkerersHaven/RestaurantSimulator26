@@ -73,13 +73,13 @@ public class ControllerSuoni {
      * Riproduce il suono associato all'arrivo di un nuovo cliente.
      */
     public void playClienteArrivato() {
-        playSound("sounds/ding2x.mp3");
+        playSound("sounds/tableding.mp3");
     }
 
     /**
      * Riproduce il suono associato al completamento di un piatto da parte del cuoco.
      */
     public void playCuocoPronto() {
-        playSound("sounds/ovending.mp3");
+        playSound("sounds/cookdone.mp3");
     }
 }

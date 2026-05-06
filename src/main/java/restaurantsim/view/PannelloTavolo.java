@@ -17,8 +17,9 @@ import restaurantsim.model.StatoTavolo;
 /**
  * Pannello che mostra un tavolo, con il piatto ordinato e la pazienza del cliente se il tavolo è occupato
  */
-@SuppressWarnings("serial")
 public class PannelloTavolo extends JPanel {
+	/** Serial Version UID */
+	private static final long serialVersionUID = 1L;
 	/** Label per mostrare il testo "Piatto Ordinato: " prima del piatto ordinato */
 	private JLabel lblOrdinePiatto;
 	/** Barra di progresso per mostrare la pazienza del cliente al tavolo */
