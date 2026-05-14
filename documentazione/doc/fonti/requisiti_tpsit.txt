@@ -1,0 +1,185 @@
+ITIS “MAX PLANCK” - LANCENIGO DI VILLORBA (TV)
+PROGETTO DI GRUPPO - CLASSE 4EII
+GRIGLIA DI VALUTAZIONE PROGETTO DI GRUPPO
+TPSIT
+
+Implementazione
+
+Gruppo
+
+Punti
+
+Descrittori
+
+Max
+
+Organizzazione dei file
+
+0,50
+
+Complessità generale e robustezza del codice
+
+2,00
+
+Thread
+
+0,50
+
+Mutua esclusione
+
+0,50
+
+Sincronizzazione
+
+0,50
+
+Innovazione e originalità
+
+Progetto di gruppo
+
+TOTALE IMPLEMENTAZIONE (somma punti attribuiti)
+Numero elementi (esempio: uso dei file, uso dei thread di Swing, integrazione della programmazione
+concorrente con la libreria grafica)
+
+Attribuiti
+
+Il punteggio di ogni indicatore è attribuito nel limite
+massimo stabilito. Il totale dell'implementazione è
+ottenuto sommando tutti i punteggi.
+
+0,00
+
+4,00
+n=
+
+2
+
+Nella prima riga è inserito il numero n degli elementi di
+innovazione e originalità rilevati nel progetto. Nelle
+righe successive è descritto ogni elemento rilevato nel
+progetto (nella traccia sono presenti alcuni elementi di
+innovazione e originalità a titolo di esempio). Il
+punteggio massimo attribuibile a ciascun elemento è 1
+punto per un punteggio massimo complessivo di 2
+punti. In presenza di più di 2 elementi il punteggio
+massimo è rimodulato per suddividere equamente i 2
+punti tra gli elementi. Il punteggio è attribuito su tre
+livelli: 0 -> assente o implementazione insufficiente;
+sufficienza -> implementazione sufficiente; massimo ->
+implementazione ottimale. Punteggio massimo e
+sufficienza sono indicati per ciascun elemento.
+
+Elemento 1
+Elemento 2
+
+1,00
+
+TOTALE INNOVAZIONE E ORIGINALITÀ (somma punti attribuiti)
+
+Descrizione
+
+0,00
+
+2,00
+
+Documento di Specifica dei Requisiti
+2,00
+Documentazione del codice (JavaDoc)
+Documentazione del gruppo
+
+TOTALE DOCUMENTAZIONE (media punti attribuiti)
+
+2,00
+
+0,00
+
+TOTALE PROGETTO DI GRUPPO - TPSIT
+
+8,00
+
+0,00
+
+Conoscenza del progetto
+
+Esposizione e linguaggio
+tecnico
+
+Indicatori
+
+Interrogazione Individuale
+
+Il punteggio di ogni indicatore è attribuito nel limite
+massimo indicato. Il punteggio complessivo per la
+DOCUMENTAZIONE è la media delle valutazioni dei
+singoli indicatori.
+
+Diagramma delle classi
+
+STUDENTI
+
+Punti
+
+Documentazione
+
+Descrizione dell'applicazione (Studio di fattibilità e Analisi dei requisiti)
+
+Descrittori
+L’esposizione è chiara e corretta, il lessico articolato e ricco di termini specifici
+
+1,00
+
+L’esposizione risulta chiara e corretta. La padronanza del linguaggio, compresi i termini specifici è soddisfacente
+
+0,50
+
+L’esposizione è abbastanza chiara e corretta, il lessico utilizzato è semplice e non sempre
+pertinente
+
+0,00
+
+L’esposizione è incerta e non sempre corretta. Il lessico è piuttosto povero e spesso inadeguato
+
+-0,50
+
+L’esposizione è stentata e scorretta; lessico povero
+
+-1,00
+
+La terminologia tecnica è inesistente e l'esposizione nel suo complesso è incomprensibile
+
+-1,50
+
+Conoscenza globale e approfondita di ogni parte del progetto
+
+1,00
+
+Conoscenza parziale del progetto nel suo insieme oltre alla conoscenza approfondita della parte personalmente
+sviluppata
+
+0,50
+
+Conoscenza approfondita solo della parte personalmente sviluppata
+
+0,00
+
+Conoscenza frammentaria della parte personalmente sviluppata
+
+-0,50
+
+Scarsa conoscenza del progetto, sia della propria parte sia di quella dei compagni
+
+-1,00
+
+Assenza di conoscenza significativa del progetto.
+
+-1,50
+
+VOTO TPSIT
+
+0,00
+
+0,00
+
+0,00
+
+

@@ -81,7 +81,7 @@ public class ArrivoClientiWorker extends SwingWorker<Void, StatoTavolo> {
 			// Usiamo isCancelled per sapere quando la partita è stata interrotta e fermare il ciclo
 			while (!isCancelled()) {
 				// random.nextInt usa il limite superiore esclusivo, quindi dobbiamo aggiungere 1 per includere TEMPO_MASSIMO_ARRIVO
-				int attesa = random.nextInt(TEMPO_MINIMO_ARRIVO, TEMPO_MASSIMO_ARRIVO + 1);
+				int attesa = TEMPO_MINIMO_ARRIVO + random.nextInt(TEMPO_MASSIMO_ARRIVO + 1 - TEMPO_MINIMO_ARRIVO);
 				Thread.sleep(attesa);
 
 				boolean tavoloLiberoTrovato = false;

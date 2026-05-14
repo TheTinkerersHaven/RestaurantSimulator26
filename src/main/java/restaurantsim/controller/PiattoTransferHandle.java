@@ -168,7 +168,13 @@ public class PiattoTransferHandle extends TransferHandler {
 		try {
 			TransferPiatto transferPiatto = (TransferPiatto) transferable.getTransferData(PIATTO_DATA_FLAVOR);
 			processaRilascio(transferPiatto);
-		} catch (UnsupportedFlavorException | IOException | InterruptedException e) {
+		} catch (UnsupportedFlavorException e) {
+			JOptionPane.showMessageDialog(pannelloTavolo, "Errore durante il trasferimento del piatto: " + e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} catch (IOException e) {
+			JOptionPane.showMessageDialog(pannelloTavolo, "Errore durante il trasferimento del piatto: " + e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
+			return false;
+		} catch (InterruptedException e) {
 			JOptionPane.showMessageDialog(pannelloTavolo, "Errore durante il trasferimento del piatto: " + e.getMessage(), "Errore", JOptionPane.ERROR_MESSAGE);
 			return false;
 		} catch (RuntimeException ex) {
@@ -188,10 +194,13 @@ public class PiattoTransferHandle extends TransferHandler {
 	 * @param controllerNotifiche Il controller delle notifiche a cui associare i controller dei cuochi
 	 * @param controllerPartita   Il controller della partita a cui associare i controller dei cuochi
 	 */
-	public static void registraTransferHandles(Gioco gioco, PannelloSala salaPanel, ControllerNotifiche controllerNotifiche, ControllerPartita controllerPartita) {
-		salaPanel.registraTransferHandlerPiatto(panel -> {
-			Tavolo tavolo = gioco.getSala().getTavolo(panel.getNumeroTavolo());
-			return new PiattoTransferHandle(gioco, tavolo, salaPanel, panel, controllerNotifiche, controllerPartita);
+	public static void registraTransferHandles(final Gioco gioco, final PannelloSala salaPanel, final ControllerNotifiche controllerNotifiche, final ControllerPartita controllerPartita) {
+		salaPanel.registraTransferHandlerPiatto(new restaurantsim.view.Function<PannelloTavolo, PiattoTransferHandle>() {
+			@Override
+			public PiattoTransferHandle apply(PannelloTavolo panel) {
+				Tavolo tavolo = gioco.getSala().getTavolo(panel.getNumeroTavolo());
+				return new PiattoTransferHandle(gioco, tavolo, salaPanel, panel, controllerNotifiche, controllerPartita);
+			}
 		});
 	}
 

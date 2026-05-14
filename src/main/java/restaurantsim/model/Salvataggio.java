@@ -50,7 +50,7 @@ public class Salvataggio {
         this.notifiche = gioco.getNotifiche();
         this.cuochi = gioco.getCuochi();
         this.piattiPronti = gioco.getSala().getPiattiPronti();
-        this.tavoli = new ArrayList<>(gioco.getSala().getTavoli().size());
+        this.tavoli = new ArrayList<StatoTavolo>(gioco.getSala().getTavoli().size());
         for (Tavolo tavolo : gioco.getSala().getTavoli()) {
             this.tavoli.add(tavolo.getStatoTavolo());
         }

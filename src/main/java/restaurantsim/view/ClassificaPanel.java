@@ -63,7 +63,9 @@ public class ClassificaPanel extends JPanel {
 	 */
 	public void aggiornaClassifica(List<String> lista) {
 		dlm.clear();
-		dlm.addAll(lista);
+		for (String s : lista) {
+			dlm.addElement(s);
+		}
 	}
 
 	/**

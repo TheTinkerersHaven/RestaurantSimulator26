@@ -63,16 +63,13 @@ public class ControllerCuoco implements ActionListener {
 			return;
 		}
 
-		switch (e.getActionCommand()) {
-			case SASHIMI_ACTION_COMMAND:
-				cuoco.iniziaPreparazione(Piatto.SASHIMI);
-				break;
-			case URAMAKI_RAINBOW_ACTION_COMMAND:
-				cuoco.iniziaPreparazione(Piatto.URAMAKI_RAINBOW);
-				break;
-			case HOSOMAKI_MAGURO_ACTION_COMMAND:
-				cuoco.iniziaPreparazione(Piatto.HOSOMAKI_MAGURO);
-				break;
+		String actionCommand = e.getActionCommand();
+		if (SASHIMI_ACTION_COMMAND.equals(actionCommand)) {
+			cuoco.iniziaPreparazione(Piatto.SASHIMI);
+		} else if (URAMAKI_RAINBOW_ACTION_COMMAND.equals(actionCommand)) {
+			cuoco.iniziaPreparazione(Piatto.URAMAKI_RAINBOW);
+		} else if (HOSOMAKI_MAGURO_ACTION_COMMAND.equals(actionCommand)) {
+			cuoco.iniziaPreparazione(Piatto.HOSOMAKI_MAGURO);
 		}
 
 		timerPreparazione.start();
@@ -86,11 +83,14 @@ public class ControllerCuoco implements ActionListener {
 	 * @param cucinaPanel       Il pannello della cucina che contiene i pannelli dei cuochi.
 	 * @param controllerPartita Il controller della partita da cui prendere i timer dei cuochi.
 	 */
-	public static void registraAscoltatori(Gioco gioco, PannelloCucina cucinaPanel, ControllerPartita controllerPartita) {
-		cucinaPanel.aggiungiAscoltatoriCuochi((pannelloCuoco) -> {
-			int numeroCuoco = pannelloCuoco.getNumeroCuoco();
-			Cuoco cuoco = gioco.getCuoco(numeroCuoco);
-			return new ControllerCuoco(cuoco, pannelloCuoco, controllerPartita.getTimerCuoco(numeroCuoco));
+	public static void registraAscoltatori(final Gioco gioco, PannelloCucina cucinaPanel, final ControllerPartita controllerPartita) {
+		cucinaPanel.aggiungiAscoltatoriCuochi(new restaurantsim.view.Function<PannelloCuoco, ControllerCuoco>() {
+			@Override
+			public ControllerCuoco apply(PannelloCuoco pannelloCuoco) {
+				int numeroCuoco = pannelloCuoco.getNumeroCuoco();
+				Cuoco cuoco = gioco.getCuoco(numeroCuoco);
+				return new ControllerCuoco(cuoco, pannelloCuoco, controllerPartita.getTimerCuoco(numeroCuoco));
+			}
 		});
 	}
 }

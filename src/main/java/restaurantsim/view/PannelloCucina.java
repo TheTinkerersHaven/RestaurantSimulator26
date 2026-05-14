@@ -3,7 +3,6 @@ package restaurantsim.view;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.util.List;
-import java.util.function.Function;
 
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -66,7 +65,7 @@ public class PannelloCucina extends JPanel {
 	 * 
 	 * @param creaControllerCuoco una funzione che dato un pannello cuoco restituisce un controller cuoco da registrare come ascoltatore per quel pannello
 	 */
-	public void aggiungiAscoltatoriCuochi(Function<PannelloCuoco, ControllerCuoco> creaControllerCuoco) {
+	public void aggiungiAscoltatoriCuochi(restaurantsim.view.Function<PannelloCuoco, ControllerCuoco> creaControllerCuoco) {
 		pannelloCuoco1.aggiungiAscoltatori(creaControllerCuoco.apply(pannelloCuoco1));
 		pannelloCuoco2.aggiungiAscoltatori(creaControllerCuoco.apply(pannelloCuoco2));
 		pannelloCuoco3.aggiungiAscoltatori(creaControllerCuoco.apply(pannelloCuoco3));

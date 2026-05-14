@@ -1,0 +1,6 @@
+- Deve essere realizzato in Java
+- L'interfaccia grafica deve essere realizzata con Swing
+- Deve seguire il modello MVC con i packages
+- Deve usare delle data structure tipo collections
+- Deve implementare l'ereditarietà
+- Deve fare un uso appropriato di eccezzioni personalizzate

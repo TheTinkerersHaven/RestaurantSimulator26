@@ -7,9 +7,6 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.Timer;
 
-import com.fasterxml.jackson.core.exc.StreamReadException;
-import com.fasterxml.jackson.core.exc.StreamWriteException;
-import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -89,8 +86,8 @@ public class ControllerPartita {
         this.controllerNotifiche = controllerNotifiche;
         this.controllerSuoni = controllerSuoni;
 
-        this.timerTavoli = new ArrayList<>(Gioco.NUM_TAVOLI);
-        this.timerCuochi = new ArrayList<>(Gioco.NUM_CUOCHI);
+        this.timerTavoli = new ArrayList<Timer>(Gioco.NUM_TAVOLI);
+        this.timerCuochi = new ArrayList<Timer>(Gioco.NUM_CUOCHI);
         this.arrivoClientiWorker = new ArrivoClientiWorker(gioco, panel.getSalaPanel(), controllerNotifiche, this, controllerSuoni);
     }
 
@@ -121,9 +118,9 @@ public class ControllerPartita {
             String nomeGiocatore;
             do {
                 nomeGiocatore = JOptionPane.showInputDialog(mainPanel, "Inserisci il nome del giocatore.", "Inserisci nome", JOptionPane.INFORMATION_MESSAGE);
-                if (nomeGiocatore == null || nomeGiocatore.isBlank())
+                if (nomeGiocatore == null || nomeGiocatore.trim().isEmpty())
                     JOptionPane.showMessageDialog(mainPanel, "Non puoi non inserire un nome.", "Errore", JOptionPane.OK_OPTION);
-            } while (nomeGiocatore == null || nomeGiocatore.isBlank());
+            } while (nomeGiocatore == null || nomeGiocatore.trim().isEmpty());
             classifica.inserisciPartita(nomeGiocatore, gioco.getPunteggio());
             classificaPanel.aggiornaClassifica(classifica.getClassifica());
 
@@ -266,7 +263,7 @@ public class ControllerPartita {
      * @throws IOException          se si verifica un errore di I/O
      * @throws InterruptedException se il thread viene interrotto durante il recupero dello stato dei tavoli nel modello Salvataggio.
      */
-    public void salvaPartita() throws StreamWriteException, DatabindException, IOException, InterruptedException {
+    public void salvaPartita() throws IOException, InterruptedException {
         ObjectMapper mapper = new ObjectMapper();
         Salvataggio salvataggio = new Salvataggio(gioco);
         File file = new File("salvataggio.json");
@@ -282,7 +279,7 @@ public class ControllerPartita {
      * @throws IOException          se si verifica un errore di I/O
      * @throws InterruptedException se il thread viene interrotto durante l'aggiornamento della view o il caricamento dei dati nel modello.
      */
-    public void caricaPartita() throws StreamReadException, DatabindException, IOException, InterruptedException {
+    public void caricaPartita() throws IOException, InterruptedException {
         ObjectMapper mapper = new ObjectMapper();
         File file = new File("salvataggio.json");
 

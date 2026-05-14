@@ -24,9 +24,9 @@ public class Sala {
 	 * Inizializza la sala del ristorante, creando i tavoli e la lista dei piatti pronti.
 	 */
 	public Sala() {
-		piattiPronti = new ArrayList<>();
+		piattiPronti = new ArrayList<Piatto>();
 
-		tavoli = new ArrayList<>(Gioco.NUM_TAVOLI);
+		tavoli = new ArrayList<Tavolo>(Gioco.NUM_TAVOLI);
 		for (int i = 0; i < Gioco.NUM_TAVOLI; i++) {
 			tavoli.add(new Tavolo(i + 1));
 		}

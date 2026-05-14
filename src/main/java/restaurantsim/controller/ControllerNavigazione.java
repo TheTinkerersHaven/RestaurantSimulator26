@@ -94,102 +94,101 @@ public class ControllerNavigazione implements ActionListener, ItemListener {
 	 */
 	@Override
 	public void actionPerformed(ActionEvent e) {
-		int esito;
-		switch (e.getActionCommand()) {
-			case NAVIGA_CLASSIFICA:
-				controllerPartita.caricaClassifica();
-				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_CLASSIFICA);
-				break;
-			case NAVIGA_NUOVA_PARTITA:
-				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_SALA);
-				controllerPartita.nuovaParita();
-				break;
-			case NAVIGA_CARICA_PARTITA:
-				try {
-					controllerPartita.caricaPartita();
-				} catch (IOException | InterruptedException ex) {
-					ex.printStackTrace();
-					JOptionPane.showMessageDialog(finestra, "Errore nel caricamento della partita.", "Errore caricamento", JOptionPane.ERROR_MESSAGE);
-					break;
-				}
-				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_SALA);
-				break;
-			case PULISCI_CLASSIFICA:
-				esito = JOptionPane.showConfirmDialog(finestra, "Sei sicuro di voler pulire la classifica? Questa è un'azione irreversibile!", "Conferma pulizia", JOptionPane.YES_NO_OPTION);
-				if(esito == JOptionPane.YES_OPTION) controllerPartita.pulisciClassifica();
-				esito = -1;
-				break;
-			case ELIMINA_SALVATAGGIO:
-				esito = JOptionPane.showConfirmDialog(finestra, "Sei sicuro di voler eliminare i dati salvati della partita? Questa è un'azione irreversibile!", "Conferma eliminazione", JOptionPane.YES_NO_OPTION);
-				if (esito == JOptionPane.YES_OPTION) {
-					controllerPartita.eliminaSalvataggio();
-					aggiornaStatoPulsanteCaricamento();
-				}
-				esito = -1;
-				break;
-			case NAVIGA_INDIETRO_CLASSIFICA:
-				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_MENU);
+		String actionCommand = e.getActionCommand();
+		
+		if (NAVIGA_CLASSIFICA.equals(actionCommand)) {
+			controllerPartita.caricaClassifica();
+			cambiaMenu(PannelloPrincipale.NOME_PANNELLO_CLASSIFICA);
+		} else if (NAVIGA_NUOVA_PARTITA.equals(actionCommand)) {
+			cambiaMenu(PannelloPrincipale.NOME_PANNELLO_SALA);
+			controllerPartita.nuovaParita();
+		} else if (NAVIGA_CARICA_PARTITA.equals(actionCommand)) {
+			try {
+				controllerPartita.caricaPartita();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(finestra, "Errore nel caricamento della partita.", "Errore caricamento", JOptionPane.ERROR_MESSAGE);
+				return;
+			} catch (InterruptedException ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(finestra, "Errore nel caricamento della partita.", "Errore caricamento", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			cambiaMenu(PannelloPrincipale.NOME_PANNELLO_SALA);
+		} else if (PULISCI_CLASSIFICA.equals(actionCommand)) {
+			int esito = JOptionPane.showConfirmDialog(finestra, "Sei sicuro di voler pulire la classifica? Questa è un'azione irreversibile!", "Conferma pulizia", JOptionPane.YES_NO_OPTION);
+			if(esito == JOptionPane.YES_OPTION) controllerPartita.pulisciClassifica();
+		} else if (ELIMINA_SALVATAGGIO.equals(actionCommand)) {
+			int esito = JOptionPane.showConfirmDialog(finestra, "Sei sicuro di voler eliminare i dati salvati della partita? Questa è un'azione irreversibile!", "Conferma eliminazione", JOptionPane.YES_NO_OPTION);
+			if (esito == JOptionPane.YES_OPTION) {
+				controllerPartita.eliminaSalvataggio();
 				aggiornaStatoPulsanteCaricamento();
-				break;
-			case NAVIGA_A_IMPOSTAZIONI:
-				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_IMPOSTAZIONI);
-				break;
-			case NAVIGA_DA_IMPOSTAZIONI:
-				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_MENU);
+			}
+		} else if (NAVIGA_INDIETRO_CLASSIFICA.equals(actionCommand)) {
+			cambiaMenu(PannelloPrincipale.NOME_PANNELLO_MENU);
+			aggiornaStatoPulsanteCaricamento();
+		} else if (NAVIGA_A_IMPOSTAZIONI.equals(actionCommand)) {
+			cambiaMenu(PannelloPrincipale.NOME_PANNELLO_IMPOSTAZIONI);
+		} else if (NAVIGA_DA_IMPOSTAZIONI.equals(actionCommand)) {
+			cambiaMenu(PannelloPrincipale.NOME_PANNELLO_MENU);
+			aggiornaStatoPulsanteCaricamento();
+		} else if (NAVIGA_VAI_CUCINA_DA_SALA.equals(actionCommand)) {
+			cambiaMenu(PannelloPrincipale.NOME_PANNELLO_CUCINA);
+		} else if (NAVIGA_VAI_SALA_DA_CUCINA.equals(actionCommand)) {
+			cambiaMenu(PannelloPrincipale.NOME_PANNELLO_SALA);
+		} else if (NAVIGA_SALVA_PARTITA.equals(actionCommand)) {
+			try {
+				controllerPartita.salvaPartita();
 				aggiornaStatoPulsanteCaricamento();
-				break;
-			case NAVIGA_VAI_CUCINA_DA_SALA:
-				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_CUCINA);
-				break;
-			case NAVIGA_VAI_SALA_DA_CUCINA:
-				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_SALA);
-				break;
-			case NAVIGA_SALVA_PARTITA:
-				try {
-					controllerPartita.salvaPartita();
-					aggiornaStatoPulsanteCaricamento();
-				} catch (IOException | InterruptedException ex) {
-					ex.printStackTrace();
-					JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Riprova più tardi.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
-				}
-				break;
-			case NAVIGA_MENU_TORNA_A_MENU:
-				try {
-					controllerPartita.salvaPartita();
-				} catch (IOException | InterruptedException ex) {
-					ex.printStackTrace();
-					JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Non verrai portato al menu.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
-					break;
-				}
-				try {
-					controllerPartita.finisciPartita(ControllerPartita.ESCI_SENZA_MESSAGGIO);
-				} catch (InterruptedException ex) {
-					ex.printStackTrace();
-					JOptionPane.showMessageDialog(finestra, "Impossibile terminare la partita. Verrai portato al menu ma potrebbero verificarsi degli imprevisti.", "Errore terminazione", JOptionPane.WARNING_MESSAGE);
-				}
-				cambiaMenu(PannelloPrincipale.NOME_PANNELLO_MENU);
-				aggiornaStatoPulsanteCaricamento();
-				break;
-			case NAVIGA_MENU_ESCI:
-				boolean conferma = controllerFinestra.chiediConfermaChiusura("Sei sicuro di voler uscire? I tuoi dati saranno salvati.");
-				if (!conferma) {
-					break;
-				}
-				try {
-					controllerPartita.salvaPartita();
-				} catch (IOException | InterruptedException ex) {
-					ex.printStackTrace();
-					JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Il gioco non verrà chiuso.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
-					break;
-				}
-				try {
-					controllerPartita.finisciPartita(ControllerPartita.ESCI_SENZA_MESSAGGIO);
-				} catch (InterruptedException ex) {
-					ex.printStackTrace();
-					// Stiamo per terminare il gioco quindi non succederà nulla anche se il model e la view non finiscono di aggiornarsi.
-				}
-				controllerFinestra.chiudiFinestra();
-				break;
+			} catch (IOException ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Riprova più tardi.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
+			} catch (InterruptedException ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Riprova più tardi.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
+			}
+		} else if (NAVIGA_MENU_TORNA_A_MENU.equals(actionCommand)) {
+			try {
+				controllerPartita.salvaPartita();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Non verrai portato al menu.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
+				return;
+			} catch (InterruptedException ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Non verrai portato al menu.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			try {
+				controllerPartita.finisciPartita(ControllerPartita.ESCI_SENZA_MESSAGGIO);
+			} catch (InterruptedException ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(finestra, "Impossibile terminare la partita. Verrai portato al menu ma potrebbero verificarsi degli imprevisti.", "Errore terminazione", JOptionPane.WARNING_MESSAGE);
+			}
+			cambiaMenu(PannelloPrincipale.NOME_PANNELLO_MENU);
+			aggiornaStatoPulsanteCaricamento();
+		} else if (NAVIGA_MENU_ESCI.equals(actionCommand)) {
+			boolean conferma = controllerFinestra.chiediConfermaChiusura("Sei sicuro di voler uscire? I tuoi dati saranno salvati.");
+			if (!conferma) {
+				return;
+			}
+			try {
+				controllerPartita.salvaPartita();
+			} catch (IOException ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Il gioco non verrà chiuso.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
+				return;
+			} catch (InterruptedException ex) {
+				ex.printStackTrace();
+				JOptionPane.showMessageDialog(finestra, "Impossibile salvare il gioco. Il gioco non verrà chiuso.", "Errore salvataggio", JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			try {
+				controllerPartita.finisciPartita(ControllerPartita.ESCI_SENZA_MESSAGGIO);
+			} catch (InterruptedException ex) {
+				ex.printStackTrace();
+			}
+			controllerFinestra.chiudiFinestra();
 		}
 	}
 

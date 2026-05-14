@@ -70,7 +70,7 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 		this.gioco = gioco;
 		this.pannelloPrincipale = pannelloPrincipale;
 
-		this.timerPannelli = new HashMap<>();
+		this.timerPannelli = new HashMap<NotificaPanel, Timer>();
 	}
 
 	/**
@@ -118,16 +118,13 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 
 		pannelloPrincipale.rimuoviNotifica(notificaPanel);
 
-		switch (e.getComponent().getName()) {
-			case NOME_TESTO_NOTIFICA:
-				controllerNavigazione.cambiaMenu(notificaPanel.getOrigine());
-				break;
-			case NOME_LABEL_CHIUDI_NOTIFICA:
-				// Non serve fare altro
-				break;
-			default:
-				// Se il componente cliccato non è uno di quelli gestiti, non facciamo nulla invece di lanciare eccezione
-				break;
+		String componentName = e.getComponent().getName();
+		if (NOME_TESTO_NOTIFICA.equals(componentName)) {
+			controllerNavigazione.cambiaMenu(notificaPanel.getOrigine());
+		} else if (NOME_LABEL_CHIUDI_NOTIFICA.equals(componentName)) {
+			// Non serve fare altro
+		} else {
+			// Se il componente cliccato non è uno di quelli gestiti, non facciamo nulla invece di lanciare eccezione
 		}
 	}
 
@@ -146,7 +143,9 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 		gioco.cancellaNotifiche();
 		pannelloPrincipale.pulisciNotificheOverlay();
 		aggiornaNotifiche();
-		timerPannelli.forEach((panel, timer) -> timer.stop());
+		for (Timer timer : timerPannelli.values()) {
+			timer.stop();
+		}
 		timerPannelli.clear();
 	}
 
@@ -156,12 +155,15 @@ public class ControllerNotifiche implements MouseListener, ActionListener {
 	 * @param notifica La notifica da mostrare
 	 */
 	public void mostraNotifica(Notifica notifica) {
-		NotificaPanel notificaPanel = pannelloPrincipale.mostraNotifica(notifica, this);
+		final NotificaPanel notificaPanel = pannelloPrincipale.mostraNotifica(notifica, this);
 		pannelloPrincipale.aggiornaMenuNotifiche(gioco.getNotifiche(), this);
 
-		Timer timer = new Timer(5000, event -> {
-			pannelloPrincipale.rimuoviNotifica(notificaPanel);
-			timerPannelli.remove(notificaPanel);
+		Timer timer = new Timer(5000, new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent event) {
+				pannelloPrincipale.rimuoviNotifica(notificaPanel);
+				timerPannelli.remove(notificaPanel);
+			}
 		});
 
 		timerPannelli.put(notificaPanel, timer);

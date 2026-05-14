@@ -1,7 +1,6 @@
 package restaurantsim.controller;
 
 import java.io.BufferedInputStream;
-import java.util.Objects;
 
 import javazoom.jl.player.Player;
 
@@ -22,11 +21,14 @@ public class ControllerSuoni {
         this.enabled = true;
         // Carichiamo un piccolo buffer silenzioso o semplicemente inizializziamo le classi
         // senza far baccano all'avvio
-        new Thread(() -> {
-            try {
-                // Inizializza le classi di JLayer in background senza suonare nulla
-                new Player(new java.io.ByteArrayInputStream(new byte[0]));
-            } catch (Exception ignored) {}
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // Inizializza le classi di JLayer in background senza suonare nulla
+                    new Player(new java.io.ByteArrayInputStream(new byte[0]));
+                } catch (Exception ignored) {}
+            }
         }).start();
     }
 
@@ -36,17 +38,32 @@ public class ControllerSuoni {
      * 
      * @param soundFilePath Il percorso relativo del file audio nelle risorse (es. "sounds/ding.mp3").
      */
-    public void playSound(String soundFilePath) {
+    public void playSound(final String soundFilePath) {
         if (!enabled) return;
 
-        new Thread(() -> {
-            try (BufferedInputStream bis = new BufferedInputStream(
-                Objects.requireNonNull(getClass().getClassLoader().getResourceAsStream(soundFilePath)))) {
-                Player player = new Player(bis);
-                player.play();
-                player.close();
-            } catch (Exception e) {
-                System.err.println("Errore nella riproduzione del suono: " + soundFilePath);
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                BufferedInputStream bis = null;
+                try {
+                    java.io.InputStream is = getClass().getClassLoader().getResourceAsStream(soundFilePath);
+                    if (is == null) {
+                        System.err.println("Errore nella riproduzione del suono: " + soundFilePath);
+                        return;
+                    }
+                    bis = new BufferedInputStream(is);
+                    Player player = new Player(bis);
+                    player.play();
+                    player.close();
+                } catch (Exception e) {
+                    System.err.println("Errore nella riproduzione del suono: " + soundFilePath);
+                } finally {
+                    if (bis != null) {
+                        try {
+                            bis.close();
+                        } catch (Exception ignored) {}
+                    }
+                }
             }
         }).start();
     }

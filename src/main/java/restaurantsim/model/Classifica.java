@@ -18,7 +18,7 @@ public class Classifica {
      * Inizializza la classifica.
      */
     public Classifica() {
-        this.classifica = new ArrayList<>();
+        this.classifica = new ArrayList<String>();
     }
 
     /**

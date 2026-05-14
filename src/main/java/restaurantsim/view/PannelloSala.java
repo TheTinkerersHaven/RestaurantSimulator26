@@ -6,7 +6,6 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.net.URL;
 import java.util.List;
-import java.util.function.Function;
 
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -138,7 +137,7 @@ public class PannelloSala extends JPanel {
 	 * 
 	 * @param creaTransferHandle una funzione che, dato un pannello tavolo, restituisce il TransferHandler da assegnare a quel pannello tavolo per il drag and drop dei piatti
 	 */
-	public void registraTransferHandlerPiatto(Function<PannelloTavolo, PiattoTransferHandle> creaTransferHandle) {
+	public void registraTransferHandlerPiatto(restaurantsim.view.Function<PannelloTavolo, PiattoTransferHandle> creaTransferHandle) {
 		tavolo1.setTransferHandler(creaTransferHandle.apply(tavolo1));
 		tavolo2.setTransferHandler(creaTransferHandle.apply(tavolo2));
 		tavolo3.setTransferHandler(creaTransferHandle.apply(tavolo3));

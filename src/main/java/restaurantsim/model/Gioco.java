@@ -68,9 +68,9 @@ public class Gioco {
         punteggio = 0;
         clientiArrabbiati = 0;
 
-        notifiche = new LinkedList<>();
+        notifiche = new LinkedList<Notifica>();
 
-        cuochi = new ArrayList<>(NUM_CUOCHI);
+        cuochi = new ArrayList<Cuoco>(NUM_CUOCHI);
         for (int i = 0; i < NUM_CUOCHI; i++) {
             cuochi.add(new Cuoco());
         }
@@ -230,11 +230,11 @@ public class Gioco {
     public void carica(Salvataggio salvataggio) throws InterruptedException {
         this.punteggio = salvataggio.getPunteggio();
         this.clientiArrabbiati = salvataggio.getClientiArrabbiati();
-        this.notifiche = new LinkedList<>(salvataggio.getNotifiche());
+        this.notifiche = new LinkedList<Notifica>(salvataggio.getNotifiche());
         for (int i = 0; i < this.cuochi.size(); i++) {
             this.cuochi.get(i).caricaCuoco(salvataggio.getCuochi().get(i));
         }
-        this.sala.setPiattiPronti(new ArrayList<>(salvataggio.getPiattiPronti()));
-        this.sala.caricaTavoli(new ArrayList<>(salvataggio.getTavoli()));
+        this.sala.setPiattiPronti(new ArrayList<Piatto>(salvataggio.getPiattiPronti()));
+        this.sala.caricaTavoli(new ArrayList<StatoTavolo>(salvataggio.getTavoli()));
     }
 }

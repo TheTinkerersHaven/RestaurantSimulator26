@@ -59,6 +59,11 @@ public class Main {
 	 * @param args - Argomenti dalla linea di comando
 	 */
 	public static void main(String[] args) {
-		EventQueue.invokeLater(() -> init());
+		EventQueue.invokeLater(new Runnable() {
+			@Override
+			public void run() {
+				init();
+			}
+		});
 	}
 }
