@@ -7,4 +7,4 @@ Progetto di informatica e TPS 2026 edition
 Il progretto è scritto in Java utilizzando la libreria Swing per l'interfaccia grafica, e l'utilizzo di Jackson e JLayer per il salvataggio in JSON e la riproduzione audio rispettivamente.
 
 Il progetto può essere rappresentato dal seguente diagramma delle classi UML:
-![UML delle classi](uml/Restaurant%20Simulator.svg)
+![UML delle classi](documentazione/uml/Restaurant%20Simulator.svg)
